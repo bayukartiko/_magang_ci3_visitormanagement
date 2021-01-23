@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2021 at 05:52 PM
+-- Generation Time: Jan 23, 2021 at 09:57 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -89,14 +89,6 @@ CREATE TABLE `tabel_visitor` (
   `time_logged_out` datetime NOT NULL,
   `status` enum('logged in','logged out') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tabel_visitor`
---
-
-INSERT INTO `tabel_visitor` (`id_visitor`, `id_event`, `nama_visitor`, `perusahaan_visitor`, `jabatan_visitor`, `email_visitor`, `email_perusahaan`, `tlp_visitor`, `tlp_perusahaan`, `alasan_ikut`, `gambar_qrcode`, `registered_at`, `time_logged_in`, `time_logged_out`, `status`) VALUES
-('VSTR202101212349420000001', 'EVNT202001210000001', 'asdasasdas', 'sadsa', 'asda', 'asd@asd.sad', 'asdas@adas.sad', '21312', '2131', 'adsa', 'VSTR202101212349420000001.png', '2021-01-21 23:49:42', '2021-01-21 23:49:42', '0000-00-00 00:00:00', 'logged in'),
-('VSTR202101212350130000002', 'EVNT202001210000001', 'asdasddasda', 'asda', 'asdas', 'asd@asd.asda', 'asd@adas.sada', '23123', '231', 'ADASD', 'VSTR202101212350130000002.png', '2021-01-21 23:50:13', '2021-01-21 23:50:13', '0000-00-00 00:00:00', 'logged in');
 
 --
 -- Indexes for dumped tables
