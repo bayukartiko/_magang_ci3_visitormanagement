@@ -99,12 +99,12 @@ class Main_controller extends CI_Controller {
 				// $data["nama_visitor"] = $this->session->userdata('nama_visitor');
 				// $data["qrcode"] = $this->session->userdata('gambar_qrcode');
 				// $data["status_login"] = $this->session->userdata('status');
-				// $html = $this->load->view('registrasi/view_register');
+				$html = $this->load->view('registrasi/view_register', array('plain'=>'null'), true);
 
 				$callback = array(
 					'status'=>'sukses',
 					'pesan'=>'Data berhasil disimpan',
-					// 'html'=>$html
+					'html'=>$html
 				);
 			}else{
 				$callback = array(

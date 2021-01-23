@@ -111,9 +111,9 @@
 
 							$('#Modalregister').modal('hide');
 
-							window.location.reload();
+							// window.location.reload();
 							// Ganti isi dari div view dengan view yang diambil dari view_register.php
-							// $('#view').html(callback.html);
+							$('#view').html(callback.html);
 							// $('#pesan-sukses').html(callback.pesan).fadeIn().delay(10000).fadeOut();
 
 						}else{

@@ -9,30 +9,11 @@
 		<div class="row">
 			<div class="col-md-8 ml-auto mr-auto">
 
-				<!-- <div id="view">
-					<.?php $this->load->view('registrasi/view_register'); ?>
-				</div> -->
+				<div id="view">
+					<?php $this->load->view('registrasi/view_register'); ?>
+				</div>
 
-				<?php if($this->session->userdata('status') == "logged in"){ ?>
-					<div class="text-center">
-						<h2>Selamat datang, <?= $this->session->userdata("nama_visitor"); ?></h2>
-						<h5>qr code dibawah berfungsi untuk discan saat anda ingin memasuki area tertentu.</h5>
-						<h5>dipersilahkan untuk screenshot bila perlu.</h5>
-						<img src="assets/img/qrcode/<?= $this->session->userdata("gambar_qrcode"); ?>" alt="<?= $this->session->userdata("id_visitor"); ?>" data-toggle="popover" data-placement="top" data-content="<?= $this->session->userdata("id_visitor"); ?>" data-container="body" class="img-thumbnail rounded mx-auto d-block">
-						<h5>tunjukkan qr code anda kepada petugas area untuk discan.</h5>
-					</div>
-				<?php }else{ ?>
-					<h2 class="text-center title">Form Registrasi</h2>
-					<h5 class="text-center description">Silahkan isi form berikut untuk mendapatkan tiket berupa QR Code</h5><br>
-
-					<div class="row">
-						<div class="offset-md-5 col-md-2">
-							<button class="btn btn-block btn-primary" data-toggle="modal" data-target="#Modalregister">
-								Isi form
-							</button>
-						</div>
-					</div>
-				<?php } ?>
+				
 
 				
 				<!-- <h2 class="text-center title">Form Registrasi</h2>
