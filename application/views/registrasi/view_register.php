@@ -1,13 +1,16 @@
 <?php if($this->session->userdata('status') == "logged in"){ ?>
 	<div class="text-center">
+		<!-- </?= $this->session->all_userdata(); ?>
+		</?= $this->session->userdata('gambar_qrcode'); ?> -->
+		
 		<h2>Selamat datang, <?= $this->session->userdata("nama_visitor"); ?></h2>
 		<h5>qr code dibawah berfungsi untuk discan saat anda ingin memasuki area tertentu.</h5>
 		<h5>dipersilahkan untuk screenshot bila perlu.</h5>
-		<img src="assets/img/qrcode/<?= $this->session->userdata("gambar_qrcode"); ?>" alt="<?= $this->session->userdata("id_visitor"); ?>" data-toggle="popover" data-placement="top" data-content="<?= $this->session->userdata("id_visitor"); ?>" data-container="body" class="img-thumbnail rounded mx-auto d-block">
+		<img src="<?= base_url() ?>assets/img/qrcode/<?= $this->session->userdata("gambar_qrcode"); ?>" alt="<?= $this->session->userdata("id_visitor"); ?>" data-toggle="popover" data-placement="top" data-content="<?= $this->session->userdata("id_visitor"); ?>" data-container="body" class="img-thumbnail rounded mx-auto d-block">
 		<h5>tunjukkan qr code anda kepada petugas area untuk discan.</h5>
 	</div>
 <?php }else{ ?>
-	<h2 class="text-center title">Form Registrasi</h2>
+	<h2 class="text-center title">Form Pendaftaran</h2>
 	<h5 class="text-center description">Silahkan isi form berikut untuk mendapatkan tiket berupa QR Code</h5><br>
 
 	<div class="row">

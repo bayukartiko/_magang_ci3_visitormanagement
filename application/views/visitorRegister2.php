@@ -13,54 +13,11 @@
 					<?php $this->load->view('registrasi/view_register'); ?>
 				</div>
 
-				
-
-				
-				<!-- <h2 class="text-center title">Form Registrasi</h2>
-				<h5 class="text-center description">Silahkan isi form berikut untuk mendapatkan tiket berupa QR Code</h5><br>
-				
-				<div class="row">
-					<div class="offset-md-5 col-md-2">
-						<button class="btn btn-block btn-primary" data-toggle="modal" data-target="#Modalregister">
-							Isi form
-						</button>
-					</div>
-				</div>
-
-				<div class="text-center">
-					<h2>Selamat datang, [user] di [nama event]</h2>
-					<h5>tunjukkan qr code anda kepada petugas area untuk discan</h5>
-					<img src="assets/img/qrcode/cobaqrcode.png" alt="" srcset="" class="img-thumbnail rounded mx-auto d-block">
-				</div> -->
-
 			</div>
 		</div>
 
     </div>
   </div>
-	
-	<!-- Modal QR Code -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Modal title</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<i class="material-icons">clear</i>
-						</button>
-					</div>
-					<div class="modal-body">
-						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
-						</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-link">Nice Button</button>
-						<button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	<!--  End Modal -->
 
 	<!-- modal form register -->
 		<div class="modal fade" id="Modalregister" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
@@ -197,3 +154,151 @@
 			</div>
 		</div>
 	<!-- end modal form register -->
+
+
+	<script>
+		$(document).ready(function(){
+
+			$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
+				e.preventDefault();
+				$('#btn-simpan').html('Sedang mendaftar..'); // ganti text btn-simpan jadi sedang mendaftar
+				register_visitor();
+			});
+
+			function register_visitor(){
+				$.ajax({
+					url: '<?= base_url(); ?>main_controller/aksi_register_visitor', // URL tujuan
+					type: 'POST',
+					// data: $("#form-modal form").serialize(),
+					data: new FormData(document.getElementById('form-register')),
+					processData:false,
+					contentType:false,
+					cache:false,
+					async:false,
+					dataType: 'JSON',
+					beforeSend: function() {
+						// $('#loading-simpan').show(); // Munculkan loading simpan
+						$('#btn-simpan').html('Sedang mendaftar..'); // ganti text btn-simpan jadi sedang mendaftar
+					},
+					success: function(callback){
+						// console.log('sukses');
+						// console.log(callback)
+
+						if(callback.status == "sukses"){ // Jika Statusnya = sukses
+							// console.log('callback sukses');
+							
+
+							$('#Modalregister').modal('hide');
+
+							// window.location.reload();
+							// Ganti isi dari div view dengan view yang diambil dari view_register.php
+							$('#view').html(callback.html);
+							// $('#pesan-sukses').html(callback.pesan).fadeIn().delay(10000).fadeOut();
+							const Toast = Swal.mixin({
+								toast: true,
+								position: 'top-start',
+								showConfirmButton: false,
+								timer: 10000,
+								timerProgressBar: true,
+								didOpen: (toast) => {
+									toast.addEventListener('mouseenter', Swal.stopTimer)
+									toast.addEventListener('mouseleave', Swal.resumeTimer)
+								}
+							});
+							Toast.fire({
+								icon: 'success',
+								title: callback.pesan
+							});
+
+						}else{
+							console.log('callback error');
+							// tampil pesan validasi
+								if(callback.nama_depan_error){
+									$('#field_nama_depan').addClass('has-danger');
+									$('#error_nama_depan').html(callback.nama_depan_error);
+								}else{
+									$('#field_nama_depan').removeClass('has-danger');
+									$('#error_nama_depan').html('');
+								}
+								
+								if(callback.nama_belakang_error){
+									$('#field_nama_belakang').addClass('has-danger');
+									$('#error_nama_belakang').html(callback.nama_belakang_error);
+								}else{
+									$('#field_nama_belakang').removeClass('has-danger');
+									$('#error_nama_belakang').html('');
+								}
+
+								if(callback.nama_perusahaan_error){
+									$('#field_nama_perusahaan').addClass('has-danger');
+									$('#error_nama_perusahaan').html(callback.nama_perusahaan_error);
+								}else{
+									$('#field_nama_perusahaan').removeClass('has-danger');
+									$('#error_nama_perusahaan').html('');
+								}
+
+								if(callback.jabatan_error){
+									$('#field_jabatan').addClass('has-danger');
+									$('#error_jabatan').html(callback.jabatan_error);
+								}else{
+									$('#field_jabatan').removeClass('has-danger');
+									$('#error_jabatan').html('');
+								}
+
+								if(callback.email_pribadi_error){
+									$('#field_email_pribadi').addClass('has-danger');
+									$('#error_email_pribadi').html(callback.email_pribadi_error);
+								}else{
+									$('#field_email_pribadi').removeClass('has-danger');
+									$('#error_email_pribadi').html('');
+								}
+
+								if(callback.email_perusahaan_error){
+									$('#field_email_perusahaan').addClass('has-danger');
+									$('#error_email_perusahaan').html(callback.email_perusahaan_error);
+								}else{
+									$('#field_email_perusahaan').removeClass('has-danger');
+									$('#error_email_perusahaan').html('');
+								}
+
+								if(callback.notlp_pribadi_error){
+									$('#field_notlp_pribadi').addClass('has-danger');
+									$('#error_notlp_pribadi').html(callback.notlp_pribadi_error);
+								}else{
+									$('#field_notlp_pribadi').removeClass('has-danger');
+									$('#error_notlp_pribadi').html('');
+								}
+
+								if(callback.notlp_perusahaan_error){
+									$('#field_notlp_perusahaan').addClass('has-danger');
+									$('#error_notlp_perusahaan').html(callback.notlp_perusahaan_error);
+								}else{
+									$('#field_notlp_perusahaan').removeClass('has-danger');
+									$('#error_notlp_perusahaan').html('');
+								}
+
+								if(callback.alasan_error){
+									$('#field_alasan').addClass('has-danger');
+									$('#error_alasan').html(callback.alasan_error);
+								}else{
+									$('#field_alasan').removeClass('has-danger');
+									$('#error_alasan').html('');
+								}
+							
+							$('#btn-simpan').html('x Terjadi kesalahan x');
+							setTimeout(() => {
+								$('#btn-simpan').html('Daftar');
+							}, 2000);
+						}
+					},
+					error: function(xhr, ajaxOptions, thrownError, errorMessage, callback) {
+						console.log("error :", errorMessage);
+						console.log(callback)
+						// alert(xhr.responseText);
+						console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+			}
+
+		});
+	</script>

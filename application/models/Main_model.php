@@ -44,20 +44,20 @@ class Main_model extends CI_Model{
 
 	public function simpan_register_pengunjung($id_visitor){
 		$data_tabel_visitor = [
-			"id_visitor" => $id_visitor,
-			"id_event" => 'EVNT202001210000001',
-			"nama_visitor" => $this->input->post('nama_depan', true) . ' ' . $this->input->post('nama_belakang', true),
-			"perusahaan_visitor" => $this->input->post('nama_perusahaan', true),
-			"jabatan_visitor" => $this->input->post('jabatan', true),
-			"email_visitor" => $this->input->post('email_pribadi', true),
-			"email_perusahaan" => $this->input->post('email_perusahaan', true),
-			"tlp_visitor" => $this->input->post('notlp_pribadi', true),
-			"tlp_perusahaan" => $this->input->post('notlp_perusahaan', true),
-			"alasan_ikut" => $this->input->post('alasan', true),
-			"gambar_qrcode" => $id_visitor.'.png',
-			"registered_at" => mdate("%Y-%m-%d %H:%i:%s"),
-			"time_logged_in" => mdate("%Y-%m-%d %H:%i:%s"),
-			"status" => "logged in"
+			"id_visitor" => htmlspecialchars($id_visitor),
+			"id_event" => htmlspecialchars('EVNT202001210000001'),
+			"nama_visitor" => htmlspecialchars($this->input->post('nama_depan', true)) . ' ' . htmlspecialchars($this->input->post('nama_belakang', true)),
+			"perusahaan_visitor" => htmlspecialchars($this->input->post('nama_perusahaan', true)),
+			"jabatan_visitor" => htmlspecialchars($this->input->post('jabatan', true)),
+			"email_visitor" => htmlspecialchars($this->input->post('email_pribadi', true)),
+			"email_perusahaan" => htmlspecialchars($this->input->post('email_perusahaan', true)),
+			"tlp_visitor" => htmlspecialchars($this->input->post('notlp_pribadi', true)),
+			"tlp_perusahaan" => htmlspecialchars($this->input->post('notlp_perusahaan', true)),
+			"alasan_ikut" => htmlspecialchars($this->input->post('alasan', true)),
+			"gambar_qrcode" => htmlspecialchars($id_visitor.'.png'),
+			"registered_at" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+			"time_logged_in" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+			"status" => htmlspecialchars("logged in")
 		];
 		$this->db->insert('tabel_visitor', $data_tabel_visitor);
 

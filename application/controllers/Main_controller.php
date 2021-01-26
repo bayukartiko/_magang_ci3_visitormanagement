@@ -29,22 +29,9 @@ class Main_controller extends CI_Controller {
 	{
 		// $this->load->view('welcome_message');
 		echo "welcome / index";
-
-		// menghubungkan ke view:
-			// $this->load->view('nama_file_view_didalam_folder_app/view');
-		// menghubungkan ke model:
-			// 1. buat pemanggilan model dahulu
-				// $this->load->model('nama_file_model')
-			// 2. buat fungsinya
-				// $this->nama_file_model->nama_function_didalam_model_tsb();
-			// 3. buat variabel untuk menampung data
-				// $data['nama_array'] = $this->nama_file_model->nama_function_didalam_model_tsb();
-			// 4. kirim ke view
-				// $this->load->view('nama_file_view_didalam_folder_app/view', $data);
-				
 	}
 
-	public function page_register(){
+	public function page_register_visitor(){
 		// $this->session->sess_destroy();
 		$data["nama_event"] = 'nama eventasdasd';
 		// $data["id_visitor"] = $this->session->userdata('id_visitor');
@@ -52,13 +39,103 @@ class Main_controller extends CI_Controller {
 		// $data["qrcode"] = $this->session->userdata('gambar_qrcode');
 		// $data["status_login"] = $this->session->userdata('status');
 		
-		$this->load->view('template/pengunjung/header', $data);
+		$this->load->view('template/visitor/header', $data);
 		$this->load->view('visitorRegister2', $data);
-		$this->load->view('template/pengunjung/footer', $data);
+		$this->load->view('template/visitor/footer', $data);
+	}
+	
+	public function page_login_staff(){
+		// $this->session->sess_destroy();
+		if($this->session->userdata('username')){ // jika ada session dari staff
+			if($this->session->userdata('role_id') == '1'){
+				redirect('staff_only/admin/home');
+			}elseif($this->session->userdata('role_id') == '2'){
+				redirect('staff_only/petugas/home');
+			}
+		}
+
+		$this->form_validation->set_rules('username', 'username', 'required|trim', [
+			'required' => 'field username harus diisi !'
+		]);
+		$this->form_validation->set_rules('password', 'password', 'required|trim', [
+			'required' => 'field password harus diisi !'
+		]);
+		if($this->form_validation->run() == false){
+			$this->load->view('template/staff_only/header');
+			$this->load->view('login');
+			$this->load->view('template/staff_only/footer');
+		}else{
+			// echo 'berhasil';
+			$this->_aksi_login();
+		}
 	}
 
-	public function register(){
-		// if($this->input->is_ajax_request()){
+	private function _aksi_login(){
+		$username = $this->input->post('username');
+		$password = $this->input->post('password');
+
+		$staff = $this->db->get_where('tabel_staff', ['username' => $username])->row_array();
+		$role = $this->db->get_where('tabel_role', ['role_id' => $staff['role_id']])->row_array();
+
+		if($staff){ // staff terdeteksi ada
+			if($staff['verified'] == '1'){
+				if($staff['is_active'] == '0'){
+
+					// if(password_verify($password, $staff['password'])){
+					if($password == $staff['password']){
+						$log_stat = '1';
+						$this->db->set('is_active', $log_stat);
+						$this->db->where('staff_id', $staff['staff_id']);
+						$this->db->update('tabel_staff');
+
+						$data = [
+							"staff_id" => $staff["staff_id"],
+							"role_id" => $staff["role_id"],
+							"username" => $staff["username"],
+							"password" => $staff["password"],
+							"nama" => $staff["nama"],
+							"verified" => $staff["verified"],
+							"is_active" => $staff["is_active"]
+						];
+						// $this->session->sess_expiration = '10';// expires in 4 hours (14400)
+						$this->session->set_userdata($data);
+						// $session = $this->session->set_userdata($data);
+						// var_dump($session);
+						// die;
+
+						// cek tipe user
+						if($role['role_id'] == '1'){
+							redirect('staff_only/admin/home');
+						}elseif($role['role_id'] == '2'){
+							redirect('staff_only/petugas/home');
+						}else{
+							echo 'role tidak dikenal !';
+						}
+
+					}else{
+						$this->session->set_flashdata('gagal', 'Username atau password salah !');
+						redirect('staff_only/login');
+					}
+
+				}else{
+					$this->session->set_flashdata('gagal', 'Staff ini sedang aktif !');
+					redirect('staff_only/login');
+				}
+
+			}else{
+				$this->session->set_flashdata('gagal', 'Staff ini belum di verifikasi !');
+				redirect('staff_only/login');
+			}
+
+		}else{
+			$this->session->set_flashdata('gagal', 'Staff ini belum terdaftar !');
+			redirect('staff_only/login');
+		}
+		
+	}
+
+	public function aksi_register_visitor(){
+		if($this->input->is_ajax_request()){
 	
 			if($this->main_model->validasi_register_pengunjung() == true){
 				// buat kostum id
@@ -94,16 +171,11 @@ class Main_controller extends CI_Controller {
 					$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
 
 				// Load ulang view_register.php agar data yang baru bisa muncul di tabel pada visitorRegister2.php
-				// $data["nama_event"] = 'nama event';
-				// $data["id_visitor"] = $this->session->userdata('id_visitor');
-				// $data["nama_visitor"] = $this->session->userdata('nama_visitor');
-				// $data["qrcode"] = $this->session->userdata('gambar_qrcode');
-				// $data["status_login"] = $this->session->userdata('status');
 				$html = $this->load->view('registrasi/view_register', array('plain'=>'null'), true);
 
 				$callback = array(
 					'status'=>'sukses',
-					'pesan'=>'Data berhasil disimpan',
+					'pesan'=>'Selamat! anda sudah terdaftar.',
 					'html'=>$html
 				);
 			}else{
@@ -122,7 +194,7 @@ class Main_controller extends CI_Controller {
 				);
 			}
 			echo json_encode($callback);
-		// }
+		}
 		// var_dump($callback);
 
 	}

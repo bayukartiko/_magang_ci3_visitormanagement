@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 23, 2021 at 09:57 AM
+-- Generation Time: Jan 26, 2021 at 01:18 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -56,6 +56,48 @@ INSERT INTO `tabel_event` (`id_event`, `nama_event`, `tanggal_dibuka`, `tanggal_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tabel_role`
+--
+
+CREATE TABLE `tabel_role` (
+  `role_id` int(10) NOT NULL,
+  `nama_role` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tabel_role`
+--
+
+INSERT INTO `tabel_role` (`role_id`, `nama_role`) VALUES
+(1, 'admin'),
+(2, 'petugas');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tabel_staff`
+--
+
+CREATE TABLE `tabel_staff` (
+  `staff_id` varchar(255) NOT NULL,
+  `role_id` int(10) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `verified` varchar(1) NOT NULL,
+  `is_active` varchar(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tabel_staff`
+--
+
+INSERT INTO `tabel_staff` (`staff_id`, `role_id`, `username`, `password`, `nama`, `verified`, `is_active`) VALUES
+('STF2021012419200100000001', 1, 'bayu', 'qwerty', 'bayu kartiko', '1', '0');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tabel_tracking`
 --
 
@@ -91,6 +133,17 @@ CREATE TABLE `tabel_visitor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `tabel_visitor`
+--
+
+INSERT INTO `tabel_visitor` (`id_visitor`, `id_event`, `nama_visitor`, `perusahaan_visitor`, `jabatan_visitor`, `email_visitor`, `email_perusahaan`, `tlp_visitor`, `tlp_perusahaan`, `alasan_ikut`, `gambar_qrcode`, `registered_at`, `time_logged_in`, `time_logged_out`, `status`) VALUES
+('VSTR202101261121110000001', 'EVNT202001210000001', 'asd dsa', 'asd', 'asd', 'reger@htrh.rthr', 'asd@asd.asd', '123', '123', 'asd', 'VSTR202101261121110000001.png', '2021-01-26 11:21:11', '2021-01-26 11:21:11', '0000-00-00 00:00:00', 'logged in'),
+('VSTR202101261823410000002', 'EVNT202001210000001', 'asd asd', 'asd', 'asd', 'asd@asd.asd', 'asd@asd.asd', '213', '123', 'asd', 'VSTR202101261823410000002.png', '2021-01-26 18:23:41', '2021-01-26 18:23:41', '0000-00-00 00:00:00', 'logged in'),
+('VSTR202101261825140000003', 'EVNT202001210000001', 'asd dsa', 'asd', 'asdaa', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'assd', 'VSTR202101261825140000003.png', '2021-01-26 18:25:14', '2021-01-26 18:25:14', '0000-00-00 00:00:00', 'logged in'),
+('VSTR202101261826220000004', 'EVNT202001210000001', 'sd asd', 'asdada', 'asdas', 'asd@asd.asd', 'asd@asd.asd', '2123', '123', 'sad', 'VSTR202101261826220000004.png', '2021-01-26 18:26:22', '2021-01-26 18:26:22', '0000-00-00 00:00:00', 'logged in'),
+('VSTR202101261832270000005', 'EVNT202001210000001', 'asd asd', 'asd', 'asd', 'asd@asd.asd', 'sad@wefe.weff', '123', '213', 'asda', 'VSTR202101261832270000005.png', '2021-01-26 18:32:27', '2021-01-26 18:32:27', '0000-00-00 00:00:00', 'logged in');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -108,6 +161,19 @@ ALTER TABLE `tabel_event`
   ADD PRIMARY KEY (`id_event`);
 
 --
+-- Indexes for table `tabel_role`
+--
+ALTER TABLE `tabel_role`
+  ADD PRIMARY KEY (`role_id`);
+
+--
+-- Indexes for table `tabel_staff`
+--
+ALTER TABLE `tabel_staff`
+  ADD PRIMARY KEY (`staff_id`),
+  ADD KEY `role_id` (`role_id`);
+
+--
 -- Indexes for table `tabel_tracking`
 --
 ALTER TABLE `tabel_tracking`
@@ -122,6 +188,16 @@ ALTER TABLE `tabel_visitor`
   ADD KEY `id_event` (`id_event`);
 
 --
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tabel_role`
+--
+ALTER TABLE `tabel_role`
+  MODIFY `role_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -130,6 +206,12 @@ ALTER TABLE `tabel_visitor`
 --
 ALTER TABLE `tabel_area`
   ADD CONSTRAINT `tabel_area_ibfk_1` FOREIGN KEY (`id_event`) REFERENCES `tabel_event` (`id_event`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tabel_staff`
+--
+ALTER TABLE `tabel_staff`
+  ADD CONSTRAINT `tabel_staff_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `tabel_role` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tabel_tracking`

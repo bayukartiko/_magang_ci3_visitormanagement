@@ -58,5 +58,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 // $route['param1/param2/param3/param4'] = 'controller_name/method_name';
 $route[''] = 'main_controller/index';
-$route['register'] = 'main_controller/page_register';
-// $route['qrcode'] = 'main_controller/qrcode';
+$route['visitor/register'] = 'main_controller/page_register_visitor';
+$route['staff_only/login'] = 'main_controller/page_login_staff';
+$route['staff_only/admin/home'] = 'staff_controller/index_admin';
+$route['staff_only/admin/logout'] = 'staff_controller/logout';
