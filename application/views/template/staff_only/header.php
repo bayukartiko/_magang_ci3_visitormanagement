@@ -3,6 +3,7 @@
 
 <head>
 
+	<link rel="icon" type="image/png" href="<?= base_url() ?>assets/img/id_card_icon.png">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,6 +29,15 @@
     <!-- Custom scripts for all pages-->
 	<script src="<?= base_url() ?>assets/sba2/js/sb-admin-2.min.js"></script>
 
-</head>
+    <!-- Page level plugins -->
+    <script src="<?= base_url() ?>assets/Chart.js/dist/Chart.bundle.js"></script>
+	
+	<!-- datatables -->
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/DataTables/datatables.min.css"/>
+	<script type="text/javascript" src="<?= base_url() ?>assets/DataTables/datatables.min.js"></script>
 
-<body class="bg-gradient-primary">
+		<!-- sweetalert -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.3.5/sweetalert2.all.min.js" integrity="sha512-rQGS49+CfE3nYVbZ4JFwdUrwZwHMnvNz611lVFevMeKN8HG7z/Sep0K91rjMbL4da6VSmOxk4hSXrhK0M+nDnQ==" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.3.5/sweetalert2.min.css" integrity="sha512-NU255TKQ55xzDS6UHQgO9HQ4jVWoAEGG/lh2Vme0E2ymREox7e8qwIfn6BFem8lbahhU9E2IQrHZlFAxtKWH2Q==" crossorigin="anonymous" />
+	
+</head>

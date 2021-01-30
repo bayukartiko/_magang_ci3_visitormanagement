@@ -31,6 +31,15 @@ class Main_controller extends CI_Controller {
 		echo "welcome / index";
 	}
 
+	// public function coba_barcode(){
+	// 	$generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+	// 	echo $generator->getBarcode('abcd1234567890', $generator::TYPE_CODE_128);
+	// }
+
+	public function redirect_register(){
+		redirect('visitor/register');
+	}
+
 	public function page_register_visitor(){
 		// $this->session->sess_destroy();
 		$data["nama_event"] = 'nama eventasdasd';
@@ -48,8 +57,10 @@ class Main_controller extends CI_Controller {
 		// $this->session->sess_destroy();
 		if($this->session->userdata('username')){ // jika ada session dari staff
 			if($this->session->userdata('role_id') == '1'){
+				$this->session->set_flashdata('harap_logout', 'harap logout terlebih dahulu !');
 				redirect('staff_only/admin/home');
 			}elseif($this->session->userdata('role_id') == '2'){
+				$this->session->set_flashdata('harap_logout', 'harap logout terlebih dahulu !');
 				redirect('staff_only/petugas/home');
 			}
 		}
@@ -66,11 +77,11 @@ class Main_controller extends CI_Controller {
 			$this->load->view('template/staff_only/footer');
 		}else{
 			// echo 'berhasil';
-			$this->_aksi_login();
+			$this->_aksi_login_staff();
 		}
 	}
 
-	private function _aksi_login(){
+	private function _aksi_login_staff(){
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 
@@ -79,11 +90,11 @@ class Main_controller extends CI_Controller {
 
 		if($staff){ // staff terdeteksi ada
 			if($staff['verified'] == '1'){
-				if($staff['is_active'] == '0'){
+				if($staff['is_active'] == 'offline'){
 
-					// if(password_verify($password, $staff['password'])){
-					if($password == $staff['password']){
-						$log_stat = '1';
+					if(password_verify($password, $staff['password'])){
+					// if($password == $staff['password']){
+						$log_stat = 'online';
 						$this->db->set('is_active', $log_stat);
 						$this->db->where('staff_id', $staff['staff_id']);
 						$this->db->update('tabel_staff');
@@ -169,6 +180,10 @@ class Main_controller extends CI_Controller {
 					$params['size'] = 10;
 					$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
 					$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+				
+				// barcode
+					// $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+					// echo $generator->getBarcode('081231723897', $generator::TYPE_CODE_128);
 
 				// Load ulang view_register.php agar data yang baru bisa muncul di tabel pada visitorRegister2.php
 				$html = $this->load->view('registrasi/view_register', array('plain'=>'null'), true);

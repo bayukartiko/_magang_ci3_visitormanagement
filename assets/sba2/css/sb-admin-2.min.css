@@ -2227,18 +2227,18 @@ fieldset:disabled a.btn {
 }
 .btn-primary {
   color: #fff;
-  background-color: #6f4a8e;
-  border-color: #6f4a8e;
+  background-color: #6930c3;
+  border-color: #6930c3;
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #be79df;
-  border-color: #6a097d;
+  background-color: #64dfdf;
+  border-color: #252525;
 }
 .btn-primary.focus,
 .btn-primary:focus {
   color: #fff;
-  background-color: #be79df;
+  background-color: #64dfdf;
   border-color: #6a097d;
   box-shadow: 0 0 0 0.2rem rgba(105, 136, 228, 0.5);
 }
@@ -9067,13 +9067,47 @@ a:focus {
   animation-timing-function: opacity cubic-bezier(0, 1, 0.4, 1);
 }
 .bg-gradient-primary {
-  background-color: #52057b;
-  /* background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%); */
+  background-color: #6155a6;
+  background-image: linear-gradient(180deg, #6151a6 10%, #224abe 100%);
   background-size: cover;
 }
 .bg-gradient-secondary {
   background-color: #858796;
   background-image: linear-gradient(180deg, #858796 10%, #60616f 100%);
+  background-size: cover;
+}
+.bg-gradient-neon1 {
+  background-color: #252525;
+  background-image: linear-gradient(180deg, #252525 10%, #6930c3 100%);
+  background-size: cover;
+}
+.bg-gradient-45-neon1 {
+  background-color: #252525;
+  background-image: linear-gradient(45deg, #252525 10%, #6930c3 100%);
+  background-size: cover;
+}
+.bg-gradient-90-neon1 {
+  background-color: #252525;
+  background-image: linear-gradient(90deg, #252525 10%, #6930c3 100%);
+  background-size: cover;
+}
+.bg-gradient-neon2 {
+  background-color: #6930c3;
+  background-image: linear-gradient(180deg, #6930c3 10%, #64dfdf 100%);
+  background-size: cover;
+}
+.bg-gradient-neon3 {
+  background-color: #64dfdf;
+  background-image: linear-gradient(180deg, #64dfdf 10%, #80ffdb 100%);
+  background-size: cover;
+}
+.bg-gradient-neon4 {
+  background-color: #80ffdb;
+  background-image: linear-gradient(180deg, #858796 10%, #60616f 100%);
+  background-size: cover;
+}
+.bg-gradient-neon-secondary {
+  background-color:#000;
   background-size: cover;
 }
 .bg-gradient-success {

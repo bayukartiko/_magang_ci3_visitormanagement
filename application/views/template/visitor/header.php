@@ -16,8 +16,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 <head>
   <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-	<link rel="icon" type="image/png" href="./assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="<?= base_url() ?>assets/img/id_card_icon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     Event Registration
@@ -47,6 +46,10 @@ The above copyright notice and this permission notice shall be included in all c
 
 	<!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
 		<script src="<?= base_url() ?>assets/material/js/material-kit.js?v=2.0.7" type="text/javascript"></script>
+
+	<!-- datatables -->
+		<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/DataTables/datatables.min.css"/>
+		<script type="text/javascript" src="<?= base_url() ?>assets/DataTables/datatables.min.js"></script>
 
 </head>
 
