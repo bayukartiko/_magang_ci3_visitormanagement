@@ -25,15 +25,33 @@ class Main_controller extends CI_Controller {
 		$this->load->library('form_validation', 'ciqrcode');
 	}
 
-	public function index()
-	{
-		// $this->load->view('welcome_message');
-		echo "welcome / index";
+	public function index_visitor(){
+		redirect('visitor/register');
+	}
+	public function index_staff(){
+		redirect('staff_only/login');
 	}
 
 	// public function coba_barcode(){
-	// 	$generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-	// 	echo $generator->getBarcode('abcd1234567890', $generator::TYPE_CODE_128);
+		// 	$generatorHTML = new Picqer\Barcode\BarcodeGeneratorHTML();
+		// 	$generatorSVG = new Picqer\Barcode\BarcodeGeneratorSVG();
+		// 	$generatorPNG = new Picqer\Barcode\BarcodeGeneratorPNG();
+		// 	$generatorJPG = new Picqer\Barcode\BarcodeGeneratorJPG();
+
+		// 	// Most used types are TYPE_CODE_128 and TYPE_CODE_39. Because of the best scanner support, variable length and most chars supported.
+		// 	// Code 128 and Code 39 should not be used for products that are for sale in retail stores (retail products need EAN barcodes).
+
+		// 	$kode_angka = '1234567890';
+		// 	$kode_huruf = 'abcdefghijklmnopqrstuvwxyz';
+		// 	// echo $generatorHTML->getBarcode('210131000001', $generatorHTML::TYPE_CODE_128);
+		// 	// file_put_contents('assets/img/barcode/'.$kode.'.jpg', $generatorJPG->getBarcode($kode, $generatorJPG::TYPE_CODABAR));
+		// 	file_put_contents('assets/img/barcode/'.$kode_angka.'.png', $generatorJPG->getBarcode($kode_angka, $generatorJPG::TYPE_CODE_128));
+		// 	echo '<img src="assets/img/barcode/'.$kode_angka.'.png">';
+		// 	// echo '<img src="data:image/png;base64,' . base64_encode($generatorPNG->getBarcode($kode, $generatorPNG::TYPE_CODE_128)) . '">';
+
+		// 	// save jpg barcode to disk
+		// 	// $generator = new Picqer\Barcode\BarcodeGeneratorJPG();
+		// 	// file_put_contents('barcode.jpg', $generator->getBarcode('081231723897', $generator::TYPE_CODABAR));
 	// }
 
 	public function redirect_register(){
@@ -42,7 +60,7 @@ class Main_controller extends CI_Controller {
 
 	public function page_register_visitor(){
 		// $this->session->sess_destroy();
-		$data["nama_event"] = 'nama eventasdasd';
+		$data["nama_event"] = 'nama event';
 		// $data["id_visitor"] = $this->session->userdata('id_visitor');
 		// $data["nama_visitor"] = $this->session->userdata('nama_visitor');
 		// $data["qrcode"] = $this->session->userdata('gambar_qrcode');
@@ -158,32 +176,35 @@ class Main_controller extends CI_Controller {
 					}else{
 						$kode = 1;
 					}
-					$tgl = mdate("%Y%m%d%H%i%s");
+					// $tgl = mdate("%y%m%d%H%i%s");
+					$d = new DateTime();
+					$tgl = $d->format("ymdu");
 					$batas_user = str_pad($kode, 7, "0", STR_PAD_LEFT);
-					$id_visitor = "VSTR".$tgl.$batas_user;
+					// $id_visitor = "VSTR".$tgl.$batas_user;
+					$id_visitor = $tgl.$batas_user;
 
 				$this->main_model->simpan_register_pengunjung($id_visitor);
 
 				// qr code
-					$config['cacheable'] = true; //boolean, the default is true
-					$config['cachedir'] = './assets/'; //string, the default is application/cache/
-					$config['errorlog'] = './assets/'; //string, the default is application/logs/
-					$config['imagedir'] = './assets/img/qrcode/'; //direktori penyimpanan qr code
-					$config['quality'] = true; //boolean, the default is true
-					$config['size'] = '1024'; //interger, the default is 1024
-					$config['black'] = array(224,255,255); // array, default is array(255,255,255)
-					$config['white'] = array(70,130,180); // array, default is array(0,0,0)
-					$this->ciqrcode->initialize($config);
-					$image_name= $id_visitor.'.png';
-					$params['data'] = $id_visitor; //data yang akan di jadikan QR CODE
-					$params['level'] = 'H'; //H=High
-					$params['size'] = 10;
-					$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
-					$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+					// $config['cacheable'] = true; //boolean, the default is true
+					// $config['cachedir'] = './assets/'; //string, the default is application/cache/
+					// $config['errorlog'] = './assets/'; //string, the default is application/logs/
+					// $config['imagedir'] = './assets/img/qrcode/'; //direktori penyimpanan qr code
+					// $config['quality'] = true; //boolean, the default is true
+					// $config['size'] = '1024'; //interger, the default is 1024
+					// $config['black'] = array(224,255,255); // array, default is array(255,255,255)
+					// $config['white'] = array(70,130,180); // array, default is array(0,0,0)
+					// $this->ciqrcode->initialize($config);
+					// $image_name= $id_visitor.'.png';
+					// $params['data'] = $id_visitor; //data yang akan di jadikan QR CODE
+					// $params['level'] = 'H'; //H=High
+					// $params['size'] = 10;
+					// $params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
+					// $this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
 				
 				// barcode
-					// $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-					// echo $generator->getBarcode('081231723897', $generator::TYPE_CODE_128);
+					$generatorJPG = new Picqer\Barcode\BarcodeGeneratorJPG();
+					file_put_contents('assets/img/barcode/'.$id_visitor.'.png', $generatorJPG->getBarcode($id_visitor, $generatorJPG::TYPE_CODE_128));
 
 				// Load ulang view_register.php agar data yang baru bisa muncul di tabel pada visitorRegister2.php
 				$html = $this->load->view('registrasi/view_register', array('plain'=>'null'), true);

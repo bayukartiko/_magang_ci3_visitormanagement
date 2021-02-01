@@ -96,7 +96,7 @@
 						</div>
 						<!-- Card Body -->
 						<div class="card-body">
-							<button class="btn btn-primary" data-toggle="modal" data-target="#modal_form_staff">Tambah staff baru</button>
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modal_tambah_staff">Tambah staff baru</button>
 							<br><br>
 							
 							<div id="view_tabel_staff">
@@ -189,7 +189,7 @@
 			<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Detail staff baru</h5>
+						<h5 class="modal-title" id="exampleModalLabel">Detail staff</h5>
 						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">×</span>
 						</button>
@@ -227,14 +227,18 @@
 						</fieldset>
 					</div>
 					<div class="modal-footer">
-						<button class="btn btn-primary" type="button" data-dismiss="modal">Mengerti</button>
+						<div class="mr-auto">
+							<button class="btn btn-secondary" type="button">edit</button>
+							<button class="btn btn-danger" type="button" id="btn-hapus">Hapus</button>
+						</div>
+						| <button class="btn btn-primary" type="button" data-dismiss="modal">Mengerti</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	<script>
 		$(document).ready(function() {
-			$('#tabel_list_staff').DataTable();
+			$('#view_tabel_staff #tabel_list_staff').DataTable();
 
 			$('#modal_tambah_staff').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
 				$('#modal_form_staff input, #modal_form_staff select, #modal_form_staff textarea, #modal_form_staff password').val(''); // Clear inputan menjadi kosong
@@ -269,6 +273,28 @@
 				}
 				$('#status_detail').html(is_active);
 
+			});
+
+			$("#btn-hapus").on('click', function(){
+				Swal.fire({
+					title: 'Apa anda yakin?',
+					text: "anda akan menghapus staff ini secara permanen!",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					cancelButtonText: 'Batal',
+					confirmButtonText: 'Ya, saya yakin!'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						// hapus_staff();
+						Swal.fire(
+							'Dihapus!',
+							'Staff ini sudah dihapus secara permanen.',
+							'success'
+						)
+					}
+				})
 			});
 
 			$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
@@ -376,6 +402,10 @@
 						console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
 					}
 				});
+			};
+
+			function hapus_staff(){
+				
 			}
 
 		});
