@@ -7,7 +7,7 @@ application/logs/*
 !application/logs/index.html
 
 !application/*/.htaccess
-assets/Highcharts/api.zip
+/assets/Highcharts/api.zip
 
 composer.lock
 
