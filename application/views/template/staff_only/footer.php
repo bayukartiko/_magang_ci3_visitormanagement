@@ -33,9 +33,6 @@
 
     <!-- Custom scripts for all pages-->
 	<script src="<?= base_url() ?>assets/sba2/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-	<script src="<?= base_url() ?>assets/Chart.js/dist/Chart.bundle.js"></script>
 	
 	<!-- highcharts -->
 	<script src="<?= base_url() ?>assets/Highcharts/code/highcharts.js"></script>

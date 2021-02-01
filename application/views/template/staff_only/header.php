@@ -28,9 +28,6 @@
 
     <!-- Custom scripts for all pages-->
 	<script src="<?= base_url() ?>assets/sba2/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="<?= base_url() ?>assets/Chart.js/dist/Chart.bundle.js"></script>
 	
 	<!-- datatables -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/DataTables/datatables.min.css"/>

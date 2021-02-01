@@ -38,28 +38,26 @@
 		min-width: 50px;
 	}
 </style>
- <!-- Pie Chart -->
- <div class="card shadow mb-4">
+<!-- Pie Chart -->
+<div class="card shadow mb-4">
 	<!-- Card Header - Dropdown -->
 	<div
 		class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-		<h6 class="m-0 font-weight-bold text-primary">Status staff</h6>
-		<div class="dropdown no-arrow">
+		<h6 class="m-0 font-weight-bold text-primary">Status visitor</h6>
+		<!-- <div class="dropdown no-arrow">
 			<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
 				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
 			</a>
-			<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-				<div class="dropdown-header">Pilih Staff:</div>
-				<a class="dropdown-item" href="" id="admin">Admin</a>
-				<a class="dropdown-item" href="" id="petugas">Petugas</a>
+			<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+				aria-labelledby="dropdownMenuLink">
+				<div class="dropdown-header">Dropdown Header:</div>
+				<a class="dropdown-item" href="#">Action</a>
+				<a class="dropdown-item" href="#">Another action</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="" id="semua_staff">Semua Staff</a>
+				<a class="dropdown-item" href="#">Something else here</a>
 			</div>
-			<select name="" id="" class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
- 				<option value="" class="dropdown-item">asdas</option>
-			</select>
-		</div>
+		</div> -->
 	</div>
 	<!-- Card Body -->
 	<div class="card-body">
@@ -68,22 +66,26 @@
 				<table class="table table-hover table-responsive-sm">
 					<tbody>
 						<tr>
-							<td>online</td>
-							<td><button class="btn btn-outline-primary"><?= $hitung_staff_online ?></button></td>
+							<td>masuk</td>
+							<td><button class="btn btn-outline-primary">20</button></td>
 						</tr>
 						<tr>
-							<td>offline</td>
-							<td><button class="btn btn-outline-secondary"><?= $hitung_staff_offline ?></button></td>
+							<td>keluar</td>
+							<td><button class="btn btn-outline-secondary">55</button></td>
+						</tr>
+						<tr>
+							<td>Didalam area</td>
+							<td><button class="btn btn-outline-secondary">25</button></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="col-md-6">
-				<div id="status_staff_chart"></div>
+				<div id="status_visitor_chart"></div>
 
 				<script>
 					$(document).ready(function(){
-						$("#status_staff_chart").highcharts({
+						$("#status_visitor_chart").highcharts({
 							chart: {
 								plotBackgroundColor: null,
 								BackgroundColor: null,
@@ -116,17 +118,20 @@
 								name: 'Brands',
 								colorByPoint: true,
 								data: [{
-										name: 'Online',
-										y: <?= $hitung_staff_online ?>
+										name: 'masuk',
+										y: 20
 									}, {
-										name: 'Offline',
-										y: <?= $hitung_staff_offline ?>
+										name: 'keluar',
+										y: 55
+									}, {
+										name: 'Didalam area',
+										y: 25
 								}]
 							}]
 						})
 					});
-
 				</script>
+
 			</div>
 		</div>
 	</div>

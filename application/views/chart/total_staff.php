@@ -1,4 +1,44 @@
-<!-- Area Chart -->
+<style>
+	.highcharts-figure, .highcharts-data-table table {
+		min-width: 320px; 
+		max-width: 800px;
+		margin: 1em auto;
+	}
+
+	.highcharts-data-table table {
+		font-family: Verdana, sans-serif;
+		border-collapse: collapse;
+		border: 1px solid #EBEBEB;
+		margin: 10px auto;
+		text-align: center;
+		width: 100%;
+		max-width: 500px;
+	}
+	.highcharts-data-table caption {
+		padding: 1em 0;
+		font-size: 1.2em;
+		color: #555;
+	}
+	.highcharts-data-table th {
+		font-weight: 600;
+		padding: 0.5em;
+	}
+	.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+		padding: 0.5em;
+	}
+	.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+		background: #f8f8f8;
+	}
+	.highcharts-data-table tr:hover {
+		background: #f1f7ff;
+	}
+
+
+	input[type="number"] {
+		min-width: 50px;
+	}
+</style>
+<!-- Pie Chart -->
 <div class="card shadow mb-4">
 	<!-- Card Header - Dropdown -->
 	<div
@@ -37,55 +77,54 @@
 				</table>
 			</div>
 			<div class="col-md-6">
-				<div class="chart-pie pt-4 pb-2">
-					<canvas id="total_staff_chart"></canvas>
-				</div>
+				<div id="total_staff_chart"></div>
+
 				<script>
-					// Set new default font family and font color to mimic Bootstrap's default styling
-					Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-					Chart.defaults.global.defaultFontColor = '#858796';
-
-					// Pie Chart Example
-					var ctx = document.getElementById("total_staff_chart");
-					var myPieChart = new Chart(ctx, {
-						type: 'doughnut',
-						data: {
-							labels: ['admin', 'petugas'],
-							datasets: [{
-								data: [<?= $hitung_staff_admin ?>, <?= $hitung_staff_petugas ?>],
-								backgroundColor: ['#4e73df', '#1cc88a'],
-								hoverBackgroundColor: ['#2e59d9', '#17a673'],
-								hoverBorderColor: "rgba(234, 236, 244, 1)",
-							}],
-						},
-						options: {
-							maintainAspectRatio: false,
-							tooltips: {
-								backgroundColor: "rgb(255,255,255)",
-								bodyFontColor: "#858796",
-								borderColor: '#dddfeb',
-								borderWidth: 1,
-								xPadding: 15,
-								yPadding: 15,
-								displayColors: false,
-								caretPadding: 10,
+					$(document).ready(function(){
+						$("#total_staff_chart").highcharts({
+							chart: {
+								plotBackgroundColor: null,
+								BackgroundColor: null,
+								plotBorderWidth: null,
+								plotShadow: false,
+								type: 'pie'
 							},
-							legend: {
-								display: false
+							title: {
+								text: null
 							},
-							cutoutPercentage: 80,
-						},
+							tooltip: {
+								pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+							},
+							accessibility: {
+								point: {
+									valueSuffix: '%'
+								}
+							},
+							plotOptions: {
+								pie: {
+									allowPointSelect: true,
+									cursor: 'pointer',
+									dataLabels: {
+										enabled: true,
+										format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+									}
+								}
+							},
+							series: [{
+								name: 'Brands',
+								colorByPoint: true,
+								data: [{
+										name: 'Admin',
+										y: <?= $hitung_staff_admin ?>
+									}, {
+										name: 'Petugas',
+										y: <?= $hitung_staff_petugas ?>
+								}]
+							}]
+						})
 					});
-
 				</script>
-				<div class="mt-4 text-center small">
-					<span class="mr-2">
-						<i class="fas fa-circle text-primary"></i> admin
-					</span>
-					<span class="mr-2">
-						<i class="fas fa-circle text-success"></i> petugas
-					</span>
-				</div>
+
 			</div>
 		</div>
 	</div>
