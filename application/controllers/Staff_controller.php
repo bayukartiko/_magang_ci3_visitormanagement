@@ -110,50 +110,101 @@ class Staff_controller extends CI_Controller {
 		redirect('staff_only/login');
 	}
 
-	public function tambah_staff(){
-		if($this->input->is_ajax_request()){
+	public function crud_staff($mode, $staff_id){
+		if($mode == "tambah"){
+			if($this->input->is_ajax_request()){
 	
-			if($this->staff_model->validasi_form_tambah_staff() == true){
-				// buat kostum id
-					if($this->db->query('SELECT * FROM tabel_staff')->num_rows() > 0){
-						$data = $this->db->query('SELECT * FROM tabel_staff')->num_rows();
-						$kode = $data+1;
-					}else{
-						$kode = 1;
-					}
-					$tgl = mdate("%Y%m%d%H%i%s");
-					$batas_user = str_pad($kode, 7, "0", STR_PAD_LEFT);
-					$staff_id = "STF".$tgl.$batas_user;
-
-				$this->staff_model->aksi_tambah_staff($staff_id);
-
+				if($this->staff_model->validasi_form_tambah_staff() == true){
+					// buat kostum id
+						if($this->db->query('SELECT * FROM tabel_staff')->num_rows() > 0){
+							$data = $this->db->query('SELECT * FROM tabel_staff')->num_rows();
+							$kode = $data+1;
+						}else{
+							$kode = 1;
+						}
+						$tgl = mdate("%Y%m%d%H%i%s");
+						$batas_user = str_pad($kode, 7, "0", STR_PAD_LEFT);
+						$staff_id = "STF".$tgl.$batas_user;
+	
+					$this->staff_model->aksi_crud_staff("tambah", $staff_id);
+	
+					// Load ulang tabel_staff.php agar data yang baru bisa muncul di tabel pada admin_daftar_staff.php
+	
+					$total_staff = $this->db->get_where('tabel_staff', ['verified' => '1'])->num_rows();
+					$total_staff_admin = $this->db->get_where('tabel_staff', ['role_id' => '1'])->num_rows();
+					$total_staff_petugas = $this->db->get_where('tabel_staff', ['role_id' => '2'])->num_rows();
+					$total_staff_online = $this->db->get_where('tabel_staff', ['is_active' => 'online'])->num_rows();
+					$total_staff_offline = $this->db->get_where('tabel_staff', ['is_active' => 'offline'])->num_rows();
+	
+					$view_chart_status_staff = $this->load->view('chart/status_staff', array(
+						'hitung_staff_online'=>$total_staff_online,
+						'hitung_staff_offline'=>$total_staff_offline
+					), true);
+	
+					$view_chart_total_staff = $this->load->view('chart/total_staff', array(
+						'hitung_staff_admin'=>$total_staff_admin,
+						'hitung_staff_petugas'=>$total_staff_petugas
+					), true);
+	
+					$view_tabel_staff = $this->load->view('tabel/tabel_staff', array(
+						'all_staff'=>$this->staff_model->get_tb_staff(),
+						'all_role'=>$this->staff_model->get_tb_role(),
+						'all_area'=>$this->staff_model->get_tb_area(),
+					), true);
+	
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Staff berhasil ditambahkan.',
+						'total_staff'=>$total_staff,
+						'total_staff_admin'=>$total_staff_admin,
+						'total_staff_petugas'=>$total_staff_petugas,
+						'view_chart_status_staff'=>$view_chart_status_staff,
+						'view_chart_total_staff'=>$view_chart_total_staff,
+						'view_tabel_staff'=>$view_tabel_staff
+					);
+				}else{
+					$callback = array(
+						'status'=>'gagal',
+						'username_error' => form_error('username'),
+						'password_error' => form_error('password'),
+						'nama_error' => form_error('nama'),
+						'jabatan_error' => form_error('jabatan'),
+						// 'pesan'=>validation_errors()
+					);
+				}
+				echo json_encode($callback);
+			}
+		}elseif($mode == "hapus"){
+			if($this->input->is_ajax_request()){
+				$this->staff_model->aksi_crud_staff("hapus", $staff_id); // panggil fungsi crud_member() di AdminModel
+	
 				// Load ulang tabel_staff.php agar data yang baru bisa muncul di tabel pada admin_daftar_staff.php
-
+	
 				$total_staff = $this->db->get_where('tabel_staff', ['verified' => '1'])->num_rows();
 				$total_staff_admin = $this->db->get_where('tabel_staff', ['role_id' => '1'])->num_rows();
 				$total_staff_petugas = $this->db->get_where('tabel_staff', ['role_id' => '2'])->num_rows();
 				$total_staff_online = $this->db->get_where('tabel_staff', ['is_active' => 'online'])->num_rows();
 				$total_staff_offline = $this->db->get_where('tabel_staff', ['is_active' => 'offline'])->num_rows();
-
+	
 				$view_chart_status_staff = $this->load->view('chart/status_staff', array(
 					'hitung_staff_online'=>$total_staff_online,
 					'hitung_staff_offline'=>$total_staff_offline
 				), true);
-
+	
 				$view_chart_total_staff = $this->load->view('chart/total_staff', array(
 					'hitung_staff_admin'=>$total_staff_admin,
 					'hitung_staff_petugas'=>$total_staff_petugas
 				), true);
-
+	
 				$view_tabel_staff = $this->load->view('tabel/tabel_staff', array(
 					'all_staff'=>$this->staff_model->get_tb_staff(),
 					'all_role'=>$this->staff_model->get_tb_role(),
 					'all_area'=>$this->staff_model->get_tb_area(),
 				), true);
-
+	
 				$callback = array(
 					'status'=>'sukses',
-					'pesan'=>'Staff berhasil ditambahkan.',
+					'pesan'=>'Staff berhasil dihapus.',
 					'total_staff'=>$total_staff,
 					'total_staff_admin'=>$total_staff_admin,
 					'total_staff_petugas'=>$total_staff_petugas,
@@ -163,12 +214,7 @@ class Staff_controller extends CI_Controller {
 				);
 			}else{
 				$callback = array(
-					'status'=>'gagal',
-					'username_error' => form_error('username'),
-					'password_error' => form_error('password'),
-					'nama_error' => form_error('nama'),
-					'jabatan_error' => form_error('jabatan'),
-					// 'pesan'=>validation_errors()
+					'status'=>'gagal'
 				);
 			}
 			echo json_encode($callback);

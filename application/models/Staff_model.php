@@ -37,19 +37,22 @@ class Staff_model extends CI_Model{
 		}
 	}
 
-	public function aksi_tambah_staff($staff_id){
-		$data_tabel_staff = [
-			"staff_id" => htmlspecialchars($staff_id),
-			"role_id" => htmlspecialchars($this->input->post('jabatan', true)),
-			"username" => htmlspecialchars($this->input->post('username', true)),
-			"password" => password_hash(htmlspecialchars($this->input->post('password', true)), PASSWORD_DEFAULT),
-			"nama" => htmlspecialchars($this->input->post('nama', true)),
-			"id_area" => null,
-			"verified" => htmlspecialchars('1'),
-			"is_active" => htmlspecialchars('offline'),
-		];
-		$this->db->insert('tabel_staff', $data_tabel_staff);
+	public function aksi_crud_staff($mode, $staff_id){
+		if($mode == "tambah"){
+			$data_tabel_staff = [
+				"staff_id" => htmlspecialchars($staff_id),
+				"role_id" => htmlspecialchars($this->input->post('jabatan', true)),
+				"username" => htmlspecialchars($this->input->post('username', true)),
+				"password" => password_hash(htmlspecialchars($this->input->post('password', true)), PASSWORD_DEFAULT),
+				"nama" => htmlspecialchars($this->input->post('nama', true)),
+				"id_area" => null,
+				"verified" => htmlspecialchars('1'),
+				"is_active" => htmlspecialchars('offline'),
+			];
+			$this->db->insert('tabel_staff', $data_tabel_staff);
+		}elseif($mode == "hapus"){
+			$this->db->delete('tabel_staff', array('staff_id' => $staff_id));
+		}
 	}
-
 }
 ?>

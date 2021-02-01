@@ -25,6 +25,10 @@ class Main_controller extends CI_Controller {
 		$this->load->library('form_validation', 'ciqrcode');
 	}
 
+	// public function coba_parameter($nama){
+	// 	echo $nama;
+	// }
+
 	public function index_visitor(){
 		redirect('visitor/register');
 	}

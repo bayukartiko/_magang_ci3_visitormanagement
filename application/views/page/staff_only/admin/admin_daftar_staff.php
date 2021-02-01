@@ -131,7 +131,7 @@
     </div>
 	<!-- End of Page Wrapper -->
 
-	<!-- modal form staff-->
+	<!-- modal tambah staff-->
 		<div class="modal fade" id="modal_tambah_staff" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -228,10 +228,33 @@
 					</div>
 					<div class="modal-footer">
 						<div class="mr-auto">
-							<button class="btn btn-secondary" type="button">edit</button>
-							<button class="btn btn-danger" type="button" id="btn-hapus">Hapus</button>
+							<!-- <button class="btn btn-secondary" type="button">edit</button>
+							<button class="btn btn-danger" type="button" id="btn-hapus">Hapus</button> -->
 						</div>
 						| <button class="btn btn-primary" type="button" data-dismiss="modal">Mengerti</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- modal hapus staff -->
+		<div class="modal fade" id="modal_hapus_staff" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Hapus staff</h5>
+						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						Anda yakin ingin menghapus staff ini?
+						<br>
+						Ini akan bersifat permanen!
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-danger" type="button" id="btn-hapus" data-dismiss="modal">Hapus</button>
+						<button class="btn btn-transparent" type="button" id="btn-hapus" data-dismiss="modal">Batal</button>
 					</div>
 				</div>
 			</div>
@@ -239,9 +262,10 @@
 	<script>
 		$(document).ready(function() {
 			$('#view_tabel_staff #tabel_list_staff').DataTable();
+			var id = "";
 
 			$('#modal_tambah_staff').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
-				$('#modal_form_staff input, #modal_form_staff select, #modal_form_staff textarea, #modal_form_staff password').val(''); // Clear inputan menjadi kosong
+				$('#modal_tambah_staff input, #modal_tambah_staff select, #modal_tambah_staff textarea, #modal_tambah_staff password').val(''); // Clear inputan menjadi kosong
 				$('#btn-simpan').html('Tambah');
 			});
 			
@@ -275,37 +299,25 @@
 
 			});
 
-			$("#btn-hapus").on('click', function(){
-				Swal.fire({
-					title: 'Apa anda yakin?',
-					text: "anda akan menghapus staff ini secara permanen!",
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					cancelButtonText: 'Batal',
-					confirmButtonText: 'Ya, saya yakin!'
-				}).then((result) => {
-					if (result.isConfirmed) {
-						// hapus_staff();
-						Swal.fire(
-							'Dihapus!',
-							'Staff ini sudah dihapus secara permanen.',
-							'success'
-						)
-					}
-				})
-			});
-
 			$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
 				e.preventDefault();
 				$('#btn-simpan').html('Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
+				$('#btn-simpan').attr('disabled', true);
 				tambah_staff();
+			});
+
+			$('#view_tabel_staff').on('click', '.btn-hapus-staff', function(){
+				id = $(this).data('id');
+			});
+			$('#btn-hapus').click(function(e){
+				$('#btn-hapus').html('Sedang menghapus..');
+				$('#btn-hapus').attr('disabled', true);
+				hapus_staff();
 			});
 
 			function tambah_staff(){
 				$.ajax({
-					url: '<?= base_url(); ?>staff_only/admin/tambah_staff', // URL tujuan
+					url: '<?= base_url(); ?>staff_only/admin/crud_staff/tambah/'+null+'', // URL tujuan
 					type: 'POST',
 					// data: $("#form-modal form").serialize(),
 					data: new FormData(document.getElementById('form-tambah-staff')),
@@ -353,6 +365,9 @@
 								icon: 'success',
 								title: callback.pesan
 							});
+
+							$('#btn-simpan').html('Tambah'); // ganti text btn-simpan jadi sedang menambahkan
+							$('#btn-simpan').attr('disabled', false);
 
 						}else{
 							console.log('callback error');
@@ -405,7 +420,58 @@
 			};
 
 			function hapus_staff(){
-				
+				$.ajax({
+					url: '<?= base_url(); ?>staff_only/admin/crud_staff/hapus/'+id+'', // URL tujuan
+					type: 'POST', // Tentukan type nya POST atau GET
+					// data: new FormData(document.getElementById('modal_hapus_staff')),
+					// processData:false,
+					// contentType:false,
+					// cache:false,
+					// async:false,
+					dataType: 'JSON',
+					beforeSend: function() {
+						$('#btn-hapus').html('Sedang menghapus..');
+						$('#btn-hapus').attr('disabled', true);
+					},
+					success: function(callback){ // Ketika proses pengiriman berhasil
+						$('#modal_hapus_staff').modal('hide'); // Close / Tutup Modal Dialog
+
+						$('#total_staff').html(callback.total_staff)
+						$('#total_staff_admin').html(callback.total_staff_admin)
+						$('#total_staff_petugas').html(callback.total_staff_petugas)
+
+						// window.location.reload();
+						// Ganti isi dari div view dengan view yang diambil dari view_register.php
+						$('#view_tabel_staff').html(callback.view_tabel_staff);
+						$('#view_chart_status_staff').html(callback.view_chart_status_staff);
+						$('#view_chart_total_staff').html(callback.view_chart_total_staff);
+						// $('#pesan-sukses').html(callback.pesan).fadeIn().delay(10000).fadeOut();
+						const Toast = Swal.mixin({
+							toast: true,
+							position: 'top-start',
+							showConfirmButton: false,
+							timer: 10000,
+							timerProgressBar: true,
+							didOpen: (toast) => {
+								toast.addEventListener('mouseenter', Swal.stopTimer)
+								toast.addEventListener('mouseleave', Swal.resumeTimer)
+							}
+						});
+						Toast.fire({
+							icon: 'success',
+							title: callback.pesan
+						});
+
+						$('#btn-hapus').html('Hapus');
+						$('#btn-hapus').attr('disabled', false);
+					},
+					error: function(xhr, ajaxOptions, thrownError, errorMessage, callback) {
+						console.log("error :", errorMessage);
+						console.log(callback)
+						// alert(xhr.responseText);
+						console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
 			}
 
 		});

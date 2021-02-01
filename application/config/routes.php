@@ -58,6 +58,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 // $route['param1/param2/param3/param4'] = 'controller_name/method_name';
 $route[''] = 'main_controller/index';
+// $route['coba_parameter/(:any)'] = 'main_controller/coba_parameter/$1';
 // $route['coba_barcode'] = 'main_controller/coba_barcode';
 $route['nama_event'] = 'main_controller/redirect_register';
 $route['visitor'] = 'main_controller/index_visitor';
@@ -72,4 +73,7 @@ $route['staff_only/admin/daftar_staff'] = 'staff_controller/page_admin_daftar_st
 $route['staff_only/admin/data_list'] = 'staff_controller/page_admin_data_list';
 $route['staff_only/admin/logout'] = 'staff_controller/logout';
 
+$route['staff_only/admin/crud_staff/(:any)/(:any)'] = 'staff_controller/crud_staff/$1/$2';
 $route['staff_only/admin/tambah_staff'] = 'staff_controller/tambah_staff';
+// $route['staff_only/admin/hapus_staff'] = 'staff_controller/hapus_staff/';
+

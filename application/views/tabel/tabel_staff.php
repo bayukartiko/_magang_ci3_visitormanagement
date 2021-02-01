@@ -43,7 +43,12 @@
 				</td>
 				<td><?= $staff_data->is_active ?></td>
 				<td>
-					<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff">Detail</a>
+					<?php if($staff_data->is_active == 'online'){ ?>
+						<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff">Detail</a>
+					<?php }else{ ?>
+							<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff">Detail</a>
+							<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_hapus_staff" class="btn btn-danger btn-hapus-staff">Hapus</a>
+					<?php } ?>
 
 				<!-- Membuat sebuah textbox hidden yang akan digunakan untuk form detail -->
 					<input type="hidden" class="staff_id-value_detail" value="<?= $staff_data->staff_id; ?>">
@@ -73,3 +78,7 @@
 		</tr>
 	</tfoot>
 </table>
+
+<script>
+	$('#tabel_list_staff').DataTable();
+</script>
