@@ -15,7 +15,9 @@
 		"endroid/qr-code": "^3.9",
 		"dompdf/dompdf": "^1.0",
 		"pusher/pusher-php-server": "^4.1",
-		"picqer/php-barcode-generator": "^2.1"
+		"picqer/php-barcode-generator": "^2.1",
+		"snapappointments/bootstrap-select": "^1.13",
+		"ttskch/select2-bootstrap4-theme": "^1.5"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

@@ -56,9 +56,6 @@
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item" href="" id="semua_staff">Semua Staff</a>
 			</div>
-			<select name="" id="" class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
- 				<option value="" class="dropdown-item">asdas</option>
-			</select>
 		</div>
 	</div>
 	<!-- Card Body -->

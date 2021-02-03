@@ -100,7 +100,7 @@
 							<br><br>
 							
 							<div id="view_tabel_staff">
-								<?php $this->load->view('tabel/tabel_staff', ['all_staff'=>$all_staff, 'all_role'=>$all_role, 'all_area'=>$all_area]); ?>
+								<?php $this->load->view('tabel/tabel_staff', ['all_staff'=>$all_staff, 'all_role'=>$all_role, 'all_area'=>$all_area, 'all_event'=>$all_event]); ?>
 							</div>
 						</div>
 					</div>
@@ -167,6 +167,7 @@
 							<div class="form-group">
 								<label for="field_jabatan">Jabatan</label>
 								<select name="jabatan" id="field_jabatan" class="form-control">
+								<!-- <select name="jabatan" id="field_jabatan" class="form-control" data-live-search="true" multiple> -->
 									<option value="" selected disabled>Pilih Jabatan</option>
 									<option value="1">admin</option>
 									<option value="2">petugas</option>
@@ -177,7 +178,7 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary btn-raised" id="btn-simpan">Tambah</button>
+						<button type="submit" class="btn btn-primary btn-raised" id="btn-simpan">Simpan</button>
 						<button class="btn btn-transparent" type="button" data-dismiss="modal">Batal</button>
 					</div>
 				</div>
@@ -266,7 +267,7 @@
 
 			$('#modal_tambah_staff').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
 				$('#modal_tambah_staff input, #modal_tambah_staff select, #modal_tambah_staff textarea, #modal_tambah_staff password').val(''); // Clear inputan menjadi kosong
-				$('#btn-simpan').html('Tambah');
+				$('#btn-simpan').html('Simpan');
 			});
 			
 			$('#view_tabel_staff').on('click', '.btn-detail-staff', function(){
@@ -366,11 +367,11 @@
 								title: callback.pesan
 							});
 
-							$('#btn-simpan').html('Tambah'); // ganti text btn-simpan jadi sedang menambahkan
+							$('#btn-simpan').html('Simpan'); // ganti text btn-simpan jadi sedang menambahkan
 							$('#btn-simpan').attr('disabled', false);
 
 						}else{
-							console.log('callback error');
+							// console.log('callback error');
 							// tampil pesan validasi
 								if(callback.username_error){
 									$('#field_username').addClass('is-invalid');
@@ -406,7 +407,8 @@
 							
 							$('#btn-simpan').html('x Terjadi kesalahan x');
 							setTimeout(() => {
-								$('#btn-simpan').html('Daftar');
+								$('#btn-simpan').html('Simpan');
+								$('#btn-simpan').attr('disabled', false);
 							}, 2000);
 						}
 					},

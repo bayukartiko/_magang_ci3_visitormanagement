@@ -23,7 +23,7 @@
             </div>
         </div>
 	</div>
-	
+
 	<!-- Core plugin JavaScript-->
 	<script src="<?= base_url() ?>assets/jquery-easing/jquery.easing.min.js"></script>
 	
@@ -39,6 +39,9 @@
 	<script src="<?= base_url() ?>assets/Highcharts/code/modules/exporting.js"></script>
 	<script src="<?= base_url() ?>assets/Highcharts/code/modules/export-data.js"></script>
 	<script src="<?= base_url() ?>assets/Highcharts/code/modules/accessibility.js"></script>
+
+	<!-- select2 -->
+	<!-- <script src="</?= base_url() ?>vendor/select2/dist/js/select2.min.js"></script> -->
 
 
 </body>

@@ -59,6 +59,7 @@ class Staff_controller extends CI_Controller {
 		$data['all_staff'] = $this->staff_model->get_tb_staff();
 		$data['all_role'] = $this->staff_model->get_tb_role();
 		$data['all_area'] = $this->staff_model->get_tb_area();
+		$data['all_event'] = $this->staff_model->get_tb_event();
 
 		$data['hitung_staff'] = $this->db->get_where('tabel_staff', ['verified' => '1'])->num_rows();
 		$data['hitung_staff_admin'] = $this->db->get_where('tabel_staff', ['role_id' => '1'])->num_rows();
@@ -87,6 +88,12 @@ class Staff_controller extends CI_Controller {
 
 	public function page_admin_event_management(){
 		$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+		$data['staff_nganggur'] = $this->db->get_where('tabel_staff', ['id_area' => null, 'role_id' => '2'])->result();
+		$data['all_event'] = $this->staff_model->get_tb_event();
+		$data['all_area'] = $this->staff_model->get_tb_area();
+
+		// $id_event = $this->db->get('tabel_event')->row_array();
+		// $data['hitung_area'] = $this->db->get_where('tabel_area', ['id_event' => $id_event['id_event']])->num_rows();
 
 		// echo 'selamat datang ' . $data['tb_user']['username'];
 		$this->load->view('template/staff_only/header', $data);
@@ -218,6 +225,67 @@ class Staff_controller extends CI_Controller {
 				);
 			}
 			echo json_encode($callback);
+		}
+	}
+
+	public function crud_event($mode, $event_id){
+		if($mode == "tambah"){
+			if($this->input->is_ajax_request()){
+	
+				if($this->staff_model->validasi_form_tambah_event() == true){
+					// buat kostum id tabel event
+						if($this->db->query('SELECT * FROM tabel_event')->num_rows() > 0){
+							$data = $this->db->query('SELECT * FROM tabel_event')->num_rows();
+							$kode = $data+1;
+						}else{
+							$kode = 1;
+						}
+						$tgl = mdate("%d%m%y%H%i%s");
+						$batas_event = str_pad($kode, 7, "0", STR_PAD_LEFT);
+						$id_event = "EVNT".$tgl.$batas_event;
+
+					// buat kostum id tabel area
+						if($this->db->query('SELECT * FROM tabel_area')->num_rows() > 0){
+							$data = $this->db->query('SELECT * FROM tabel_area')->num_rows();
+							$kode = $data+1;
+						}else{
+							$kode = 1;
+						}
+						$tgl = mdate("%d%m%y%H%i%s");
+						$batas_area = str_pad($kode, 7, "0", STR_PAD_LEFT);
+						$id_area = "AR".$tgl.$batas_area;
+
+					$this->staff_model->aksi_crud_event("tambah", $id_event, $id_area);
+	
+					// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
+					$id_event = $this->db->get('tabel_event')->row_array();
+					$view_tabel_event = $this->load->view('tabel/tabel_event', array(
+						'all_event' => $this->staff_model->get_tb_event(),
+						'all_area' => $this->staff_model->get_tb_area(),
+						// 'hitung_area' => $this->db->get_where('tabel_area', ['id_event' => $id_event['id_event']])->num_rows()
+					), true);
+	
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Event berhasil ditambahkan.',
+						'view_tabel_staff'=>$view_tabel_event
+					);
+					
+				}else{
+					$callback = array(
+						'status'=>'gagal',
+						'nama_event_error' => form_error('nama_event'),
+						'tgl_mulai_error' => form_error('tgl_mulai'),
+						'tgl_selesai_error' => form_error('tgl_selesai'),
+						// 'namaArea_error' => form_error('namaArea[]'),
+						// 'namaPetugas_error' => form_error('namaPetugas[]'),
+						// 'pesan'=>validation_errors()
+					);
+				}
+				echo json_encode($callback);
+			}
+		}elseif($mode == "ubah"){
+
 		}
 	}
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2021 at 01:08 PM
+-- Generation Time: Feb 03, 2021 at 03:43 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -29,16 +29,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `tabel_area` (
   `id_area` varchar(255) NOT NULL,
-  `id_event` varchar(255) NOT NULL,
-  `nama_area` varchar(255) NOT NULL
+  `id_event` varchar(255) DEFAULT NULL,
+  `nama_area` varchar(255) NOT NULL,
+  `staff_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tabel_area`
 --
 
-INSERT INTO `tabel_area` (`id_area`, `id_event`, `nama_area`) VALUES
-('AR2021012814312000000001', 'EVNT202001210000001', 'area 1');
+INSERT INTO `tabel_area` (`id_area`, `id_event`, `nama_area`, `staff_id`) VALUES
+('AR2021012814312000000001', 'EVNT202001210000001', 'area 1', NULL);
 
 -- --------------------------------------------------------
 
@@ -88,7 +89,7 @@ INSERT INTO `tabel_role` (`role_id`, `nama_role`) VALUES
 
 CREATE TABLE `tabel_staff` (
   `staff_id` varchar(255) NOT NULL,
-  `role_id` int(10) NOT NULL,
+  `role_id` int(10) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `nama` varchar(255) NOT NULL,
@@ -102,9 +103,12 @@ CREATE TABLE `tabel_staff` (
 --
 
 INSERT INTO `tabel_staff` (`staff_id`, `role_id`, `username`, `password`, `nama`, `id_area`, `verified`, `is_active`) VALUES
-('STF202101300925250000003', 1, 'admin', '$2y$10$giRYQKKvjOVEuGiozcCwVeVWOD2GGvwjLZzeVlPSl9Xv.ICsQ0FUu', 'bayu kartiko', NULL, '1', 'online'),
-('STF202101300927120000002', 2, 'petugas', '$2y$10$QSXwZd.ly7GFKrbDWwSu3O6DmO5KIEfwwmTP5eOlO4AAkkl.D7CQa', 'petugas1', NULL, '1', 'offline'),
-('STF202101301325110000003', 2, 'qwerty', '$2y$10$QEzhF3hvJDzxJCoaMsmhpuTvMzMLgmfxWYcUCTu1o/OKtV8AAYUXW', 'qweerty', NULL, '1', 'offline');
+('STF202101300925250000001', 1, 'admin', '$2y$10$giRYQKKvjOVEuGiozcCwVeVWOD2GGvwjLZzeVlPSl9Xv.ICsQ0FUu', 'bayu kartiko', NULL, '1', 'online'),
+('STF202102011946130000002', 2, 'petugas1', '$2y$10$iW628pKXrvgtpjChzkPAmeFmKuEyyv0o8dqnt3Z.aeSLikqywK32e', 'petugas1', NULL, '1', 'offline'),
+('STF202102031313020000003', 2, 'petugas2', '$2y$10$Bx4GsO4luPGFu0A0I2JLouaMdYmxeVq.HVp0ayvmDMkYLLGPZ/9qW', 'petugas2', NULL, '1', 'offline'),
+('STF202102031313240000004', 2, 'petugas3', '$2y$10$jTti8PnyZp8hNJkYqA3Rgut3eaU5WMv6Yw32xbmy55orhZztllbsq', 'petugas3', NULL, '1', 'offline'),
+('STF202102031314180000005', 2, 'petugas4', '$2y$10$KZxAVnfystO.zMGHjrd6CuvzSZM5Owga4K8EZsJlQmHENteprH2Zu', 'petugas4', NULL, '1', 'offline'),
+('STF202102031314360000006', 2, 'petugas5', '$2y$10$wuKg4zQ9OdRuprtJ43jalOpGzNjyKQVBbZLRbFX6tA2A6Y5qLUb9m', 'petugas5', NULL, '1', 'offline');
 
 -- --------------------------------------------------------
 
@@ -113,8 +117,8 @@ INSERT INTO `tabel_staff` (`staff_id`, `role_id`, `username`, `password`, `nama`
 --
 
 CREATE TABLE `tabel_tracking` (
-  `id_visitor` varchar(255) NOT NULL,
-  `id_area` varchar(255) NOT NULL,
+  `id_visitor` varchar(255) DEFAULT NULL,
+  `id_area` varchar(255) DEFAULT NULL,
   `time_in_area` datetime NOT NULL,
   `time_out_area` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -127,7 +131,7 @@ CREATE TABLE `tabel_tracking` (
 
 CREATE TABLE `tabel_visitor` (
   `id_visitor` varchar(255) NOT NULL,
-  `id_event` varchar(255) NOT NULL,
+  `id_event` varchar(255) DEFAULT NULL,
   `nama_visitor` varchar(255) NOT NULL,
   `perusahaan_visitor` varchar(255) NOT NULL,
   `jabatan_visitor` varchar(255) NOT NULL,
@@ -144,18 +148,6 @@ CREATE TABLE `tabel_visitor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tabel_visitor`
---
-
-INSERT INTO `tabel_visitor` (`id_visitor`, `id_event`, `nama_visitor`, `perusahaan_visitor`, `jabatan_visitor`, `email_visitor`, `email_perusahaan`, `tlp_visitor`, `tlp_perusahaan`, `alasan_ikut`, `gambar_qrcode`, `registered_at`, `time_logged_in`, `time_logged_out`, `status`) VALUES
-('VSTR202101261121110000001', 'EVNT202001210000001', 'asd dsa', 'asd', 'asd', 'reger@htrh.rthr', 'asd@asd.asd', '123', '123', 'asd', 'VSTR202101261121110000001.png', '2021-01-26 11:21:11', '2021-01-26 11:21:11', '0000-00-00 00:00:00', 'logged out'),
-('VSTR202101261823410000002', 'EVNT202001210000001', 'asd asd', 'asd', 'asd', 'asd@asd.asd', 'asd@asd.asd', '213', '123', 'asd', 'VSTR202101261823410000002.png', '2021-01-26 18:23:41', '2021-01-26 18:23:41', '0000-00-00 00:00:00', 'logged in'),
-('VSTR202101261825140000003', 'EVNT202001210000001', 'asd dsa', 'asd', 'asdaa', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'assd', 'VSTR202101261825140000003.png', '2021-01-26 18:25:14', '2021-01-26 18:25:14', '0000-00-00 00:00:00', 'logged out'),
-('VSTR202101261826220000004', 'EVNT202001210000001', 'sd asd', 'asdada', 'asdas', 'asd@asd.asd', 'asd@asd.asd', '2123', '123', 'sad', 'VSTR202101261826220000004.png', '2021-01-26 18:26:22', '2021-01-26 18:26:22', '0000-00-00 00:00:00', 'logged in'),
-('VSTR202101261832270000005', 'EVNT202001210000001', 'asd asd', 'asd', 'asd', 'asd@asd.asd', 'sad@wefe.weff', '123', '213', 'asda', 'VSTR202101261832270000005.png', '2021-01-26 18:32:27', '2021-01-26 18:32:27', '0000-00-00 00:00:00', 'in area'),
-('VSTR202101271949210000006', 'EVNT202001210000001', 'asd dsa', 'asd', 'asd', 'sad@efw.ewfe', 'asd@asd.asd', '123', '123', 'asd', 'VSTR202101271949210000006.png', '2021-01-27 19:49:21', '2021-01-27 19:49:21', '0000-00-00 00:00:00', 'logged in');
-
---
 -- Indexes for dumped tables
 --
 
@@ -164,7 +156,8 @@ INSERT INTO `tabel_visitor` (`id_visitor`, `id_event`, `nama_visitor`, `perusaha
 --
 ALTER TABLE `tabel_area`
   ADD PRIMARY KEY (`id_area`),
-  ADD KEY `id_event` (`id_event`);
+  ADD KEY `id_event` (`id_event`),
+  ADD KEY `staff_id` (`staff_id`);
 
 --
 -- Indexes for table `tabel_event`
@@ -218,27 +211,28 @@ ALTER TABLE `tabel_role`
 -- Constraints for table `tabel_area`
 --
 ALTER TABLE `tabel_area`
-  ADD CONSTRAINT `tabel_area_ibfk_1` FOREIGN KEY (`id_event`) REFERENCES `tabel_event` (`id_event`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tabel_area_ibfk_1` FOREIGN KEY (`id_event`) REFERENCES `tabel_event` (`id_event`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `tabel_area_ibfk_2` FOREIGN KEY (`staff_id`) REFERENCES `tabel_staff` (`staff_id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `tabel_staff`
 --
 ALTER TABLE `tabel_staff`
-  ADD CONSTRAINT `tabel_staff_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `tabel_role` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tabel_staff_ibfk_2` FOREIGN KEY (`id_area`) REFERENCES `tabel_area` (`id_area`) ON DELETE SET NULL ON UPDATE SET NULL;
+  ADD CONSTRAINT `tabel_staff_ibfk_2` FOREIGN KEY (`id_area`) REFERENCES `tabel_area` (`id_area`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `tabel_staff_ibfk_3` FOREIGN KEY (`role_id`) REFERENCES `tabel_role` (`role_id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `tabel_tracking`
 --
 ALTER TABLE `tabel_tracking`
-  ADD CONSTRAINT `tabel_tracking_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `tabel_area` (`id_area`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tabel_tracking_ibfk_2` FOREIGN KEY (`id_visitor`) REFERENCES `tabel_visitor` (`id_visitor`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tabel_tracking_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `tabel_area` (`id_area`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `tabel_tracking_ibfk_2` FOREIGN KEY (`id_visitor`) REFERENCES `tabel_visitor` (`id_visitor`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `tabel_visitor`
 --
 ALTER TABLE `tabel_visitor`
-  ADD CONSTRAINT `tabel_visitor_ibfk_1` FOREIGN KEY (`id_event`) REFERENCES `tabel_event` (`id_event`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tabel_visitor_ibfk_1` FOREIGN KEY (`id_event`) REFERENCES `tabel_event` (`id_event`) ON DELETE SET NULL ON UPDATE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

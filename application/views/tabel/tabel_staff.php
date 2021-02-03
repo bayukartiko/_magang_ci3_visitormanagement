@@ -1,4 +1,4 @@
-<table id="tabel_list_staff" class="table table-striped table-bordered table-hover table-responsive-sm" style="width:100%">
+<table id="tabel_list_staff" class="table table-bordered table-hover table-responsive-sm" style="width:100%">
 	<thead>
 		<tr>
 			<th>Nomor.</th>
@@ -33,9 +33,29 @@
 						}else{
 							foreach($all_area as $area_data){
 								if($staff_data->id_area == $area_data->id_area){
-									echo $area_data->nama_area;
+								?>
+									<table class="table table-borderless table-hover table-responsive-sm">
+										<tr>
+											<td>Nama Event</td>
+											<td>: 
+												<?php foreach($all_event as $event_data){ ?>
+													<?php if($staff_data->id_area == $area_data->id_area){ ?>
+														<?php if($event_data->id_event == $area_data->id_event){ ?> 
+															<?= $event_data->nama_event ?>
+														<?php } ?> 
+													<?php } ?>
+												<?php } ?>
+											</td>
+										</tr>
+										<tr>
+											<td>Nama Area</td>
+											<td>: <?= $area_data->nama_area; ?></td>
+										</tr>
+									</table>
+								<?php	
 								}elseif($staff_data->id_area == null){
 									echo '<button class="btn btn-outline-danger"> belum bertugas </button>';
+									break;
 								}
 							}
 						}

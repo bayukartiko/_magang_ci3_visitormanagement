@@ -74,6 +74,7 @@ $route['staff_only/admin/data_list'] = 'staff_controller/page_admin_data_list';
 $route['staff_only/admin/logout'] = 'staff_controller/logout';
 
 $route['staff_only/admin/crud_staff/(:any)/(:any)'] = 'staff_controller/crud_staff/$1/$2';
+$route['staff_only/admin/crud_event/(:any)/(:any)'] = 'staff_controller/crud_event/$1/$2';
 $route['staff_only/admin/tambah_staff'] = 'staff_controller/tambah_staff';
 // $route['staff_only/admin/hapus_staff'] = 'staff_controller/hapus_staff/';
 
