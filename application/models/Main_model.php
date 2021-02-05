@@ -56,12 +56,15 @@ class Main_model extends CI_Model{
 			"alasan_ikut" => htmlspecialchars($this->input->post('alasan', true)),
 			"gambar_qrcode" => htmlspecialchars($id_visitor.'.png'),
 			"registered_at" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+			"id_petugas_pintu_keluar" => null,
+			"id_petugas_pintu_area" => null,
 			"time_logged_in" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
 			"status" => htmlspecialchars("logged in")
 		];
 		$this->db->insert('tabel_visitor', $data_tabel_visitor);
 
 		$this->session->set_userdata($data_tabel_visitor);
+		$this->db->update('ci_sessions', ["user_id" => $this->session->userdata('id_visitor')], ["id" => session_id()]);
 	}
 }
 

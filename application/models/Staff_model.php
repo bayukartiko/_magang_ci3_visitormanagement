@@ -72,6 +72,7 @@ class Staff_model extends CI_Model{
 				"username" => htmlspecialchars($this->input->post('username', true)),
 				"password" => password_hash(htmlspecialchars($this->input->post('password', true)), PASSWORD_DEFAULT),
 				"nama" => htmlspecialchars($this->input->post('nama', true)),
+				"id_event" => null,
 				"id_area" => null,
 				"verified" => htmlspecialchars('1'),
 				"is_active" => htmlspecialchars('offline'),
@@ -87,6 +88,7 @@ class Staff_model extends CI_Model{
 				$data_tabel_event = [
 					"id_event" => htmlspecialchars($id_event),
 					"nama_event" => htmlspecialchars($this->input->post('nama_event', true)),
+					"staff_id" => htmlspecialchars($this->input->post('nama_petugas_pintuKeluar', true)),
 					"tanggal_dibuka" => htmlspecialchars($this->input->post('tgl_mulai', true)),
 					"tanggal_ditutup" => htmlspecialchars($this->input->post('tgl_selesai', true)),
 					"status" => htmlspecialchars('active'),
@@ -110,6 +112,9 @@ class Staff_model extends CI_Model{
 				}
 				$this->db->insert_batch('tabel_area', $data_tabel_area);
 
+			// update tabel_staff berdasarkan id_event yang ditugaskannya
+				$this->db->update('tabel_staff', ["id_event" => htmlspecialchars($id_event)], ["staff_id" => htmlspecialchars($this->input->post('nama_petugas_pintuKeluar', true))]);
+
 			// update tabel_staff berdasarkan id_area yang ditugaskannya
 				$nama_area = $_POST['namaArea'];
 				$nama_petugas = $_POST['namaPetugas'];
@@ -123,8 +128,32 @@ class Staff_model extends CI_Model{
 		// 	$this->db->delete('tabel_staff', array('staff_id' => $staff_id));
 		// }
 	}
-	public function aksi_crud_area($data_tabel_area){
-		$this->db->insert_batch('tabel_area', $data_tabel_area);
+
+	public function validasi_scan_visitor($tipe_scan, $id_visitor){
+		if($tipe_scan == 'keluar'){
+			$ci_session_visitor_id = $this->db->get_where('ci_sessions', ['user_id' => $id_visitor])->row();
+			if(!$ci_session_visitor_id){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+
+	public function aksi_scan_visitor($tipe_scan, $id_visitor){
+		if($tipe_scan == 'keluar'){
+			// update tabel_staff isi id_petugas_pintu_keluar
+				$this->db->update('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id'), 'time_logged_out' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'logged out'], ['id_visitor' => $id_visitor]);
+			// hapus gambar barcode visitor berdasarkan id_visitor
+	
+			// $gambar_lama = $this->input->post('gambarlama');
+			// if($gambar_lama != 'default.jpg'){
+				unlink(FCPATH . 'assets/img/barcode/' . $id_visitor .'.png');
+			// }
+	
+			// delete ci_sessions visitor
+				$this->db->delete('ci_sessions', ['user_id' => $id_visitor]);
+		}
 	}
 
 

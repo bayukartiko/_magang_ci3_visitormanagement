@@ -83,7 +83,7 @@ class Main_controller extends CI_Controller {
 				redirect('staff_only/admin/home');
 			}elseif($this->session->userdata('role_id') == '2'){
 				$this->session->set_flashdata('harap_logout', 'harap logout terlebih dahulu !');
-				redirect('staff_only/petugas/home');
+				redirect('staff_only/petugas/scan');
 			}
 		}
 
@@ -120,6 +120,9 @@ class Main_controller extends CI_Controller {
 						$this->db->set('is_active', $log_stat);
 						$this->db->where('staff_id', $staff['staff_id']);
 						$this->db->update('tabel_staff');
+						$staff = $this->db->get_where('tabel_staff', ['username' => $username])->row_array();
+
+						$this->db->update('ci_sessions', ["user_id" => $staff['staff_id']], ["id" => session_id()]);
 
 						$data = [
 							"staff_id" => $staff["staff_id"],
@@ -127,6 +130,8 @@ class Main_controller extends CI_Controller {
 							"username" => $staff["username"],
 							"password" => $staff["password"],
 							"nama" => $staff["nama"],
+							"id_event" => $staff["id_event"],
+							"id_area" => $staff["id_area"],
 							"verified" => $staff["verified"],
 							"is_active" => $staff["is_active"]
 						];
@@ -140,7 +145,7 @@ class Main_controller extends CI_Controller {
 						if($role['role_id'] == '1'){
 							redirect('staff_only/admin/home');
 						}elseif($role['role_id'] == '2'){
-							redirect('staff_only/petugas/home');
+							redirect('staff_only/petugas/scan');
 						}else{
 							echo 'role tidak dikenal !';
 						}

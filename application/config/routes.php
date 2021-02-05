@@ -73,8 +73,13 @@ $route['staff_only/admin/daftar_staff'] = 'staff_controller/page_admin_daftar_st
 $route['staff_only/admin/data_list'] = 'staff_controller/page_admin_data_list';
 $route['staff_only/admin/logout'] = 'staff_controller/logout';
 
+$route['staff_only/petugas/scan'] = 'staff_controller/page_petugas_scan';
+$route['staff_only/petugas/logout'] = 'staff_controller/logout';
+
 $route['staff_only/admin/crud_staff/(:any)/(:any)'] = 'staff_controller/crud_staff/$1/$2';
 $route['staff_only/admin/crud_event/(:any)/(:any)'] = 'staff_controller/crud_event/$1/$2';
 $route['staff_only/admin/tambah_staff'] = 'staff_controller/tambah_staff';
 // $route['staff_only/admin/hapus_staff'] = 'staff_controller/hapus_staff/';
+
+$route['staff_only/petugas/scan/(:any)/(:any)'] = 'staff_controller/petugas_scan/$1/$2';
 

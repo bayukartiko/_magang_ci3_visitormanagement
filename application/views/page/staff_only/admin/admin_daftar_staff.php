@@ -100,7 +100,7 @@
 							<br><br>
 							
 							<div id="view_tabel_staff">
-								<?php $this->load->view('tabel/tabel_staff', ['all_staff'=>$all_staff, 'all_role'=>$all_role, 'all_area'=>$all_area, 'all_event'=>$all_event]); ?>
+								<?php $this->load->view('tabel/tabel_staff', ['all_staff'=>$all_staff, 'all_role'=>$all_role, 'all_area'=>$all_area, 'all_event'=>$all_event, 'hitung_area'=>$hitung_area]); ?>
 							</div>
 						</div>
 					</div>

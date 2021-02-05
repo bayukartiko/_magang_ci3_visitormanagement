@@ -33,303 +33,355 @@
     <!-- End of Page Wrapper -->
 
     <!-- event modal -->
-			<div class="modal fade" id="modal_tambah_event" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Buat Event Baru</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<form id="form-tambah-event" enctype="multipart/form-data" action="" class="" method="POST">
-								<div class="row">
-									<div class="offset-md-1 col-md-10">
-										<div class="form-group">
-											<label class="bmd-label-floating text-gray-800" for="field_nama_event">Nama Event</label>
-											<input type="text" class="form-control" id="field_nama_event" name="nama_event" placeholder="masukkan nama event" value="<?= set_value('nama_event') ?>"/>
+		<div class="modal fade" id="modal_tambah_event" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Buat Event Baru</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="form-tambah-event" enctype="multipart/form-data" action="" class="" method="POST">
+							<div class="row">
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_nama_event">Nama Event</label>
+										<input type="text" class="form-control" id="field_nama_event" name="nama_event" placeholder="masukkan nama event" value="<?= set_value('nama_event') ?>"/>
 
-											<small id="error_nama_event" class="invalid-feedback"></small>
-										</div>
-									</div>
-									<div class="offset-md-1 col-md-5">
-										<div class="form-group">
-											<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai">Tanggal Mulai</label>
-											<input type="datetime-local" class="form-control" id="field_tgl_mulai" name="tgl_mulai" value="<?= set_value('tgl_mulai') ?>"/>
-
-											<small id="error_tgl_mulai" class="invalid-feedback"></small>
-										</div>
-									</div>
-									<div class="col-md-5">
-										<div class="form-group">
-											<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai">Tanggal Selesai</label>
-											<input type="datetime-local" class="form-control" id="field_tgl_selesai" name="tgl_selesai" value="<?= set_value('tgl_selesai') ?>"/>
-
-											<small id="error_tgl_selesai" class="invalid-feedback"></small>
-										</div>
-									</div>
-									<div class="offset-md-1 col-md-10">
-										<br>
-										<hr>
-										<h3 class="text-center">Buat area beserta petugasnya untuk event ini</h3>
-										<br>
-										<table class="table table-hover table-responsive-sm table-borderless text-center" id="form-area">
-											<span id="error"></span>
-											<thead>
-												<tr>
-													<!-- <th>Nomor.</th> -->
-													<th>Nama Area</th>
-													<th>Nama Petugas</th>
-													<th>Aksi</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<!-- <td>1</td> -->
-													<td>
-														<input type="text" name="namaArea[]" class="form-control field_nama_area" placeholder="Masukkan Nama Area" value="<?= set_value('namaArea[]') ?>"/>
-														<?php echo form_error('namaArea[]'); ?>
-													</td>
-													<td>
-														<select name="namaPetugas[]" class="form-control field_nama_petugas">
-															<option value="" disabled selected>Pilih petugas</option>
-															<?php foreach($staff_nganggur as $staff_data){ ?>
-																<option value="<?= $staff_data->staff_id ?>"><?= $staff_data->nama ?></option>
-															<?php } ?>
-														</select>
-													</td>
-													<td>
-														<a class="btn btn-danger" id="remove-form"><i class="fas fa-trash"></i></a>
-													</td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<th colspan="3">
-														<a class="btn btn-secondary float-right" id="btn-tambah-input">tambah</a>
-													</th>
-												</tr>
-											</tfoot>
-										</table>
-
-										<!-- tampung jumlah data form -->
-										<input type="hidden" id="jumlah-form" value="1">
-										
+										<small id="error_nama_event" class="invalid-feedback"></small>
 									</div>
 								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" id="btn-simpan">Simpan</button>
-							<button type="button" class="btn btn-transparent" data-dismiss="modal">Batal</button>
-						</div>
+								<div class="offset-md-1 col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai">Tanggal Mulai</label>
+										<input type="datetime-local" class="form-control" id="field_tgl_mulai" name="tgl_mulai" value="<?= set_value('tgl_mulai') ?>"/>
+
+										<small id="error_tgl_mulai" class="invalid-feedback"></small>
+									</div>
+								</div>
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai">Tanggal Selesai</label>
+										<input type="datetime-local" class="form-control" id="field_tgl_selesai" name="tgl_selesai" value="<?= set_value('tgl_selesai') ?>"/>
+
+										<small id="error_tgl_selesai" class="invalid-feedback"></small>
+									</div>
+								</div>
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_nama_petugas_pintuKeluar">Petugas pintu keluar event</label>
+										<select name="nama_petugas_pintuKeluar" class="form-control" id="field_nama_petugas_pintuKeluar">
+											<option value="" disabled selected>Pilih petugas pintu keluar event</option>
+											<?php foreach($staff_nganggur as $staff_data){ ?>
+												<option value="<?= $staff_data->staff_id ?>"><?= $staff_data->nama ?></option>
+											<?php } ?>
+										</select>
+
+										<small id="error_nama_petugas_pintuKeluar" class="invalid-feedback"></small>
+									</div>
+								</div>
+								<div class="offset-md-1 col-md-10">
+									<br>
+									<hr>
+									<h3 class="text-center">Buat area beserta petugasnya untuk event ini</h3>
+									<br>
+									<table class="table table-hover table-responsive-sm table-borderless text-center" id="form-area">
+										<span id="error"></span>
+										<thead>
+											<tr>
+												<!-- <th>Nomor.</th> -->
+												<th>Nama Area</th>
+												<th>Nama Petugas</th>
+												<th>Aksi</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<!-- <td>1</td> -->
+												<td>
+													<input type="text" name="namaArea[]" class="form-control field_nama_area" placeholder="Masukkan Nama Area" value="<?= set_value('namaArea[]') ?>"/>
+													<?php echo form_error('namaArea[]'); ?>
+												</td>
+												<td>
+													<select name="namaPetugas[]" class="form-control field_nama_petugas">
+														<option value="" disabled selected>Pilih petugas</option>
+														<?php foreach($staff_nganggur as $staff_data){ ?>
+															<option value="<?= $staff_data->staff_id ?>"><?= $staff_data->nama ?></option>
+														<?php } ?>
+													</select>
+												</td>
+												<td>
+													<a class="btn btn-danger" id="remove-form"><i class="fas fa-trash"></i></a>
+												</td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<th colspan="3">
+													<a class="btn btn-secondary float-right" id="btn-tambah-input">tambah</a>
+												</th>
+											</tr>
+										</tfoot>
+									</table>
+
+									<!-- tampung jumlah data form -->
+									<input type="hidden" id="jumlah-form" value="1">
+									
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="btn-simpan">Simpan</button>
+						<button type="button" class="btn btn-transparent" data-dismiss="modal">Batal</button>
 					</div>
 				</div>
 			</div>
+		</div>
 		
     <script>
       $(document).ready(function () {
-				// $('.field_nama_petugas').select2({
-				// 	theme: 'bootstrap4',
-				// });
+			// $('.field_nama_petugas').select2({
+			// 	theme: 'bootstrap4',
+			// });
 
-				$('#modal_tambah_event').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
-					$('#modal_tambah_event input, #modal_tambah_event select, #modal_tambah_event datetime-local').val(''); // Clear inputan menjadi kosong
-					$('#btn-simpan').html('Tambah');
-				});
+			var nextform = ""; 
+			$('#modal_tambah_event').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
+				$('#modal_tambah_event input, #modal_tambah_event select, #modal_tambah_event datetime-local').val(''); // Clear inputan menjadi kosong
+				$('#btn-simpan').html('Simpan');
+			});
+			
+			$("#btn-tambah-input").click(function(){ // Ketika tombol Tambah Data Form di klik
+				var jumlah = parseInt($("#jumlah-form").val()); // Ambil jumlah data form pada textbox jumlah-form
+				nextform = jumlah + 1; // Tambah 1 untuk jumlah form nya
 
-				var nextform = ""; 
-				$("#btn-tambah-input").click(function(){ // Ketika tombol Tambah Data Form di klik
-					var jumlah = parseInt($("#jumlah-form").val()); // Ambil jumlah data form pada textbox jumlah-form
-					nextform = jumlah + 1; // Tambah 1 untuk jumlah form nya
+				// tambahkan form dengan menggunakan append
+				$("#form-area > tbody").append(
+					'<tr>'+
+						// "<td>"+ nextform + "</td>" +
+						'<td>'+
+							'<input type="text" name="namaArea[]" class="form-control field_nama_area" placeholder="Masukkan Nama Area" value="<?= set_value('namaArea[]') ?>"/>'+
+						'</td>'+
+						'<td>'+
+							'<select name="namaPetugas[]" class="form-control field_nama_petugas">'+
+								'<option value="" disabled selected>Pilih petugas</option>'+
+								'<?php foreach($staff_nganggur as $staff_data){ ?>'+
+									'<option value="<?= $staff_data->staff_id ?>"><?= $staff_data->nama ?></option>'+
+								'<?php } ?>'+
+							'</select>'+
+						'</td>'+
+						'<td><a class="btn btn-danger" id="remove-form"><i class="fas fa-trash"></i></a></td>'+
+					'</tr>'
+					);
+				
+				$("#jumlah-form").val(nextform); // Ubah value textbox jumlah-form dengan variabel nextform
+			});
 
-					// tambahkan form dengan menggunakan append
-					$("#form-area > tbody").append(
-						'<tr>'+
-							// "<td>"+ nextform + "</td>" +
-							'<td>'+
-								'<input type="text" name="namaArea[]" class="form-control field_nama_area" placeholder="Masukkan Nama Area" value="<?= set_value('namaArea[]') ?>"/>'+
-							'</td>'+
-							'<td>'+
-								'<select name="namaPetugas[]" class="form-control field_nama_petugas">'+
-									'<option value="" disabled selected>Pilih petugas</option>'+
-									'<?php foreach($staff_nganggur as $staff_data){ ?>'+
-										'<option value="<?= $staff_data->staff_id ?>"><?= $staff_data->nama ?></option>'+
-									'<?php } ?>'+
-								'</select>'+
-							'</td>'+
-							'<td><a class="btn btn-danger" id="remove-form"><i class="fas fa-trash"></i></a></td>'+
-						'</tr>'
-						);
+			// $(".field_nama_petugas").change(function(){
+			// 	$(".field_nama_petugas option").attr("disabled","false"); //enable everything
+			// 	DisableOptions(); //disable selected values
+			// });
+
+			// function DisableOptions(){
+			// 	var arr=[];
+			// 	$(".field_nama_petugas option:selected").each(function(){
+			// 		arr.push($(this).val());
+			// 	});
+
+			// 	$(".field_nama_petugas option").filter(function(){
+			// 		return $.inArray($(this).val(),arr)>-1;
+			// 	}).attr("disabled","disabled");   
+
+			// }
+
+
+			$("body").on("click", "#remove-form", function () {
+				$(this).parents("tr").remove();
+				// $('#error').html('');
+				// var nextform = jumlah - 1; // kirangi 1 untuk jumlah form nya
+				var jumlah = parseInt($("#jumlah-form").val()); // Ambil jumlah data form pada textbox jumlah-form
+				nextform = jumlah - 1;
+				$("#jumlah-form").val(nextform);
+			});
+
+
+			// fungsi tambah event
+				$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
+					e.preventDefault();
+					$('#btn-simpan').html('Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
+					$('#btn-simpan').attr('disabled', true);
+
 					
-					$("#jumlah-form").val(nextform); // Ubah value textbox jumlah-form dengan variabel nextform
-				});
-
-				$("body").on("click", "#remove-form", function () {
-					$(this).parents("tr").remove();
-					// $('#error').html('');
-					// var nextform = jumlah - 1; // kirangi 1 untuk jumlah form nya
-					var jumlah = parseInt($("#jumlah-form").val()); // Ambil jumlah data form pada textbox jumlah-form
-					nextform = jumlah - 1;
-					$("#jumlah-form").val(nextform);
-				});
-
-
-				// fungsi tambah event
-					$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
-						e.preventDefault();
-						$('#btn-simpan').html('Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
-						$('#btn-simpan').attr('disabled', true);
-
-						var error = '';
-						var hitung_field_nama_area = 1;
-						$('.field_nama_area').each(function(){
-							if($(this).val() == ''){
-								error += "<p>harap isi field nama area pada baris "+hitung_field_nama_area+" !</p>";
-								$(this).addClass('is-invalid');
-								return false;
-							}else{
-								$(this).removeClass('is-invalid');
-							}
-							hitung_field_nama_area = hitung_field_nama_area + 1;
-						});
-						var hitung_field_nama_petugas = 1;
-						$('.field_nama_petugas').each(function(){
-							if($(this).find(":selected").val() == ''){
-								error += "<p>harap pilih field nama petugas pada baris "+hitung_field_nama_petugas+" !</p>";
-								$(this).addClass('is-invalid');
-								return false;
-							}else{
-								$(this).removeClass('is-invalid');
-							}
-							hitung_field_nama_petugas = hitung_field_nama_petugas + 1;
-						});
-
-						if(error == ''){
-							$('#error').html('');
-							tambah_event();
+					var startDate = new Date($('#field_tgl_mulai').val());
+					var endDate = new Date($('#field_tgl_selesai').val());
+					if (endDate <= startDate){
+						$('#field_tgl_selesai').addClass('is-invalid');
+						$('#error_tgl_selesai').html('waktu selesai harus waktu setelah waktu mulai');
+						$('#btn-simpan').html('x Terjadi kesalahan x');
+						setTimeout(() => {
+							$('#btn-simpan').html('Simpan');
+							$('#btn-simpan').attr('disabled', false);
+						}, 2000);
+						return false;
+					}else{
+						$('#field_tgl_selesai').removeClass('is-invalid');
+						$('#error_tgl_selesai').html('');
+					}
+					
+					var error = '';
+					var hitung_field_nama_area = 1;
+					$('.field_nama_area').each(function(){
+						if($(this).val() == ''){
+							error += "<p>harap isi field nama area pada baris "+hitung_field_nama_area+" !</p>";
+							$(this).addClass('is-invalid');
+							return false;
 						}else{
-							$('#error').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+error+'</div>');
-							$('#btn-simpan').html('x Terjadi kesalahan x');
-							setTimeout(() => {
-								$('#btn-simpan').html('Simpan');
-								$('#btn-simpan').attr('disabled', false);
-							}, 2000);
+							$(this).removeClass('is-invalid');
 						}
-
+						hitung_field_nama_area = hitung_field_nama_area + 1;
+					});
+					var hitung_field_nama_petugas = 1;
+					$('.field_nama_petugas').each(function(){
+						if($(this).find(":selected").val() == ''){
+							error += "<p>harap pilih field nama petugas pada baris "+hitung_field_nama_petugas+" !</p>";
+							$(this).addClass('is-invalid');
+							return false;
+						}else{
+							$(this).removeClass('is-invalid');
+						}
+						hitung_field_nama_petugas = hitung_field_nama_petugas + 1;
 					});
 
-					function tambah_event(){
-						$.ajax({
-							url: '<?= base_url(); ?>staff_only/admin/crud_event/tambah/'+null+'', // URL tujuan
-							type: 'POST',
-							// data: $("#form-modal form").serialize(),
-							data: new FormData(document.getElementById('form-tambah-event')),
-							processData:false,
-							contentType:false,
-							cache:false,
-							async:false,
-							dataType: 'JSON',
-							beforeSend: function() {
-								// $('#loading-simpan').show(); // Munculkan loading simpan
-								$('#btn-simpan').html('Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
-								$('#btn-simpan').attr('disabled', true);
-							},
-							success: function(callback){
-								// console.log('sukses');
-								// console.log(callback)
+					if(error == ''){
+						$('#error').html('');
+						tambah_event();
+					}else{
+						$('#error').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+error+'</div>');
+						$('#btn-simpan').html('x Terjadi kesalahan x');
+						setTimeout(() => {
+							$('#btn-simpan').html('Simpan');
+							$('#btn-simpan').attr('disabled', false);
+						}, 2000);
+					}
 
-								if(callback.status == "sukses"){ // Jika Statusnya = sukses
-									// console.log('callback sukses');
+				});
 
-									$('#modal_tambah_event').modal('hide');
+				function tambah_event(){
+					$.ajax({
+						url: '<?= base_url(); ?>staff_only/admin/crud_event/tambah/'+null+'', // URL tujuan
+						type: 'POST',
+						// data: $("#form-modal form").serialize(),
+						data: new FormData(document.getElementById('form-tambah-event')),
+						processData:false,
+						contentType:false,
+						cache:false,
+						async:false,
+						dataType: 'JSON',
+						beforeSend: function() {
+							// $('#loading-simpan').show(); // Munculkan loading simpan
+							$('#btn-simpan').html('Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
+							$('#btn-simpan').attr('disabled', true);
+						},
+						success: function(callback){
+							// console.log('sukses');
+							// console.log(callback)
 
-									// $('#total_staff').html(callback.total_staff)
-									// $('#total_staff_admin').html(callback.total_staff_admin)
-									// $('#total_staff_petugas').html(callback.total_staff_petugas)
+							if(callback.status == "sukses"){ // Jika Statusnya = sukses
+								// console.log('callback sukses');
 
-									// window.location.reload();
-									// Ganti isi dari div view dengan view yang diambil dari view_register.php
-									$('#view_tabel_event').html(callback.view_tabel_staff);
-									// $('#view_chart_status_staff').html(callback.view_chart_status_staff);
-									// $('#view_chart_total_staff').html(callback.view_chart_total_staff);
-									// $('#pesan-sukses').html(callback.pesan).fadeIn().delay(10000).fadeOut();
-									const Toast = Swal.mixin({
-										toast: true,
-										position: 'top-start',
-										showConfirmButton: false,
-										timer: 10000,
-										timerProgressBar: true,
-										didOpen: (toast) => {
-											toast.addEventListener('mouseenter', Swal.stopTimer)
-											toast.addEventListener('mouseleave', Swal.resumeTimer)
-										}
-									});
-									Toast.fire({
-										icon: 'success',
-										title: callback.pesan
-									});
+								$('#modal_tambah_event').modal('hide');
 
-									$('#btn-simpan').html('Simpan'); // ganti text btn-simpan jadi sedang menambahkan
-									$('#btn-simpan').attr('disabled', false);
+								// $('#total_staff').html(callback.total_staff)
+								// $('#total_staff_admin').html(callback.total_staff_admin)
+								// $('#total_staff_petugas').html(callback.total_staff_petugas)
 
-								}else{
-									// console.log('callback error');
-									// tampil pesan validasi
-										if(callback.nama_event_error){
-											$('#field_nama_event').addClass('is-invalid');
-											$('#error_nama_event').html(callback.nama_event_error);
-										}else{
-											$('#field_nama_event').removeClass('is-invalid');
-											$('#error_nama_event').html('');
-										}
-										
-										if(callback.tgl_mulai_error){
-											$('#field_tgl_mulai').addClass('is-invalid');
-											$('#error_tgl_mulai').html(callback.tgl_mulai_error);
-										}else{
-											$('#field_tgl_mulai').removeClass('is-invalid');
-											$('#error_tgl_mulai').html('');
-										}
+								// window.location.reload();
+								// Ganti isi dari div view dengan view yang diambil dari view_register.php
+								$('#view_tabel_event').html(callback.view_tabel_staff);
+								// $('#view_chart_status_staff').html(callback.view_chart_status_staff);
+								// $('#view_chart_total_staff').html(callback.view_chart_total_staff);
+								// $('#pesan-sukses').html(callback.pesan).fadeIn().delay(10000).fadeOut();
+								const Toast = Swal.mixin({
+									toast: true,
+									position: 'top-start',
+									showConfirmButton: false,
+									timer: 5000,
+									timerProgressBar: true,
+									didOpen: (toast) => {
+										toast.addEventListener('mouseenter', Swal.stopTimer)
+										toast.addEventListener('mouseleave', Swal.resumeTimer)
+									}
+								});
+								Toast.fire({
+									icon: 'success',
+									title: callback.pesan
+								});
 
-										if(callback.tgl_selesai_error){
-											$('#field_tgl_selesai').addClass('is-invalid');
-											$('#error_tgl_selesai').html(callback.tgl_selesai_error);
-										}else{
-											$('#field_tgl_selesai').removeClass('is-invalid');
-											$('#error_tgl_selesai').html('');
-										}
-										// if(callback.namaArea_error){
-										// 	$('.field_nama_area').addClass('is-invalid');
-										// 	$('.error_tgl_selesai').html(callback.tgl_selesai_error);
-										// }else{
-										// 	$('.field_nama_area').removeClass('is-invalid');
-										// 	$('.error_tgl_selesai').html('');
-										// }
-										// if(callback.namaPetugas_error){
-										// 	$('.field_nama_petugas').addClass('is-invalid');
-										// 	$('.error_tgl_selesai').html(callback.tgl_selesai_error);
-										// }else{
-										// 	$('.field_nama_petugas').removeClass('is-invalid');
-										// 	$('.error_tgl_selesai').html('');
-										// }
+								$('#btn-simpan').html('Simpan'); // ganti text btn-simpan jadi sedang menambahkan
+								$('#btn-simpan').attr('disabled', false);
+
+								// setTimeout(() => {
+								// 	window.location.reload();
+								// }, 2000);
+
+							}else{
+								// console.log('callback error');
+								// tampil pesan validasi
+									if(callback.nama_event_error){
+										$('#field_nama_event').addClass('is-invalid');
+										$('#error_nama_event').html(callback.nama_event_error);
+									}else{
+										$('#field_nama_event').removeClass('is-invalid');
+										$('#error_nama_event').html('');
+									}
 									
-									$('#btn-simpan').html('x Terjadi kesalahan x');
-									setTimeout(() => {
-										$('#btn-simpan').html('Simpan');
-										$('#btn-simpan').attr('disabled', false);
-									}, 2000);
-								}
-							},
-							error: function(xhr, ajaxOptions, thrownError, errorMessage, callback) {
-								console.log("error :", errorMessage);
-								console.log(callback)
-								// alert(xhr.responseText);
-								console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
+									if(callback.tgl_mulai_error){
+										$('#field_tgl_mulai').addClass('is-invalid');
+										$('#error_tgl_mulai').html(callback.tgl_mulai_error);
+									}else{
+										$('#field_tgl_mulai').removeClass('is-invalid');
+										$('#error_tgl_mulai').html('');
+									}
+
+									if(callback.tgl_selesai_error){
+										$('#field_tgl_selesai').addClass('is-invalid');
+										$('#error_tgl_selesai').html(callback.tgl_selesai_error);
+									}else{
+										$('#field_tgl_selesai').removeClass('is-invalid');
+										$('#error_tgl_selesai').html('');
+									}
+									// if(callback.namaArea_error){
+									// 	$('.field_nama_area').addClass('is-invalid');
+									// 	$('.error_tgl_selesai').html(callback.tgl_selesai_error);
+									// }else{
+									// 	$('.field_nama_area').removeClass('is-invalid');
+									// 	$('.error_tgl_selesai').html('');
+									// }
+									// if(callback.namaPetugas_error){
+									// 	$('.field_nama_petugas').addClass('is-invalid');
+									// 	$('.error_tgl_selesai').html(callback.tgl_selesai_error);
+									// }else{
+									// 	$('.field_nama_petugas').removeClass('is-invalid');
+									// 	$('.error_tgl_selesai').html('');
+									// }
+								
+								$('#btn-simpan').html('x Terjadi kesalahan x');
+								setTimeout(() => {
+									$('#btn-simpan').html('Simpan');
+									$('#btn-simpan').attr('disabled', false);
+								}, 2000);
 							}
-						});
-					};
+						},
+						error: function(xhr, ajaxOptions, thrownError, errorMessage, callback) {
+							console.log("error :", errorMessage);
+							console.log(callback)
+							// alert(xhr.responseText);
+							console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
+						}
+					});
+				};
 
 
       });
