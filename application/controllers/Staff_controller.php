@@ -63,6 +63,7 @@ class Staff_controller extends CI_Controller {
 			$data['all_role'] = $this->staff_model->get_tb_role();
 			$data['all_area'] = $this->staff_model->get_tb_area();
 			$data['all_event'] = $this->staff_model->get_tb_event();
+			$data['all_tugas_staff_petugas'] = $this->staff_model->get_tb_tugas_staff_petugas();
 
 			$data['hitung_area'] = $this->db->get('tabel_area')->num_rows();
 			$data['hitung_staff'] = $this->db->get_where('tabel_staff', ['verified' => '1'])->num_rows();
@@ -92,7 +93,7 @@ class Staff_controller extends CI_Controller {
 
 		public function page_admin_event_management(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
-			$data['staff_nganggur'] = $this->db->get_where('tabel_staff', ['id_area' => null, 'role_id' => '2'])->result();
+			$data['staff_nganggur'] = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
 			$data['all_event'] = $this->staff_model->get_tb_event();
 			$data['all_area'] = $this->staff_model->get_tb_area();
 
@@ -252,10 +253,21 @@ class Staff_controller extends CI_Controller {
 								$batas_area = str_pad($kode, 7, "0", STR_PAD_LEFT);
 								$id_area = "AR".$tgl.$batas_area;
 
-							$this->staff_model->aksi_crud_event("tambah", $id_event, $id_area);
+							// buat kostum id tabel tugas
+								if($this->db->query('SELECT * FROM tabel_tugas_staff_petugas')->num_rows() > 0){
+									$data = $this->db->query('SELECT * FROM tabel_area')->num_rows();
+									$kode = $data+1;
+								}else{
+									$kode = 1;
+								}
+								$tgl = mdate("%d%m%y%H%i%s");
+								$batas_tugas = str_pad($kode, 7, "0", STR_PAD_LEFT);
+								$id_tugas = "TGS".$tgl.$batas_tugas;
+
+							$this->staff_model->aksi_crud_event("tambah", $id_event, $id_area, $id_tugas);
 			
 							// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
-							$staff_nganggur = $this->db->get_where('tabel_staff', ['id_area' => null, 'role_id' => '2'])->result();
+							$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => true, 'role_id' => '2'])->result();
 							$id_event = $this->db->get('tabel_event')->row_array();
 							$view_tabel_event = $this->load->view('tabel/tabel_event', array(
 								'all_event' => $this->staff_model->get_tb_event(),
@@ -290,23 +302,31 @@ class Staff_controller extends CI_Controller {
 	// page petugas
 		public function page_petugas_scan(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data['all_staff'] = $this->staff_model->get_tb_staff();
+			$data['all_role'] = $this->staff_model->get_tb_role();
+			$data['all_area'] = $this->staff_model->get_tb_area();
+			$data['all_event'] = $this->staff_model->get_tb_event();
+			$data['all_tugas_staff_petugas'] = $this->staff_model->get_tb_tugas_staff_petugas();
 			$data['petugas_pintu_keluar'] = $this->db->get_where('tabel_event', ['id_event' => $this->session->userdata('id_event')])->row();
 			$data['petugas_pintu_area'] = $this->db->get_where('tabel_area', ['id_area' => $this->session->userdata('id_area')])->row();
 
 			$data['hitung_visitor_scan_keluar'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->num_rows();
 			$data['visitor_scan_keluar'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
-
+			
+			$data['hitung_visitor_masuk_event'] = $this->db->get_where('tabel_visitor', ['status' => 'logged in'])->num_rows();
+			$data['hitung_visitor_didalam_area'] = $this->db->get_where('tabel_visitor', ['status' => 'in area'])->num_rows();
+			$data['hitung_visitor_keluar_event'] = $this->db->get_where('tabel_visitor', ['status' => 'logged out'])->num_rows();
 			// echo 'selamat datang ' . $data['tb_user']['username'];
-			// $this->load->view('page/staff_only/petugas/petugas_dashboard', $data);
-			$this->load->view('template/staff_only/header', $data);
-			$this->load->view('page/staff_only/petugas/petugas_scan', $data);
-			$this->load->view('template/staff_only/footer', $data);
-			// $this->load->view('page/staff_only/petugas/petugas_scan_tracking', $data);
+			// $this->load->view('template/staff_only/header', $data);
+			$this->load->view('page/staff_only/petugas/petugas_scan_tracking', $data);
+			// $this->load->view('template/staff_only/footer', $data);
+
+			// $this->load->view('template/staff_only/header', $data);
+			// $this->load->view('page/staff_only/petugas/petugas_scan', $data);
 			// $this->load->view('template/staff_only/footer', $data);
 		}
 
 		// aksi petugas
-
 			public function petugas_scan($tipe_scan, $id_visitor){
 				if($tipe_scan == "keluar"){
 					if($this->input->is_ajax_request()){

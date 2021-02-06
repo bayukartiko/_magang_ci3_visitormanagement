@@ -128,10 +128,9 @@ class Main_controller extends CI_Controller {
 							"staff_id" => $staff["staff_id"],
 							"role_id" => $staff["role_id"],
 							"username" => $staff["username"],
-							"password" => $staff["password"],
 							"nama" => $staff["nama"],
-							"id_event" => $staff["id_event"],
-							"id_area" => $staff["id_area"],
+							"sedang_bertugas" => $staff["sedang_bertugas"],
+							"id_tugas" => $staff["id_tugas"],
 							"verified" => $staff["verified"],
 							"is_active" => $staff["is_active"]
 						];

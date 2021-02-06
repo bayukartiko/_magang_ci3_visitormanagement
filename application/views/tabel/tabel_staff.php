@@ -31,51 +31,53 @@
 						if($staff_data->role_id == 1){
 							echo '<button class="btn btn-outline-success"> bagian admin </button>';
 						}else{
-							if($hitung_area>0){ // cek apakah ada area di tabel_area
-								
-								foreach($all_area as $area_data){ // ambil semua data tabel_area
-									if($staff_data->id_area == $area_data->id_area){ // jika id_area pada tabel_staff sama dengan id_area pada tabel_area
-									?>
-										<table class="table table-borderless table-hover table-responsive-sm">
-											<tr>
-												<td colspan="2" class="text-center">Petugas Area</td>
-											</tr>
-											<tr>
-												<td>Nama Event</td>
-												<td>: 
-													<?php foreach($all_event as $event_data){ // ambil semua data tabel_event ?> 
-														<?php if($staff_data->id_area == $area_data->id_area){ // jika id_area pada tabel_staff sama dengan id_area pada tabel_area ?>
-															<?php if($event_data->id_event == $area_data->id_event){ // jika id_event pada tabel_event sama dengan id_event pada tabel_area ?> 
+							if($staff_data->sedang_bertugas == true){ // cek apakah staff sedang bertugas
+								foreach($all_tugas_staff_petugas as $data_tugas_staff_petugas){ // ambil semua data tabel_tugas_staff_petugas
+									if($staff_data->id_tugas == $data_tugas_staff_petugas->id_tugas){ // jika id_tugas pada tabel_staff sama dengan id_tugas pada tabel_tugas_staff_petugas
+										if($data_tugas_staff_petugas->petugas_pintu_area == true){ // jika tugasnya jadi petugas_pintu_area ?>
+											<table class="table table-borderless table-hover table-responsive-sm">
+												<tr>
+													<td colspan="2" class="text-center">Petugas pintu area</td>
+												</tr>
+												<tr>
+													<td>Nama Event</td>
+													<td>: 
+														<?php foreach($all_event as $event_data){ // ambil semua data tabel_event ?> 
+															<?php if($data_tugas_staff_petugas->id_event == $event_data->id_event){ // jika id_event pada tabel_tugas_staff_petugas sama dengan id_event pada tabel_event ?>
 																<?= $event_data->nama_event ?>
-															<?php } ?> 
+															<?php } ?>
 														<?php } ?>
-														<?php if($event_data->staff_id == $staff_data->staff_id){} ?>
-													<?php } ?>
-												</td>
-											</tr>
-											<tr>
-												<td>Nama Area</td>
-												<td>: <?= $area_data->nama_area; ?></td>
-											</tr>
-										</table>
-									<?php	
-									}elseif($staff_data->id_area == null){ ?>
-										<?php foreach($all_event as $event_data){ // ambil semua data tabel_event ?>
-											<?php if($event_data->staff_id == $staff_data->staff_id){ // jika staff_id pada tabel_event sama dengan staff_id pada tabel_staff ?> 
-												<table class="table table-borderless table-hover table-responsive-sm">
-													<tr>
-														<td colspan="2" class="text-center">Petugas pintu keluar event</td>
-													</tr>
-													<tr>
-														<td>Nama Event</td>
-														<td>: <?= $event_data->nama_event ?> </td>
-													</tr>
-												</table>
-											<?php } ?>
-										<?php } ?>
-										<!-- <?= '<button class="btn btn-outline-danger"> belum bertugas </button>'; ?> -->
-										<?php break; ?>
-									<?php }
+													</td>
+												</tr>
+												<tr>
+													<td>Nama Area</td>
+													<td>: 
+														<?php foreach($all_area as $area_data){ // ambil semua data tabel_area ?> 
+															<?php if($data_tugas_staff_petugas->id_area == $area_data->id_area){ // jika id_area pada tabel_tugas_staff_petugas sama dengan id_area pada tabel_area ?>
+																<?= $area_data->nama_area ?>
+															<?php } ?>
+														<?php } ?>
+													</td>
+												</tr>
+											</table>
+										<?php }elseif($data_tugas_staff_petugas->petugas_pintu_keluar == true){ // jika tugasnya jadi petugas_pintu_keluar ?>
+											<table class="table table-borderless table-hover table-responsive-sm">
+												<tr>
+													<td colspan="2" class="text-center">Petugas pintu keluar event</td>
+												</tr>
+												<tr>
+													<td>Nama Event</td>
+													<td>: 
+														<?php foreach($all_event as $event_data){ // ambil semua data tabel_event ?> 
+															<?php if($data_tugas_staff_petugas->id_event == $event_data->id_event){ // jika id_event pada tabel_tugas_staff_petugas sama dengan id_event pada tabel_event ?>
+																<?= $event_data->nama_event ?>
+															<?php } ?>
+														<?php } ?>
+													</td>
+												</tr>
+											</table>
+										<?php }
+									}
 								}
 							}else{
 								echo '<button class="btn btn-outline-danger"> belum bertugas </button>';
@@ -98,8 +100,8 @@
 					<input type="hidden" class="username-value_detail" value="<?= $staff_data->username; ?>">
 					<input type="hidden" class="password-value_detail" value="<?= $staff_data->password; ?>">
 					<input type="hidden" class="nama-value_detail" value="<?= $staff_data->nama; ?>">
-					<input type="hidden" class="id_area-value_detail" value="<?php if($staff_data->role_id == 1){echo 'bagian admin';}else{foreach($all_area as $area_data){if($staff_data->id_area == $area_data->id_area){echo $area_data->nama_area;}elseif($staff_data->id_area == null){echo 'belum bertugas';}}}?>
-					">
+					<!-- <input type="hidden" class="id_area-value_detail" value="</?php if($staff_data->role_id == 1){echo 'bagian admin';}else{foreach($all_area as $area_data){if($staff_data->sedang_bertugas == true){echo $area_data->nama_area;}elseif($staff_data->sedang_bertugas == false){echo 'belum bertugas';}}}?>"> -->
+					<input type="hidden" class="id_area-value_detail" value="<?php if($staff_data->role_id == 1){echo 'bagian admin';}else{if($staff_data->sedang_bertugas == true){foreach($all_tugas_staff_petugas as $data_tugas_staff_petugas){if($staff_data->id_tugas == $data_tugas_staff_petugas->id_tugas){if($data_tugas_staff_petugas->petugas_pintu_area == true){foreach($all_area as $area_data){if($data_tugas_staff_petugas->id_area == $area_data->id_area){echo $area_data->nama_area;}}}}}}elseif($staff_data->sedang_bertugas == false){echo "belum bertugas";}}?>">
 					<input type="hidden" class="verified-value_detail" value="<?= $staff_data->verified; ?>">
 					<input type="hidden" class="is_active-value_detail" value="<?= $staff_data->is_active; ?>">
 				</td>
