@@ -1,4 +1,4 @@
-<?php if($this->session->userdata('status') == "logged in"){ ?>
+<?php if($this->session->userdata('status') == "telah_masuk_event"){ ?>
 	<div class="text-center">
 		<!-- </?= $this->session->all_userdata(); ?>
 		</?= $this->session->userdata('gambar_qrcode'); ?> -->

@@ -6,6 +6,10 @@ class Staff_model extends CI_Model{
 		$data = $this->db->get("tabel_staff");
 		return $data->result();
 	}
+	public function get_tb_visitor(){
+		$data = $this->db->get("tabel_visitor");
+		return $data->result();
+	}
 	public function get_tb_role(){
 		$data = $this->db->get("tabel_role");
 		return $data->result();
@@ -20,6 +24,10 @@ class Staff_model extends CI_Model{
 	}
 	public function get_tb_tugas_staff_petugas(){
 		$data = $this->db->get("tabel_tugas_staff_petugas");
+		return $data->result();
+	}
+	public function get_tb_tracking(){
+		$data = $this->db->get("tabel_tracking");
 		return $data->result();
 	}
 
@@ -162,22 +170,42 @@ class Staff_model extends CI_Model{
 	}
 
 	public function validasi_scan_visitor($tipe_scan, $id_visitor){
-		if($tipe_scan == 'keluar'){
+		if($tipe_scan == 'pintu_keluar'){
 			$ci_session_visitor_id = $this->db->get_where('ci_sessions', ['user_id' => $id_visitor])->row();
 			if(!$ci_session_visitor_id){
 				return false;
 			}else{
 				return true;
 			}
-		}elseif($tipe_scan == "masuk_area"){
-
+		}elseif($tipe_scan == "pintu_area"){
+			$ci_session_visitor_id = $this->db->get_where('ci_sessions', ['user_id' => $id_visitor])->row();
+			if(!$ci_session_visitor_id){
+				return false;
+			}else{
+				return true;
+			}
 		}
 	}
 
 	public function aksi_scan_visitor($tipe_scan, $id_visitor){
-		if($tipe_scan == 'keluar'){
+		if($tipe_scan == 'pintu_keluar'){
 			// update tabel_staff isi id_petugas_pintu_keluar
-				$this->db->update('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id'), 'time_logged_out' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'logged out'], ['id_visitor' => $id_visitor]);
+
+				$tabel_tracking = $this->get_tb_tracking();
+				$tabel_visitor = $this->get_tb_visitor();
+				
+				foreach($tabel_visitor as $data_tabel_visitor){
+					if($data_tabel_visitor->id_visitor == $id_visitor){
+						if($data_tabel_visitor->status == "didalam_area"){
+							$data_update_tabel_tracking = [
+								"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+							];
+							$this->db->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$id_visitor]); // disini masih gk jelas, semua time_out_area keubah semua (where-nya usahain jangan id_vsitor doang). Bagaimana cara mendapatkan id_tracking nya? get_where/get row() time_in_area DESC (yang paling bawah) maybe?
+						}
+					}
+				}
+
+				$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'id_petugas_pintu_keluar' => $this->session->userdata('staff_id'), 'time_out_event' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'telah_keluar_event'], ['id_visitor' => $id_visitor]);
 			// hapus gambar barcode visitor berdasarkan id_visitor
 	
 			// $gambar_lama = $this->input->post('gambarlama');
@@ -187,8 +215,94 @@ class Staff_model extends CI_Model{
 	
 			// delete ci_sessions visitor
 				$this->db->delete('ci_sessions', ['user_id' => $id_visitor]);
-		}elseif($tipe_scan == "masuk_area"){
+		}elseif($tipe_scan == "pintu_area"){
+			// insert tabel_tracking
+				// ambil id_area berdasarkan id_area petugas ini
+					$tabel_tugas = $this->get_tb_tugas_staff_petugas();
+					foreach($tabel_tugas as $data_tabel_tugas){
+						if($data_tabel_tugas->staff_id == $this->session->userdata("staff_id")){
+							$id_area = $data_tabel_tugas->id_area;
+						}
+					}
 
+				// ambil semua data tabel_tracking
+				$tabel_tracking = $this->get_tb_tracking();
+				$tabel_visitor = $this->get_tb_visitor();
+
+				if($tabel_tracking == null){
+					$data_tabel_tracking = [
+						"id_visitor" => htmlspecialchars($id_visitor),
+						"id_petugas_pintu_area" => htmlspecialchars($this->session->userdata('staff_id')),
+						"id_area" => htmlspecialchars($id_area),
+						"time_in_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+					];
+					$this->db->insert('tabel_tracking', $data_tabel_tracking);
+
+					// update tabel_staff isi id_petugas_pintu_area
+					$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id'), 'status' => 'didalam_area'], ['id_visitor' => $id_visitor]);
+
+				}else{
+
+					foreach($tabel_visitor as $data_tabel_visitor){ // deploy semua data tabel_visitor
+						if($data_tabel_visitor->id_visitor == $id_visitor){ // jika id_visitor pada tabel_visitor sama dengan id_visitor parameter
+							
+							// if($data_tabel_visitor->id_petugas_pintu_area == null){ // jika id_visitor tidak ada dan id_petugas tidak ada (sama-sama 1 baris)
+								if($data_tabel_visitor->id_petugas_pintu_area != $this->session->userdata("staff_id") && $data_tabel_visitor->status == "didalam_area"){ // jika id_petugas pada tabel_visitor tidak sama dengan staff_id anda saat ini
+									print("1");
+									$data_update_tabel_tracking = [
+										"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+									];
+									$this->db->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$id_visitor]); // disini masih gk jelas, semua time_out_area keubah semua (where-nya usahain jangan id_vsitor doang). Bagaimana cara mendapatkan id_tracking nya? get_where/get row() time_in_area DESC (yang paling bawah) maybe?
+
+									$data_insert_tabel_tracking = [
+										"id_visitor" => htmlspecialchars($id_visitor),
+										"id_petugas_pintu_area" => htmlspecialchars($this->session->userdata('staff_id')),
+										"id_area" => htmlspecialchars($id_area),
+										"time_in_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+									];
+									$this->db->insert('tabel_tracking', $data_insert_tabel_tracking);
+	
+									$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id'), 'status' => 'didalam_area'], ['id_visitor' => $id_visitor]);
+									
+								}elseif($data_tabel_visitor->id_petugas_pintu_area == $this->session->userdata("staff_id") && $data_tabel_visitor->status == "didalam_area"){ // jika id_petugas pada tabel_visitor sama dengan staff_id anda saat ini
+									print('3');
+
+									$data_update_tabel_tracking = [
+										"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+									];
+									$this->db->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$id_visitor]); // disini masih gk jelas, semua time_out_area keubah semua (where-nya usahain jangan id_vsitor doang). Bagaimana cara mendapatkan id_tracking nya? get_where/get row() time_in_area DESC (yang paling bawah) maybe?
+
+									$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'status' => 'telah_masuk_event'], ['id_visitor' => $id_visitor]);
+
+								}elseif($data_tabel_visitor->id_petugas_pintu_area == null && $data_tabel_visitor->status == "telah_masuk_event"){ // jika id_petugas pada tabel_visitor sama dengan kosong/tidak ada/null
+									print("2");
+									$data_tabel_tracking = [
+										"id_visitor" => htmlspecialchars($id_visitor),
+										"id_petugas_pintu_area" => htmlspecialchars($this->session->userdata('staff_id')),
+										"id_area" => htmlspecialchars($id_area),
+										"time_in_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+									];
+									$this->db->insert('tabel_tracking', $data_tabel_tracking);
+	
+									// update tabel_staff isi id_petugas_pintu_area
+									$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id'), 'status' => 'didalam_area'], ['id_visitor' => $id_visitor]);
+								}
+
+							// }
+
+						}
+					}
+
+				}
+
+
+				// $data_tabel_tracking = [
+				// 	"id_visitor" => htmlspecialchars($id_visitor),
+				// 	"id_petugas_pintu_area" => htmlspecialchars($this->session->userdata('staff_id')),
+				// 	"id_area" => htmlspecialchars($id_area),
+				// 	"time_in_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+				// ];
+				// $this->db->insert('tabel_tracking', $data_tabel_tracking);
 		}
 	}
 

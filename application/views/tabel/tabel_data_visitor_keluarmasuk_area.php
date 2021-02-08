@@ -2,6 +2,7 @@
 	<thead>
 		<tr>
 			<th>Nama</th>
+			<th>Waktu Masuk</th>
 			<th>Waktu Keluar</th>
 			<th>Aksi</th>
 		</tr>
@@ -14,6 +15,7 @@
 		?>
 			<tr>
 				<td><?= $data_visitor_scan_keluar->nama_visitor ?></td>
+				<td><?= $data_visitor_scan_keluar->time_in_event ?></td>
 				<td><?= $data_visitor_scan_keluar->time_out_event ?></td>
 				<td><button class="btn btn-info">Detail</button></td>
 			</tr>
@@ -23,7 +25,7 @@
 		?>
 
 			<tr>
-				<td colspan="4"><p class="text-center">Belum ada visitor keluar</p></td>
+				<td colspan="4"><p class="text-center">Belum ada visitor masuk/keluar area</p></td>
 			</tr>
 
 		<?php } ?>
@@ -31,6 +33,7 @@
 	<tfoot>
 		<tr>
 			<th>Nama</th>
+			<th>Waktu Masuk</th>
 			<th>Waktu Keluar</th>
 			<th>Aksi</th>
 		</tr>

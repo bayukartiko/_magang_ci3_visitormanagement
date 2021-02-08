@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 06, 2021 at 04:46 PM
+-- Generation Time: Feb 08, 2021 at 04:51 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -40,7 +40,12 @@ CREATE TABLE `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`id`, `user_id`, `ip_address`, `timestamp`, `data`) VALUES
-('u0i9qi737vhc0242pi80uns4rmak7cq6', '', '::1', 1612626327, 0x69645f6576656e747c733a32333a2245564e5430353032323131303032323430303030303032223b69645f617265617c4e3b736564616e675f62657274756761737c733a313a2230223b69645f74756761737c4e3b);
+('d21snuqcmhv16ceja6g0db5johotg4n4', '', '::1', 1612799382, 0x736564616e675f62657274756761737c733a313a2231223b69645f74756761737c733a32323a2254475330363032323132313432343130303030303031223b73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
+('d4v1hmv7vdufd64aekf3uolvkblflp3k', '', '::1', 1612799502, ''),
+('gou1l0ukufejdb8i976jgco355kltb4i', '', '::1', 1612767567, 0x736564616e675f62657274756761737c733a313a2231223b69645f74756761737c733a32333a225447533036303232313231343234313030303030303131223b73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
+('qaaof4bt67pmds73dc2f3fgbpgvocfcp', '', '::1', 1612753504, ''),
+('td4dmvgeb74rp8glinllmhjr6ao1124b', '', '::1', 1612766969, ''),
+('u5m73b3dcisl58h35fmdi1e1pjhmlej1', '', '::1', 1612693274, 0x736564616e675f62657274756761737c733a313a2230223b69645f74756761737c4e3b73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d);
 
 -- --------------------------------------------------------
 
@@ -148,11 +153,33 @@ INSERT INTO `tabel_staff` (`staff_id`, `role_id`, `username`, `password`, `nama`
 --
 
 CREATE TABLE `tabel_tracking` (
+  `nomor` int(11) NOT NULL,
   `id_visitor` varchar(255) DEFAULT NULL,
+  `id_petugas_pintu_area` varchar(255) DEFAULT NULL,
   `id_area` varchar(255) DEFAULT NULL,
   `time_in_area` datetime NOT NULL,
   `time_out_area` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tabel_tracking`
+--
+
+INSERT INTO `tabel_tracking` (`nomor`, `id_visitor`, `id_petugas_pintu_area`, `id_area`, `time_in_area`, `time_out_area`) VALUES
+(1, 'VSTR2102082758210000004', 'STF202102011946130000002', 'AR06022121424100000010', '2021-02-08 19:13:11', '2021-02-08 20:07:50'),
+(2, 'VSTR2102089144450000005', 'STF202102011946130000002', 'AR06022121424100000010', '2021-02-08 21:54:39', '2021-02-08 22:49:00'),
+(3, 'VSTR2102089144450000005', 'STF202102011946130000002', 'AR06022121424100000010', '2021-02-08 21:55:54', '2021-02-08 22:49:00'),
+(4, 'VSTR2102089144450000005', 'STF202102011946130000002', 'AR06022121424100000010', '2021-02-08 21:59:42', '2021-02-08 22:49:00'),
+(5, 'VSTR2102089144450000005', 'STF202102011946130000002', 'AR06022121424100000010', '2021-02-08 22:00:30', '2021-02-08 22:49:00'),
+(6, 'VSTR2102089144450000005', 'STF202102031313020000003', 'AR06022121424100000011', '2021-02-08 22:01:05', '2021-02-08 22:49:00'),
+(7, 'VSTR2102089144450000005', 'STF202102031313020000003', 'AR06022121424100000011', '2021-02-08 22:02:23', '2021-02-08 22:49:00'),
+(8, 'VSTR2102089144450000005', 'STF202102011946130000002', 'AR06022121424100000010', '2021-02-08 22:02:50', '2021-02-08 22:49:00'),
+(9, 'VSTR2102089144450000005', 'STF202102011946130000002', 'AR06022121424100000010', '2021-02-08 22:17:00', '2021-02-08 22:49:00'),
+(10, 'VSTR2102089144450000005', 'STF202102011946130000002', 'AR06022121424100000010', '2021-02-08 22:17:23', '2021-02-08 22:49:00'),
+(11, 'VSTR2102089144450000005', 'STF202102031313020000003', 'AR06022121424100000011', '2021-02-08 22:17:42', '2021-02-08 22:49:00'),
+(12, 'VSTR2102089144450000005', 'STF202102031313020000003', 'AR06022121424100000011', '2021-02-08 22:21:41', '2021-02-08 22:49:00'),
+(13, 'VSTR2102089144450000005', 'STF202102031313020000003', 'AR06022121424100000011', '2021-02-08 22:22:15', '2021-02-08 22:49:00'),
+(14, 'VSTR2102089144450000005', 'STF202102011946130000002', 'AR06022121424100000010', '2021-02-08 22:22:44', '2021-02-08 22:49:00');
 
 -- --------------------------------------------------------
 
@@ -200,19 +227,21 @@ CREATE TABLE `tabel_visitor` (
   `registered_at` datetime NOT NULL,
   `id_petugas_pintu_area` varchar(255) DEFAULT NULL,
   `id_petugas_pintu_keluar` varchar(255) DEFAULT NULL,
-  `time_logged_in` datetime NOT NULL,
-  `time_logged_out` datetime NOT NULL,
-  `status` enum('logged in','logged out','in area') NOT NULL
+  `time_in_event` datetime NOT NULL,
+  `time_out_event` datetime NOT NULL,
+  `status` enum('dalam_antrian_masuk_event','telah_masuk_event','didalam_area','telah_keluar_event') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tabel_visitor`
 --
 
-INSERT INTO `tabel_visitor` (`id_visitor`, `id_event`, `nama_visitor`, `perusahaan_visitor`, `jabatan_visitor`, `email_visitor`, `email_perusahaan`, `tlp_visitor`, `tlp_perusahaan`, `alasan_ikut`, `gambar_qrcode`, `registered_at`, `id_petugas_pintu_area`, `id_petugas_pintu_keluar`, `time_logged_in`, `time_logged_out`, `status`) VALUES
-('2102052408170000003', 'EVNT202001210000001', 'jkl lkj', 'qwe', 'qwe', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'asd', '2102052408170000003.png', '2021-02-05 19:06:57', NULL, 'STF202102041818440000009', '2021-02-05 19:06:57', '2021-02-05 19:07:42', 'logged out'),
-('2102055566650000001', 'EVNT202001210000001', 'asd asd', 'asd', 'asd', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'sad', '2102055566650000001.png', '2021-02-05 15:50:49', NULL, 'STF202102041818440000009', '2021-02-05 15:50:49', '2021-02-05 15:51:11', 'logged out'),
-('2102058999380000002', 'EVNT202001210000001', 'qwe ewq', 'qwe', 'qwe', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'asd', '2102058999380000002.png', '2021-02-05 19:03:18', NULL, 'STF202102041818440000009', '2021-02-05 19:03:18', '2021-02-05 19:03:52', 'logged out');
+INSERT INTO `tabel_visitor` (`id_visitor`, `id_event`, `nama_visitor`, `perusahaan_visitor`, `jabatan_visitor`, `email_visitor`, `email_perusahaan`, `tlp_visitor`, `tlp_perusahaan`, `alasan_ikut`, `gambar_qrcode`, `registered_at`, `id_petugas_pintu_area`, `id_petugas_pintu_keluar`, `time_in_event`, `time_out_event`, `status`) VALUES
+('VSTR2102082758210000004', 'EVNT202001210000001', 'rty rty', 'rty', 'rty', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'asd', 'VSTR2102082758210000004.png', '2021-02-08 17:00:30', NULL, 'STF202102041818440000009', '2021-02-08 17:00:30', '2021-02-08 21:45:01', 'telah_keluar_event'),
+('VSTR2102086184680000002', 'EVNT202001210000001', 'qwe ewq', 'qwe', 'qwe', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'asd', 'VSTR2102086184680000002.png', '2021-02-08 13:48:24', NULL, 'STF202102041818440000009', '2021-02-08 13:48:24', '2021-02-08 13:48:59', 'telah_keluar_event'),
+('VSTR2102088847000000003', 'EVNT202001210000001', 'bayu ka', 'asd', 'asd', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'asd', 'VSTR2102088847000000003.png', '2021-02-08 16:30:29', NULL, 'STF202102041818440000009', '2021-02-08 16:30:29', '2021-02-08 16:50:49', 'telah_keluar_event'),
+('VSTR2102089144450000005', 'EVNT202001210000001', 'jkl lkj', 'asd', 'asd', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'asd', 'VSTR2102089144450000005.png', '2021-02-08 21:47:15', NULL, 'STF202102041818440000009', '2021-02-08 21:47:15', '2021-02-08 22:49:00', 'telah_keluar_event'),
+('VSTR2102089985770000001', 'EVNT202001210000001', 'asd dsa', 'asd', 'asd', 'asd@asd.asd', 'asd@asd.asd', '123', '123', 'asd', 'VSTR2102089985770000001.png', '2021-02-08 13:44:44', NULL, 'STF202102041818440000009', '2021-02-08 13:44:44', '2021-02-08 13:46:21', 'telah_keluar_event');
 
 --
 -- Indexes for dumped tables
@@ -256,8 +285,10 @@ ALTER TABLE `tabel_staff`
 -- Indexes for table `tabel_tracking`
 --
 ALTER TABLE `tabel_tracking`
+  ADD PRIMARY KEY (`nomor`),
   ADD KEY `id_visitor` (`id_visitor`),
-  ADD KEY `id_area` (`id_area`);
+  ADD KEY `id_area` (`id_area`),
+  ADD KEY `id_event` (`id_petugas_pintu_area`);
 
 --
 -- Indexes for table `tabel_tugas_staff_petugas`
@@ -288,6 +319,12 @@ ALTER TABLE `tabel_role`
   MODIFY `role_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `tabel_tracking`
+--
+ALTER TABLE `tabel_tracking`
+  MODIFY `nomor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -309,7 +346,8 @@ ALTER TABLE `tabel_staff`
 --
 ALTER TABLE `tabel_tracking`
   ADD CONSTRAINT `tabel_tracking_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `tabel_area` (`id_area`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `tabel_tracking_ibfk_2` FOREIGN KEY (`id_visitor`) REFERENCES `tabel_visitor` (`id_visitor`) ON DELETE SET NULL ON UPDATE SET NULL;
+  ADD CONSTRAINT `tabel_tracking_ibfk_2` FOREIGN KEY (`id_visitor`) REFERENCES `tabel_visitor` (`id_visitor`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `tabel_tracking_ibfk_3` FOREIGN KEY (`id_petugas_pintu_area`) REFERENCES `tabel_staff` (`staff_id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `tabel_tugas_staff_petugas`

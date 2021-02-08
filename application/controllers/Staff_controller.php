@@ -96,6 +96,7 @@ class Staff_controller extends CI_Controller {
 			$data['staff_nganggur'] = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
 			$data['all_event'] = $this->staff_model->get_tb_event();
 			$data['all_area'] = $this->staff_model->get_tb_area();
+			$data['all_tugas_staff_petugas'] = $this->staff_model->get_tb_tugas_staff_petugas();
 
 			// $id_event = $this->db->get('tabel_event')->row_array();
 			// $data['hitung_area'] = $this->db->get_where('tabel_area', ['id_event' => $id_event['id_event']])->num_rows();
@@ -121,7 +122,9 @@ class Staff_controller extends CI_Controller {
 								}else{
 									$kode = 1;
 								}
-								$tgl = mdate("%Y%m%d%H%i%s");
+								// $tgl = mdate("%Y%m%d%H%i%s");
+								$d = new DateTime();
+								$tgl = $d->format("ymdu");
 								$batas_user = str_pad($kode, 7, "0", STR_PAD_LEFT);
 								$staff_id = "STF".$tgl.$batas_user;
 			
@@ -134,6 +137,7 @@ class Staff_controller extends CI_Controller {
 							$total_staff_petugas = $this->db->get_where('tabel_staff', ['role_id' => '2'])->num_rows();
 							$total_staff_online = $this->db->get_where('tabel_staff', ['is_active' => 'online'])->num_rows();
 							$total_staff_offline = $this->db->get_where('tabel_staff', ['is_active' => 'offline'])->num_rows();
+							$all_tugas_staff_petugas = $this->staff_model->get_tb_tugas_staff_petugas();
 							$hitung_area = $this->db->get('tabel_area')->num_rows();
 
 							$view_chart_status_staff = $this->load->view('chart/status_staff', array(
@@ -150,7 +154,9 @@ class Staff_controller extends CI_Controller {
 								'all_staff'=>$this->staff_model->get_tb_staff(),
 								'all_role'=>$this->staff_model->get_tb_role(),
 								'all_area'=>$this->staff_model->get_tb_area(),
+								'all_event'=>$this->staff_model->get_tb_event(),
 								'hitung_area'=>$this->db->get('tabel_area')->num_rows(),
+								'all_tugas_staff_petugas'=>$this->staff_model->get_tb_tugas_staff_petugas(),
 							), true);
 			
 							$callback = array(
@@ -188,6 +194,7 @@ class Staff_controller extends CI_Controller {
 						$total_staff_online = $this->db->get_where('tabel_staff', ['is_active' => 'online'])->num_rows();
 						$total_staff_offline = $this->db->get_where('tabel_staff', ['is_active' => 'offline'])->num_rows();
 						$hitung_area = $this->db->get('tabel_area')->num_rows();
+						$all_tugas_staff_petugas = $this->staff_model->get_tb_tugas_staff_petugas();
 			
 						$view_chart_status_staff = $this->load->view('chart/status_staff', array(
 							'hitung_staff_online'=>$total_staff_online,
@@ -203,7 +210,9 @@ class Staff_controller extends CI_Controller {
 							'all_staff'=>$this->staff_model->get_tb_staff(),
 							'all_role'=>$this->staff_model->get_tb_role(),
 							'all_area'=>$this->staff_model->get_tb_area(),
-							'hitung_area'=>$this->db->get('tabel_area')->num_rows()
+							'all_event'=>$this->staff_model->get_tb_event(),
+							'hitung_area'=>$this->db->get('tabel_area')->num_rows(),
+							'all_tugas_staff_petugas'=>$this->staff_model->get_tb_tugas_staff_petugas(),
 						), true);
 			
 						$callback = array(
@@ -238,7 +247,9 @@ class Staff_controller extends CI_Controller {
 								}else{
 									$kode = 1;
 								}
-								$tgl = mdate("%d%m%y%H%i%s");
+								// $tgl = mdate("%d%m%y%H%i%s");
+								$d = new DateTime();
+								$tgl = $d->format("ymdu");
 								$batas_event = str_pad($kode, 7, "0", STR_PAD_LEFT);
 								$id_event = "EVNT".$tgl.$batas_event;
 
@@ -249,7 +260,9 @@ class Staff_controller extends CI_Controller {
 								}else{
 									$kode = 1;
 								}
-								$tgl = mdate("%d%m%y%H%i%s");
+								// $tgl = mdate("%d%m%y%H%i%s");
+								$d = new DateTime();
+								$tgl = $d->format("ymdu");
 								$batas_area = str_pad($kode, 7, "0", STR_PAD_LEFT);
 								$id_area = "AR".$tgl.$batas_area;
 
@@ -260,7 +273,9 @@ class Staff_controller extends CI_Controller {
 								}else{
 									$kode = 1;
 								}
-								$tgl = mdate("%d%m%y%H%i%s");
+								// $tgl = mdate("%d%m%y%H%i%s");
+								$d = new DateTime();
+								$tgl = $d->format("ymdu");
 								$batas_tugas = str_pad($kode, 7, "0", STR_PAD_LEFT);
 								$id_tugas = "TGS".$tgl.$batas_tugas;
 
@@ -272,7 +287,8 @@ class Staff_controller extends CI_Controller {
 							$view_tabel_event = $this->load->view('tabel/tabel_event', array(
 								'all_event' => $this->staff_model->get_tb_event(),
 								'all_area' => $this->staff_model->get_tb_area(),
-								'staff_nganggur' => $staff_nganggur
+								'staff_nganggur' => $staff_nganggur,
+								'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
 							), true);
 			
 							$callback = array(
@@ -312,10 +328,12 @@ class Staff_controller extends CI_Controller {
 
 			$data['hitung_visitor_scan_keluar'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->num_rows();
 			$data['visitor_scan_keluar'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
+			$data['hitung_visitor_scan_keluarmasuk_area'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->num_rows();
+			$data['visitor_scan_keluarmasuk_area'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->result();
 			
-			$data['hitung_visitor_masuk_event'] = $this->db->get_where('tabel_visitor', ['status' => 'logged in'])->num_rows();
-			$data['hitung_visitor_didalam_area'] = $this->db->get_where('tabel_visitor', ['status' => 'in area'])->num_rows();
-			$data['hitung_visitor_keluar_event'] = $this->db->get_where('tabel_visitor', ['status' => 'logged out'])->num_rows();
+			$data['hitung_visitor_masuk_event'] = $this->db->get_where('tabel_visitor', ['status' => 'telah_masuk_event'])->num_rows();
+			$data['hitung_visitor_didalam_area'] = $this->db->get_where('tabel_visitor', ['status' => 'didalam_area'])->num_rows();
+			$data['hitung_visitor_keluar_event'] = $this->db->get_where('tabel_visitor', ['status' => 'telah_keluar_event'])->num_rows();
 			// echo 'selamat datang ' . $data['tb_user']['username'];
 			// $this->load->view('template/staff_only/header', $data);
 			$this->load->view('page/staff_only/petugas/petugas_scan_tracking', $data);
@@ -328,10 +346,10 @@ class Staff_controller extends CI_Controller {
 
 		// aksi petugas
 			public function petugas_scan($tipe_scan, $id_visitor){
-				if($tipe_scan == "keluar"){
+				if($tipe_scan == "pintu_keluar"){
 					if($this->input->is_ajax_request()){
 						if($this->staff_model->validasi_scan_visitor($tipe_scan, $id_visitor) == true){
-							$this->staff_model->aksi_scan_visitor("keluar", $id_visitor);
+							$this->staff_model->aksi_scan_visitor("pintu_keluar", $id_visitor);
 
 							$hitung_visitor_scan_keluar = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->num_rows();
 							$visitor_scan_keluar = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
@@ -345,6 +363,32 @@ class Staff_controller extends CI_Controller {
 								'status'=>'sukses',
 								'pesan'=>'visitor berhasil keluar.',
 								'view_tabel_data_visitor_keluar'=>$view_tabel_data_visitor_keluar
+							);
+						}else{
+							$callback = array(
+								'status'=>'gagal',
+								'field_scan_id_visitor_error' => 'ID visitor tidak valid'
+							);
+						}
+						echo json_encode($callback);
+					}
+				}elseif($tipe_scan == "pintu_area"){
+					if($this->input->is_ajax_request()){
+						if($this->staff_model->validasi_scan_visitor($tipe_scan, $id_visitor) == true){
+							$this->staff_model->aksi_scan_visitor("pintu_area", $id_visitor);
+
+							// $hitung_visitor_scan_keluar = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->num_rows();
+							// $visitor_scan_keluar = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
+							
+							// $view_tabel_data_visitor_keluar = $this->load->view('tabel/tabel_data_visitor_keluar', array(
+							// 	'visitor_scan_keluar' => $visitor_scan_keluar, 
+							// 	'hitung_visitor_scan_keluar' => $hitung_visitor_scan_keluar
+							// ), true);
+
+							$callback = array(
+								'status'=>'sukses',
+								'pesan'=>'visitor berhasil masuk area.',
+								// 'view_tabel_data_visitor_keluar'=>$view_tabel_data_visitor_keluar
 							);
 						}else{
 							$callback = array(

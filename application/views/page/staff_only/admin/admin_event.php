@@ -18,7 +18,7 @@
 
 					<div class="table-responsive">
 						<div id="view_tabel_event">
-							<?php $this->load->view('tabel/tabel_event', ['all_event' => $all_event, 'all_area' => $all_area]); ?>
+							<?php $this->load->view('tabel/tabel_event', ['all_event' => $all_event, 'all_area' => $all_area, 'all_tugas_staff_petugas' => $all_tugas_staff_petugas]); ?>
 						</div>
 					</div>
 				</div>

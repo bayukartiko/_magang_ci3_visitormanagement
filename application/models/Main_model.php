@@ -58,8 +58,8 @@ class Main_model extends CI_Model{
 			"registered_at" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
 			"id_petugas_pintu_keluar" => null,
 			"id_petugas_pintu_area" => null,
-			"time_logged_in" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
-			"status" => htmlspecialchars("logged in")
+			"time_in_event" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+			"status" => htmlspecialchars("telah_masuk_event")
 		];
 		$this->db->insert('tabel_visitor', $data_tabel_visitor);
 

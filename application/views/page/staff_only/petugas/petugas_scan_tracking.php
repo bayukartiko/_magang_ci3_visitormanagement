@@ -158,6 +158,8 @@
 						<div class="d-sm-flex align-items-center justify-content-between mb-4">
 							<!-- <h1 class="h3 mb-0 text-gray-800">Register / Daftar event</h1> -->
 						</div>
+
+						<?= print_r($this->session->all_userdata()) ?>
  
 						<!-- keterangan tugas dan keterangan event -->
 							<?php
@@ -171,7 +173,7 @@
 														<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 															<h6 class="m-0 font-weight-bold text-primary">Keterangan tugas</h6>
 														</div>
-														<div class="card-body p-3" style="height: 275px;">
+														<div class="card-body p-3">
 															<!-- Nested Row within Card Body -->
 															<div class="row">
 																<div class="offset-lg-1 col-lg-10">
@@ -215,7 +217,7 @@
 														<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 															<h6 class="m-0 font-weight-bold text-primary">Keterangan event</h6>
 														</div>
-														<div class="card-body p-3" style="height: 275px;">
+														<div class="card-body p-3">
 															<!-- Nested Row within Card Body -->
 															<div class="row">
 																<div class="offset-lg-1 col-lg-10">
@@ -243,6 +245,75 @@
 													</div>
 												</div>
 											</div>
+
+											<!-- form scan -->
+												<div class="card shadow mb-4">
+													<!-- Card Header - Dropdown -->
+													<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+														<h6 class="m-0 font-weight-bold text-primary">Form scan visitor</h6>
+													</div>
+													<div class="card-body p-3">
+														<!-- Nested Row within Card Body -->
+														<div class="row">
+															<div class="offset-lg-1 col-lg-10">
+																<!-- <div class="pt-5 pb-5"> -->
+																<div class="pt-5 pb-5">
+																	<form id="form-scan-visitor-area" enctype="multipart/form-data" action="" class="" method="POST">
+																		<input type="hidden" id="tipe_tugas" value="pintu_area" hidden aria-hidden="true">
+																		<div class="form-group">
+																			<label class="bmd-label-floating" for="field_scan_id_visitor">Scan ID Visitor</label>
+																			<input type="text" class="form-control" id="field_scan_id_visitor" name="field_scan_id_visitor" placeholder="masukkan id visitor hasil scan barcode disini" autofocus>
+
+																			<small id="error_field_scan_id_visitor" class="form-text text-muted invalid-feedback"></small>
+																			<small id="help-kursor" class="form-text text-muted">Pastikan kursor anda aktif didalam input diatas</small>
+																		</div>
+																	</form>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
+											<!-- list data visitor yang telah discan -->
+												<div class="card shadow mb-4">
+													<!-- Card Header - Dropdown -->
+													<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+														<h6 class="m-0 font-weight-bold text-primary">List data visitor yang telah di-scan oleh anda</h6>
+													</div>
+													<div class="card-body p-3">
+														<!-- Nested Row within Card Body -->
+														<div class="row">
+															<div class="offset-lg-1 col-lg-10">
+																<div class="pt-5 pb-5">
+																	<div id="view_tabel_data_visitor_keluarmasuk_area">
+																		<?php $this->load->view('tabel/tabel_data_visitor_keluarmasuk_area', ['visitor_scan_keluarmasuk_area' => $visitor_scan_keluarmasuk_area, 'hitung_visitor_scan_keluarmasuk_area' => $hitung_visitor_scan_keluarmasuk_area]); ?>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
+											<!-- chart data visitor logged in - logged out -->
+												<div class="card shadow mb-4">
+													<!-- Card Header - Dropdown -->
+													<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+														<h6 class="m-0 font-weight-bold text-primary">Chart total visitor didalam area</h6>
+													</div>
+													<div class="card-body p-3">
+														<!-- Nested Row within Card Body -->
+														<div class="row">
+															<div class="offset-lg-1 col-lg-10">
+																<div class="pt-5 pb-5">
+																	<div id="view_chart_visitor_keluar_masuk">
+																		<?php $this->load->view('chart/chart_visitor_keluar_masuk', ['hitung_visitor_masuk_event' => $hitung_visitor_masuk_event, 'hitung_visitor_didalam_area' => $hitung_visitor_didalam_area,'hitung_visitor_keluar_event' => $hitung_visitor_keluar_event]); ?>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
 										<?php }elseif($data_tugas_staff_petugas->petugas_pintu_keluar == true){ ?>
 											<div class="row">
 												<div class="col-md-6">
@@ -302,77 +373,79 @@
 													</div>
 												</div>
 											</div>
+
+											<!-- form scan -->
+												<div class="card shadow mb-4">
+													<!-- Card Header - Dropdown -->
+													<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+														<h6 class="m-0 font-weight-bold text-primary">Form scan visitor</h6>
+													</div>
+													<div class="card-body p-3">
+														<!-- Nested Row within Card Body -->
+														<div class="row">
+															<div class="offset-lg-1 col-lg-10">
+																<!-- <div class="pt-5 pb-5"> -->
+																<div class="pt-5 pb-5">
+																	<form id="form-scan-visitor-keluar" enctype="multipart/form-data" action="" class="" method="POST">
+																		<input type="hidden" id="tipe_tugas" value="pintu_keluar" hidden aria-hidden="true">
+																		<div class="form-group">
+																			<label class="bmd-label-floating" for="field_scan_id_visitor">Scan ID Visitor</label>
+																			<input type="text" class="form-control" id="field_scan_id_visitor" name="field_scan_id_visitor" placeholder="masukkan id visitor hasil scan barcode disini" autofocus>
+					
+																			<small id="error_field_scan_id_visitor" class="form-text text-muted invalid-feedback"></small>
+																			<small id="help-kursor" class="form-text text-muted">Pastikan kursor anda aktif didalam input diatas</small>
+																		</div>
+																	</form>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+					
+											<!-- list data visitor yang telah discan -->
+												<div class="card shadow mb-4">
+													<!-- Card Header - Dropdown -->
+													<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+														<h6 class="m-0 font-weight-bold text-primary">List data visitor yang telah di-scan oleh anda</h6>
+													</div>
+													<div class="card-body p-3">
+														<!-- Nested Row within Card Body -->
+														<div class="row">
+															<div class="offset-lg-1 col-lg-10">
+																<div class="pt-5 pb-5">
+																	<div id="view_tabel_data_visitor_keluar">
+																		<?php $this->load->view('tabel/tabel_data_visitor_keluar', ['visitor_scan_keluar' => $visitor_scan_keluar, 'hitung_visitor_scan_keluar' => $hitung_visitor_scan_keluar]); ?>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+					
+											<!-- chart data visitor logged in - logged out -->
+												<div class="card shadow mb-4">
+													<!-- Card Header - Dropdown -->
+													<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+														<h6 class="m-0 font-weight-bold text-primary">Chart total visitor keluar/masuk/in_area</h6>
+													</div>
+													<div class="card-body p-3">
+														<!-- Nested Row within Card Body -->
+														<div class="row">
+															<div class="offset-lg-1 col-lg-10">
+																<div class="pt-5 pb-5">
+																	<div id="view_chart_visitor_keluar_masuk">
+																		<?php $this->load->view('chart/chart_visitor_keluar_masuk', ['hitung_visitor_masuk_event' => $hitung_visitor_masuk_event, 'hitung_visitor_didalam_area' => $hitung_visitor_didalam_area,'hitung_visitor_keluar_event' => $hitung_visitor_keluar_event]); ?>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 										<?php }
 									}
 								}
 							?>
 
-						<!-- form scan -->
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Form scan visitor</h6>
-								</div>
-								<div class="card-body p-3">
-									<!-- Nested Row within Card Body -->
-									<div class="row">
-										<div class="offset-lg-1 col-lg-10">
-											<!-- <div class="pt-5 pb-5"> -->
-											<div class="pt-5 pb-5">
-												<form id="form-scan-visitor-keluar" enctype="multipart/form-data" action="" class="" method="POST">
-													<div class="form-group">
-														<label class="bmd-label-floating" for="field_scan_id_visitor">Scan ID Visitor</label>
-														<input type="text" class="form-control" id="field_scan_id_visitor" name="field_scan_id_visitor" placeholder="masukkan id visitor hasil scan barcode disini" autofocus>
-
-														<small id="error_field_scan_id_visitor" class="form-text text-muted invalid-feedback"></small>
-														<!-- <small id="help-kursor" class="form-text text-muted">Aktifkan kursor anda ke dalam input diatas</small> -->
-													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-						<!-- list data visitor yang telah discan -->
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">List data visitor yang telah di-scan oleh anda</h6>
-								</div>
-								<div class="card-body p-3">
-									<!-- Nested Row within Card Body -->
-									<div class="row">
-										<div class="offset-lg-1 col-lg-10">
-											<div class="pt-5 pb-5">
-												<div id="view_tabel_data_visitor_keluar">
-													<?php $this->load->view('tabel/tabel_data_visitor_keluar', ['visitor_scan_keluar' => $visitor_scan_keluar, 'hitung_visitor_scan_keluar' => $hitung_visitor_scan_keluar]); ?>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-						<!-- chart data visitor logged in - logged out -->
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Chart total visitor keluar/masuk/in_area</h6>
-								</div>
-								<div class="card-body p-3">
-									<!-- Nested Row within Card Body -->
-									<div class="row">
-										<div class="offset-lg-1 col-lg-10">
-											<div class="pt-5 pb-5">
-												<div id="view_chart_visitor_keluar_masuk">
-													<?php $this->load->view('chart/chart_visitor_keluar_masuk', ['hitung_visitor_masuk_event' => $hitung_visitor_masuk_event, 'hitung_visitor_didalam_area' => $hitung_visitor_didalam_area,'hitung_visitor_keluar_event' => $hitung_visitor_keluar_event]); ?>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
 						
 
 					</div>
@@ -451,13 +524,17 @@
 					$('#field_scan_id_visitor').addClass('is-invalid');
 					$('#error_field_scan_id_visitor').html('Harap isi field ini !');
 				}else{
-					scan_keluar_visitor();
+					if($("#tipe_tugas").val() == "pintu_keluar"){
+						scan_keluar_visitor();
+					}else if($("#tipe_tugas").val() == "pintu_area"){
+						scan_area_visitor();
+					}
 				}
 			});
 
 			function scan_keluar_visitor(){
 				$.ajax({
-					url: '<?= base_url(); ?>staff_only/petugas/scan/keluar/'+visitor_id.trim()+'', // URL tujuan
+					url: '<?= base_url(); ?>staff_only/petugas/scan/pintu_keluar/'+visitor_id.trim()+'', // URL tujuan
 					type: 'POST',
 					// data: $("#form-modal form").serialize(),
 					data: new FormData(document.getElementById('form-scan-visitor-keluar')),
@@ -519,6 +596,72 @@
 						// console.log(callback)
 						// alert(xhr.responseText);
 						// console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+			};
+			function scan_area_visitor(){
+				$.ajax({
+					url: '<?= base_url(); ?>staff_only/petugas/scan/pintu_area/'+visitor_id.trim()+'', // URL tujuan
+					type: 'POST',
+					// data: $("#form-modal form").serialize(),
+					data: new FormData(document.getElementById('form-scan-visitor-area')),
+					processData:false,
+					contentType:false,
+					cache:false,
+					async:false,
+					dataType: 'JSON',
+					// beforeSend: function() {
+					// 	// $('#loading-simpan').show(); // Munculkan loading simpan
+					// 	// $('#btn-simpan').html('Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
+					// 	// $('#btn-simpan').attr('disabled', true);
+					// },
+					success: function(callback){
+
+						if(callback.status == "sukses"){ // Jika Statusnya = sukses
+							// console.log('callback sukses');
+
+							// Ganti isi dari div id="view_tabel_data_visitor_area" dengan view yang diambil dari view_tabel_data_visitor_area.php
+							// $('#view_tabel_data_visitor_area').html(callback.view_tabel_data_visitor_area);
+
+							const Toast = Swal.mixin({
+								toast: true,
+								position: 'top-start',
+								showConfirmButton: false,
+								timer: 10000,
+								timerProgressBar: true,
+								didOpen: (toast) => {
+									toast.addEventListener('mouseenter', Swal.stopTimer)
+									toast.addEventListener('mouseleave', Swal.resumeTimer)
+								}
+							});
+							Toast.fire({
+								icon: 'success',
+								title: callback.pesan
+							});
+
+							$('#field_scan_id_visitor').val('');
+
+							$('#field_scan_id_visitor').removeClass('is-invalid');
+							$('#error_field_scan_id_visitor').html('');
+							
+							$('#field_scan_id_visitor').focus();
+
+						}else{
+							// console.log('callback error');
+							// tampil pesan validasi
+								if(callback.field_scan_id_visitor_error){
+									$('#field_scan_id_visitor').addClass('is-invalid');
+									$('#error_field_scan_id_visitor').html(callback.field_scan_id_visitor_error);
+								}else{
+									$('#field_scan_id_visitor').removeClass('is-invalid');
+									$('#error_field_scan_id_visitor').html('');
+								}
+						}
+					},
+					error: function(xhr, ajaxOptions, thrownError, errorMessage, callback) {
+						console.log("error :", errorMessage);
+						console.log(callback);
+						console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
 					}
 				});
 			};

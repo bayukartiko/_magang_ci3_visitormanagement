@@ -189,7 +189,7 @@ class Main_controller extends CI_Controller {
 					$tgl = $d->format("ymdu");
 					$batas_user = str_pad($kode, 7, "0", STR_PAD_LEFT);
 					// $id_visitor = "VSTR".$tgl.$batas_user;
-					$id_visitor = $tgl.$batas_user;
+					$id_visitor = "VSTR".$tgl.$batas_user;
 
 				$this->main_model->simpan_register_pengunjung($id_visitor);
 
