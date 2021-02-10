@@ -45,7 +45,7 @@
 
 				<div class="card o-hidden border-0 shadow-lg my-5">
 					<!-- <div class="card-img-top" style="background-color: red;">sdf</div> -->
-					<div class="card-body p-0">
+					<div class="card-body p-3">
 						<!-- Nested Row within Card Body -->
 						<div class="row">
 							<div class="offset-lg-3 col-lg-6">

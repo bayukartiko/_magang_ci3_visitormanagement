@@ -10,7 +10,7 @@
 			<div class="col-md-8 ml-auto mr-auto">
 
 				<div id="view">
-					<?php $this->load->view('registrasi/view_register'); ?>
+					<?php $this->load->view('registrasi/view_register', ["all_data_saya" => $all_data_saya, "all_data_tracking_saya" => $all_data_tracking_saya, "all_data_tracking_saya_1" => $all_data_tracking_saya_1, "all_area" => $all_area]); ?>
 				</div>
 
 			</div>

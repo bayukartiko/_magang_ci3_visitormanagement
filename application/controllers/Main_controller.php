@@ -65,10 +65,11 @@ class Main_controller extends CI_Controller {
 	public function page_register_visitor(){
 		// $this->session->sess_destroy();
 		$data["nama_event"] = 'nama event';
-		// $data["id_visitor"] = $this->session->userdata('id_visitor');
-		// $data["nama_visitor"] = $this->session->userdata('nama_visitor');
-		// $data["qrcode"] = $this->session->userdata('gambar_qrcode');
-		// $data["status_login"] = $this->session->userdata('status');
+
+		$data["all_area"] = $this->db->get('tabel_area')->result();
+		$data["all_data_saya"] = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
+		$data["all_data_tracking_saya"] = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+		$data["all_data_tracking_saya_1"] = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
 		
 		$this->load->view('template/visitor/header', $data);
 		$this->load->view('visitorRegister2', $data);
@@ -214,8 +215,18 @@ class Main_controller extends CI_Controller {
 					$generatorJPG = new Picqer\Barcode\BarcodeGeneratorJPG();
 					file_put_contents('assets/img/barcode/'.$id_visitor.'.png', $generatorJPG->getBarcode($id_visitor, $generatorJPG::TYPE_CODE_128));
 
+				$all_area = $this->db->get('tabel_area')->result();
+				$all_data_saya = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
+				$all_data_tracking_saya = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+				$all_data_tracking_saya_1 = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+				
 				// Load ulang view_register.php agar data yang baru bisa muncul di tabel pada visitorRegister2.php
-				$html = $this->load->view('registrasi/view_register', array('plain'=>'null'), true);
+				$html = $this->load->view('registrasi/view_register', array(
+					"all_area" => $all_area,
+					"all_data_saya" => $all_data_saya,
+					"all_data_tracking_saya" => $all_data_tracking_saya,
+					"all_data_tracking_saya_1" => $all_data_tracking_saya_1
+				), true);
 
 				$callback = array(
 					'status'=>'sukses',

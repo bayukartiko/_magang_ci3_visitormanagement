@@ -38,5 +38,7 @@
 </table>
 
 <script>
-	$('#tabel-data-visitor-keluar').DataTable();
+	$('#tabel-data-visitor-keluar').DataTable({
+		"ordering": false
+	});
 </script>

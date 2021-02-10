@@ -158,8 +158,6 @@
 						<div class="d-sm-flex align-items-center justify-content-between mb-4">
 							<!-- <h1 class="h3 mb-0 text-gray-800">Register / Daftar event</h1> -->
 						</div>
-
-						<?= print_r($this->session->all_userdata()) ?>
  
 						<!-- keterangan tugas dan keterangan event -->
 							<?php
@@ -286,7 +284,7 @@
 															<div class="offset-lg-1 col-lg-10">
 																<div class="pt-5 pb-5">
 																	<div id="view_tabel_data_visitor_keluarmasuk_area">
-																		<?php $this->load->view('tabel/tabel_data_visitor_keluarmasuk_area', ['visitor_scan_keluarmasuk_area' => $visitor_scan_keluarmasuk_area, 'hitung_visitor_scan_keluarmasuk_area' => $hitung_visitor_scan_keluarmasuk_area]); ?>
+																		<?php $this->load->view('tabel/tabel_data_visitor_keluarmasuk_area', ['all_visitor'=>$all_visitor,'visitor_scan_keluarmasuk_area' => $visitor_scan_keluarmasuk_area, 'hitung_visitor_scan_keluarmasuk_area' => $hitung_visitor_scan_keluarmasuk_area]); ?>
 																	</div>
 																</div>
 															</div>
@@ -621,7 +619,7 @@
 							// console.log('callback sukses');
 
 							// Ganti isi dari div id="view_tabel_data_visitor_area" dengan view yang diambil dari view_tabel_data_visitor_area.php
-							// $('#view_tabel_data_visitor_area').html(callback.view_tabel_data_visitor_area);
+							$('#view_tabel_data_visitor_keluarmasuk_area').html(callback.view_tabel_data_visitor_keluarmasuk_area);
 
 							const Toast = Swal.mixin({
 								toast: true,

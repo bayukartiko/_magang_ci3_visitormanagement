@@ -318,18 +318,20 @@ class Staff_controller extends CI_Controller {
 	// page petugas
 		public function page_petugas_scan(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data['all_visitor'] = $this->staff_model->get_tb_visitor();
 			$data['all_staff'] = $this->staff_model->get_tb_staff();
 			$data['all_role'] = $this->staff_model->get_tb_role();
 			$data['all_area'] = $this->staff_model->get_tb_area();
 			$data['all_event'] = $this->staff_model->get_tb_event();
+			$data['all_tracking'] = $this->staff_model->get_tb_tracking();
 			$data['all_tugas_staff_petugas'] = $this->staff_model->get_tb_tugas_staff_petugas();
 			$data['petugas_pintu_keluar'] = $this->db->get_where('tabel_event', ['id_event' => $this->session->userdata('id_event')])->row();
 			$data['petugas_pintu_area'] = $this->db->get_where('tabel_area', ['id_area' => $this->session->userdata('id_area')])->row();
 
 			$data['hitung_visitor_scan_keluar'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->num_rows();
-			$data['visitor_scan_keluar'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
-			$data['hitung_visitor_scan_keluarmasuk_area'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->num_rows();
-			$data['visitor_scan_keluarmasuk_area'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->result();
+			$data['visitor_scan_keluar'] = $this->db->order_by('time_out_event', 'DESC')->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
+			$data['hitung_visitor_scan_keluarmasuk_area'] = $this->db->get_where('tabel_tracking', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->num_rows();
+			$data['visitor_scan_keluarmasuk_area'] = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->result();
 			
 			$data['hitung_visitor_masuk_event'] = $this->db->get_where('tabel_visitor', ['status' => 'telah_masuk_event'])->num_rows();
 			$data['hitung_visitor_didalam_area'] = $this->db->get_where('tabel_visitor', ['status' => 'didalam_area'])->num_rows();
@@ -352,7 +354,7 @@ class Staff_controller extends CI_Controller {
 							$this->staff_model->aksi_scan_visitor("pintu_keluar", $id_visitor);
 
 							$hitung_visitor_scan_keluar = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->num_rows();
-							$visitor_scan_keluar = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
+							$visitor_scan_keluar = $this->db->order_by('time_out_event', 'DESC')->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
 							
 							$view_tabel_data_visitor_keluar = $this->load->view('tabel/tabel_data_visitor_keluar', array(
 								'visitor_scan_keluar' => $visitor_scan_keluar, 
@@ -361,7 +363,7 @@ class Staff_controller extends CI_Controller {
 
 							$callback = array(
 								'status'=>'sukses',
-								'pesan'=>'visitor berhasil keluar.',
+								'pesan'=>'visitor berhasil keluar event.',
 								'view_tabel_data_visitor_keluar'=>$view_tabel_data_visitor_keluar
 							);
 						}else{
@@ -375,20 +377,22 @@ class Staff_controller extends CI_Controller {
 				}elseif($tipe_scan == "pintu_area"){
 					if($this->input->is_ajax_request()){
 						if($this->staff_model->validasi_scan_visitor($tipe_scan, $id_visitor) == true){
-							$this->staff_model->aksi_scan_visitor("pintu_area", $id_visitor);
+							$pesan = $this->staff_model->aksi_scan_visitor("pintu_area", $id_visitor);
 
-							// $hitung_visitor_scan_keluar = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->num_rows();
-							// $visitor_scan_keluar = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
+							$all_visitor = $this->staff_model->get_tb_visitor();
+							$hitung_visitor_scan_keluarmasuk_area = $this->db->get_where('tabel_tracking', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->num_rows();
+							$visitor_scan_keluarmasuk_area = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->result();
 							
-							// $view_tabel_data_visitor_keluar = $this->load->view('tabel/tabel_data_visitor_keluar', array(
-							// 	'visitor_scan_keluar' => $visitor_scan_keluar, 
-							// 	'hitung_visitor_scan_keluar' => $hitung_visitor_scan_keluar
-							// ), true);
+							$view_tabel_data_visitor_keluarmasuk_area = $this->load->view('tabel/tabel_data_visitor_keluarmasuk_area', array(
+								'all_visitor' => $all_visitor, 
+								'visitor_scan_keluarmasuk_area' => $visitor_scan_keluarmasuk_area, 
+								'hitung_visitor_scan_keluarmasuk_area' => $hitung_visitor_scan_keluarmasuk_area
+							), true);
 
 							$callback = array(
 								'status'=>'sukses',
-								'pesan'=>'visitor berhasil masuk area.',
-								// 'view_tabel_data_visitor_keluar'=>$view_tabel_data_visitor_keluar
+								'pesan'=>$pesan,
+								'view_tabel_data_visitor_keluarmasuk_area'=>$view_tabel_data_visitor_keluarmasuk_area
 							);
 						}else{
 							$callback = array(

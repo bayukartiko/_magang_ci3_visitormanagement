@@ -200,7 +200,7 @@ class Staff_model extends CI_Model{
 							$data_update_tabel_tracking = [
 								"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
 							];
-							$this->db->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$id_visitor]); // disini masih gk jelas, semua time_out_area keubah semua (where-nya usahain jangan id_vsitor doang). Bagaimana cara mendapatkan id_tracking nya? get_where/get row() time_in_area DESC (yang paling bawah) maybe?
+							$this->db->order_by('time_in_area', 'DESC')->limit(1)->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$id_visitor]);
 						}
 					}
 				}
@@ -241,6 +241,8 @@ class Staff_model extends CI_Model{
 					// update tabel_staff isi id_petugas_pintu_area
 					$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id'), 'status' => 'didalam_area'], ['id_visitor' => $id_visitor]);
 
+					return "visitor berhasil masuk area.";
+
 				}else{
 
 					foreach($tabel_visitor as $data_tabel_visitor){ // deploy semua data tabel_visitor
@@ -248,11 +250,11 @@ class Staff_model extends CI_Model{
 							
 							// if($data_tabel_visitor->id_petugas_pintu_area == null){ // jika id_visitor tidak ada dan id_petugas tidak ada (sama-sama 1 baris)
 								if($data_tabel_visitor->id_petugas_pintu_area != $this->session->userdata("staff_id") && $data_tabel_visitor->status == "didalam_area"){ // jika id_petugas pada tabel_visitor tidak sama dengan staff_id anda saat ini
-									print("1");
+
 									$data_update_tabel_tracking = [
 										"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
 									];
-									$this->db->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$id_visitor]); // disini masih gk jelas, semua time_out_area keubah semua (where-nya usahain jangan id_vsitor doang). Bagaimana cara mendapatkan id_tracking nya? get_where/get row() time_in_area DESC (yang paling bawah) maybe?
+									$this->db->order_by('time_in_area', 'DESC')->limit(1)->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$id_visitor]);
 
 									$data_insert_tabel_tracking = [
 										"id_visitor" => htmlspecialchars($id_visitor),
@@ -263,19 +265,22 @@ class Staff_model extends CI_Model{
 									$this->db->insert('tabel_tracking', $data_insert_tabel_tracking);
 	
 									$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id'), 'status' => 'didalam_area'], ['id_visitor' => $id_visitor]);
+
+									return "visitor berhasil masuk area.";
 									
 								}elseif($data_tabel_visitor->id_petugas_pintu_area == $this->session->userdata("staff_id") && $data_tabel_visitor->status == "didalam_area"){ // jika id_petugas pada tabel_visitor sama dengan staff_id anda saat ini
-									print('3');
 
 									$data_update_tabel_tracking = [
 										"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
 									];
-									$this->db->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$id_visitor]); // disini masih gk jelas, semua time_out_area keubah semua (where-nya usahain jangan id_vsitor doang). Bagaimana cara mendapatkan id_tracking nya? get_where/get row() time_in_area DESC (yang paling bawah) maybe?
+									$this->db->order_by('time_in_area', 'DESC')->limit(1)->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$id_visitor]);
 
 									$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'status' => 'telah_masuk_event'], ['id_visitor' => $id_visitor]);
 
+									return "visitor berhasil keluar area.";
+
 								}elseif($data_tabel_visitor->id_petugas_pintu_area == null && $data_tabel_visitor->status == "telah_masuk_event"){ // jika id_petugas pada tabel_visitor sama dengan kosong/tidak ada/null
-									print("2");
+
 									$data_tabel_tracking = [
 										"id_visitor" => htmlspecialchars($id_visitor),
 										"id_petugas_pintu_area" => htmlspecialchars($this->session->userdata('staff_id')),
@@ -286,6 +291,8 @@ class Staff_model extends CI_Model{
 	
 									// update tabel_staff isi id_petugas_pintu_area
 									$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata('staff_id'), 'status' => 'didalam_area'], ['id_visitor' => $id_visitor]);
+
+									return "visitor berhasil masuk area.";
 								}
 
 							// }
