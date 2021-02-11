@@ -5,6 +5,7 @@
 			<!-- Page Heading -->
 			<div class="d-sm-flex align-items-center justify-content-between mb-4">
 				<h1 class="h3 mb-0 text-gray-800">Register / Daftar event</h1>
+				<!-- <a href="</?= base_url() ?>assets/img/qrcode/cobaqrcode.png" download="asd" >Download</a> -->
 			</div>
 
 			<div class="card shadow mb-4">

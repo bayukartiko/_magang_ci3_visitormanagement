@@ -333,9 +333,11 @@ class Staff_controller extends CI_Controller {
 			$data['hitung_visitor_scan_keluarmasuk_area'] = $this->db->get_where('tabel_tracking', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->num_rows();
 			$data['visitor_scan_keluarmasuk_area'] = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->result();
 			
-			$data['hitung_visitor_masuk_event'] = $this->db->get_where('tabel_visitor', ['status' => 'telah_masuk_event'])->num_rows();
-			$data['hitung_visitor_didalam_area'] = $this->db->get_where('tabel_visitor', ['status' => 'didalam_area'])->num_rows();
+			$data['hitung_visitor_masuk_event'] = $this->db->get_where('tabel_visitor', ['status' => 'telah_masuk_event', 'status' => 'didalam_area'])->num_rows();
+			$data['hitung_visitor_diluar_area'] = $this->db->get_where('tabel_visitor', ['status' => 'telah_masuk_event'])->num_rows();
+			$data['hitung_visitor_didalam_area'] = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata("staff_id")])->num_rows();
 			$data['hitung_visitor_keluar_event'] = $this->db->get_where('tabel_visitor', ['status' => 'telah_keluar_event'])->num_rows();
+			
 			// echo 'selamat datang ' . $data['tb_user']['username'];
 			// $this->load->view('template/staff_only/header', $data);
 			$this->load->view('page/staff_only/petugas/petugas_scan_tracking', $data);
@@ -356,15 +358,24 @@ class Staff_controller extends CI_Controller {
 							$hitung_visitor_scan_keluar = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->num_rows();
 							$visitor_scan_keluar = $this->db->order_by('time_out_event', 'DESC')->get_where('tabel_visitor', ['id_petugas_pintu_keluar' => $this->session->userdata('staff_id')])->result();
 							
+							$hitung_visitor_masuk_event = $this->db->get_where('tabel_visitor', ['status' => 'telah_masuk_event', 'status' => 'didalam_area'])->num_rows();
+							$hitung_visitor_keluar_event = $this->db->get_where('tabel_visitor', ['status' => 'telah_keluar_event'])->num_rows();
+
 							$view_tabel_data_visitor_keluar = $this->load->view('tabel/tabel_data_visitor_keluar', array(
 								'visitor_scan_keluar' => $visitor_scan_keluar, 
 								'hitung_visitor_scan_keluar' => $hitung_visitor_scan_keluar
 							), true);
 
+							$view_chart_visitor_keluar_masuk_event = $this->load->view('chart/chart_visitor_keluar_masuk_event', array(
+								'hitung_visitor_masuk_event' => $hitung_visitor_masuk_event,
+								'hitung_visitor_keluar_event' => $hitung_visitor_keluar_event
+							), true);
+
 							$callback = array(
 								'status'=>'sukses',
 								'pesan'=>'visitor berhasil keluar event.',
-								'view_tabel_data_visitor_keluar'=>$view_tabel_data_visitor_keluar
+								'view_tabel_data_visitor_keluar'=>$view_tabel_data_visitor_keluar,
+								'view_chart_visitor_keluar_masuk_event'=>$view_chart_visitor_keluar_masuk_event
 							);
 						}else{
 							$callback = array(
@@ -383,16 +394,25 @@ class Staff_controller extends CI_Controller {
 							$hitung_visitor_scan_keluarmasuk_area = $this->db->get_where('tabel_tracking', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->num_rows();
 							$visitor_scan_keluarmasuk_area = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ['id_petugas_pintu_area' => $this->session->userdata('staff_id')])->result();
 							
+							$hitung_visitor_diluar_area = $this->db->get_where('tabel_visitor', ['status' => 'telah_masuk_event'])->num_rows();
+							$hitung_visitor_didalam_area = $this->db->get_where('tabel_visitor', ['id_petugas_pintu_area' => $this->session->userdata("staff_id")])->num_rows();
+
 							$view_tabel_data_visitor_keluarmasuk_area = $this->load->view('tabel/tabel_data_visitor_keluarmasuk_area', array(
 								'all_visitor' => $all_visitor, 
 								'visitor_scan_keluarmasuk_area' => $visitor_scan_keluarmasuk_area, 
 								'hitung_visitor_scan_keluarmasuk_area' => $hitung_visitor_scan_keluarmasuk_area
 							), true);
 
+							$view_chart_visitor_keluar_masuk_area = $this->load->view('chart/chart_visitor_keluar_masuk_area', array(
+								'hitung_visitor_diluar_area' => $hitung_visitor_diluar_area,
+								'hitung_visitor_didalam_area' => $hitung_visitor_didalam_area,
+							), true);
+
 							$callback = array(
 								'status'=>'sukses',
 								'pesan'=>$pesan,
-								'view_tabel_data_visitor_keluarmasuk_area'=>$view_tabel_data_visitor_keluarmasuk_area
+								'view_tabel_data_visitor_keluarmasuk_area'=>$view_tabel_data_visitor_keluarmasuk_area,
+								'view_chart_visitor_keluar_masuk_area'=>$view_chart_visitor_keluar_masuk_area
 							);
 						}else{
 							$callback = array(

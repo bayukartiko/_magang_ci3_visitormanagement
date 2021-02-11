@@ -7,6 +7,8 @@
 		<div class="row">
 			<div class="col-md-12 m-2 text-light">
 				<h3><b>Hore! Data pendaftaran kamu telah berhasil dibuat! Tunjukkan barcode dibawah ke petugas ketika memasuki salah satu area didalam</b></h3>
+				<br>
+				<h6>Dipersilahkan untuk screenshot barcode dibawah</h6>
 			</div>
 		</div>
 		<br>

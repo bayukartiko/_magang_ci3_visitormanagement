@@ -48,10 +48,6 @@
 					<td><button class="btn btn-outline-primary"><?= $hitung_visitor_masuk_event ?></button></td>
 				</tr>
 				<tr>
-					<td>visitor didalam area</td>
-					<td><button class="btn btn-outline-secondary"><?= $hitung_visitor_didalam_area ?></button></td>
-				</tr>
-				<tr>
 					<td>visitor keluar event</td>
 					<td><button class="btn btn-outline-secondary"><?= $hitung_visitor_keluar_event ?></button></td>
 				</tr>
@@ -98,9 +94,6 @@
 						data: [{
 								name: 'visitor masuk event',
 								y: <?= $hitung_visitor_masuk_event ?>
-							}, {
-								name: 'visitor didalam area',
-								y: <?= $hitung_visitor_didalam_area ?>
 							}, {
 								name: 'visitor keluar event',
 								y: <?= $hitung_visitor_keluar_event ?>

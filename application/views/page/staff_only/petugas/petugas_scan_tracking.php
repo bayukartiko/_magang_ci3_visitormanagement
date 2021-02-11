@@ -303,8 +303,8 @@
 														<div class="row">
 															<div class="offset-lg-1 col-lg-10">
 																<div class="pt-5 pb-5">
-																	<div id="view_chart_visitor_keluar_masuk">
-																		<?php $this->load->view('chart/chart_visitor_keluar_masuk', ['hitung_visitor_masuk_event' => $hitung_visitor_masuk_event, 'hitung_visitor_didalam_area' => $hitung_visitor_didalam_area,'hitung_visitor_keluar_event' => $hitung_visitor_keluar_event]); ?>
+																	<div id="view_chart_visitor_keluar_masuk_area">
+																		<?php $this->load->view('chart/chart_visitor_keluar_masuk_area', ['hitung_visitor_diluar_area' => $hitung_visitor_diluar_area, 'hitung_visitor_didalam_area' => $hitung_visitor_didalam_area]); ?>
 																	</div>
 																</div>
 															</div>
@@ -424,15 +424,15 @@
 												<div class="card shadow mb-4">
 													<!-- Card Header - Dropdown -->
 													<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-														<h6 class="m-0 font-weight-bold text-primary">Chart total visitor keluar/masuk/in_area</h6>
+														<h6 class="m-0 font-weight-bold text-primary">Chart total visitor keluar/masuk event</h6>
 													</div>
 													<div class="card-body p-3">
 														<!-- Nested Row within Card Body -->
 														<div class="row">
 															<div class="offset-lg-1 col-lg-10">
 																<div class="pt-5 pb-5">
-																	<div id="view_chart_visitor_keluar_masuk">
-																		<?php $this->load->view('chart/chart_visitor_keluar_masuk', ['hitung_visitor_masuk_event' => $hitung_visitor_masuk_event, 'hitung_visitor_didalam_area' => $hitung_visitor_didalam_area,'hitung_visitor_keluar_event' => $hitung_visitor_keluar_event]); ?>
+																	<div id="view_chart_visitor_keluar_masuk_event">
+																		<?php $this->load->view('chart/chart_visitor_keluar_masuk_event', ['hitung_visitor_masuk_event' => $hitung_visitor_masuk_event, 'hitung_visitor_didalam_area' => $hitung_visitor_didalam_area,'hitung_visitor_keluar_event' => $hitung_visitor_keluar_event]); ?>
 																	</div>
 																</div>
 															</div>
@@ -553,6 +553,7 @@
 
 							// Ganti isi dari div id="view_tabel_data_visitor_keluar" dengan view yang diambil dari view_tabel_data_visitor_keluar.php
 							$('#view_tabel_data_visitor_keluar').html(callback.view_tabel_data_visitor_keluar);
+							$('#view_chart_visitor_keluar_masuk_event').html(callback.view_chart_visitor_keluar_masuk_event);
 
 							const Toast = Swal.mixin({
 								toast: true,
@@ -620,6 +621,7 @@
 
 							// Ganti isi dari div id="view_tabel_data_visitor_area" dengan view yang diambil dari view_tabel_data_visitor_area.php
 							$('#view_tabel_data_visitor_keluarmasuk_area').html(callback.view_tabel_data_visitor_keluarmasuk_area);
+							$('#view_chart_visitor_keluar_masuk_area').html(callback.view_chart_visitor_keluar_masuk_area);
 
 							const Toast = Swal.mixin({
 								toast: true,

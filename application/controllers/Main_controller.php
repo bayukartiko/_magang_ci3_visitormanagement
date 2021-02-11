@@ -75,6 +75,11 @@ class Main_controller extends CI_Controller {
 		$this->load->view('template/visitor/b4/header', $data);
 		$this->load->view('visitor_register', $data);
 		$this->load->view('template/visitor/b4/footer', $data);
+
+		$cek_visitor_keluar_event = $this->db->get_where('ci_sessions', ["id" => session_id(), "user_id"=>$this->session->userdata("id_visitor")])->row_array();
+		if($cek_visitor_keluar_event["status"] == "visitor_telah_keluar_event"){
+			$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
+		}
 	}
 	
 	public function page_login_staff(){
@@ -124,7 +129,7 @@ class Main_controller extends CI_Controller {
 						$this->db->update('tabel_staff');
 						$staff = $this->db->get_where('tabel_staff', ['username' => $username])->row_array();
 
-						$this->db->update('ci_sessions', ["user_id" => $staff['staff_id']], ["id" => session_id()]);
+						$this->db->update('ci_sessions', ["user_id" => $staff['staff_id'], "status"=>"adalah_staff"], ["id" => session_id()]);
 
 						$data = [
 							"staff_id" => $staff["staff_id"],
@@ -264,7 +269,14 @@ class Main_controller extends CI_Controller {
 	}
 
 	public function visitor_logout(){
-		$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
-		redirect('/');
+		$cek_visitor_keluar_event = $this->db->get_where('ci_sessions', ["id" => session_id(), "user_id"=>$this->session->userdata("id_visitor")])->row_array();
+		if($cek_visitor_keluar_event["status"] == "visitor_telah_keluar_event"){
+			$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
+			redirect('/');
+		}elseif($cek_visitor_keluar_event["status"] == "visitor_telah_masuk_event"){
+			redirect('visitor/register');
+		}else{
+			redirect('/');
+		}
 	}
 }
