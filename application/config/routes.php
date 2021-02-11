@@ -56,13 +56,14 @@ $route['translate_uri_dashes'] = FALSE;
 // routing
 // (untuk meng-hide controller-name)
 
-// $route['param1/param2/param3/param4'] = 'controller_name/method_name';
 $route[''] = 'main_controller/index';
-// $route['coba_parameter/(:any)'] = 'main_controller/coba_parameter/$1';
-// $route['coba_barcode'] = 'main_controller/coba_barcode';
+
 $route['nama_event'] = 'main_controller/redirect_register';
+
 $route['visitor'] = 'main_controller/index_visitor';
 $route['visitor/register'] = 'main_controller/page_register_visitor';
+$route['visitor/logout'] = 'main_controller/visitor_logout';
+
 $route['staff_only'] = 'main_controller/index_staff';
 $route['staff_only/login'] = 'main_controller/page_login_staff';
 $route['staff_only/admin/home'] = 'staff_controller/page_admin_dashboard';

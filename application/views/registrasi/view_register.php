@@ -15,10 +15,10 @@
 		<br>
 
 		<!-- tabel data tracking -->
-			<h3 class="text-center">Data tracking area anda</h3>
+			<h3 class="text-center">Live tracking area yang anda kunjungi</h3>
 
 			<div class="alert alert-success" role="alert">
-				<h6>Anda sekarang berada di area:</h6>
+				<h6>Anda sekarang berada di area berikut:</h6>
 				<?php
 					if($all_data_saya["status"] == "didalam_area"){
 						foreach($all_data_tracking_saya_1 as $data_tracking_saya_1){
@@ -29,7 +29,7 @@
 							}
 						}
 					}else{
-						echo "<h4>anda belum masuk di area manapun</h4>";
+						echo "<h4>anda sedang berada diluar area</h4>";
 					}
 				?>
 			</div>

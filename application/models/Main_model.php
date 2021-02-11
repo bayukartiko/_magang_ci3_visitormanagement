@@ -9,31 +9,31 @@ class Main_model extends CI_Model{
 		$this->form_validation->set_rules('nama_belakang', 'nama belakang', 'required|trim', [
 			'required' => 'Nama belakang harus diisi !'
 		]);
-		$this->form_validation->set_rules('nama_perusahaan', 'nama perusahaan', 'required|trim', [
-			'required' => 'Nama perusahaan harus diisi !'
-		]);
-		$this->form_validation->set_rules('jabatan', 'jabatan', 'required|trim', [
-			'required' => 'Jabatan anda harus diisi !'
-		]);
+		// $this->form_validation->set_rules('nama_perusahaan', 'nama perusahaan', 'required|trim', [
+		// 	'required' => 'Nama perusahaan harus diisi !'
+		// ]);
+		// $this->form_validation->set_rules('jabatan', 'jabatan', 'required|trim', [
+		// 	'required' => 'Jabatan anda harus diisi !'
+		// ]);
 		$this->form_validation->set_rules('email_pribadi', 'email pribadi', 'required|valid_email|trim', [
 			'required' => 'Email anda harus diisi !',
 			'valid_email' => 'Email tidak benar !'
 		]);
-		$this->form_validation->set_rules('email_perusahaan', 'email perusahaan', 'required|valid_email|trim', [
-			'required' => 'Email Perusahaan harus diisi !',
-			'valid_email' => 'Email tidak benar !'
-		]);
+		// $this->form_validation->set_rules('email_perusahaan', 'email perusahaan', 'required|valid_email|trim', [
+		// 	'required' => 'Email Perusahaan harus diisi !',
+		// 	'valid_email' => 'Email tidak benar !'
+		// ]);
 		$this->form_validation->set_rules('notlp_pribadi', 'nomor telepon pribadi', 'required|numeric|trim', [
 			'required' => 'Nomor telepon anda harus diisi !',
 			'numeric' => 'Isi no telepon harus angka !'
 		]);
-		$this->form_validation->set_rules('notlp_perusahaan', 'nomor telepon perusahaan', 'required|numeric|trim', [
-			'required' => 'Nomor telepon perusahaan harus diisi !',
-			'numeric' => 'Isi no telepon harus angka !'
-		]);
-		$this->form_validation->set_rules('alasan', 'alasan', 'required|trim', [
-			'required' => 'Alasan anda mengikuti event ini harus diisi !'
-		]);
+		// $this->form_validation->set_rules('notlp_perusahaan', 'nomor telepon perusahaan', 'required|numeric|trim', [
+		// 	'required' => 'Nomor telepon perusahaan harus diisi !',
+		// 	'numeric' => 'Isi no telepon harus angka !'
+		// ]);
+		// $this->form_validation->set_rules('alasan', 'alasan', 'required|trim', [
+		// 	'required' => 'Alasan anda mengikuti event ini harus diisi !'
+		// ]);
 
 		if($this->form_validation->run() == true){
 			return true;
@@ -64,7 +64,7 @@ class Main_model extends CI_Model{
 		$this->db->insert('tabel_visitor', $data_tabel_visitor);
 
 		$this->session->set_userdata($data_tabel_visitor);
-		$this->db->update('ci_sessions', ["user_id" => $this->session->userdata('id_visitor')], ["id" => session_id()]);
+		$this->db->update('ci_sessions', ["user_id" => $this->session->userdata('id_visitor'), "status"=>"visitor_telah_masuk_event"], ["id" => session_id()]);
 	}
 }
 

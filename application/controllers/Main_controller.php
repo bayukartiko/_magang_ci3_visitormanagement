@@ -22,12 +22,8 @@ class Main_controller extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('main_model');
-		$this->load->library('form_validation', 'ciqrcode');
+		$this->load->library('form_validation', 'ciqrcode', 'session');
 	}
-
-	// public function coba_parameter($nama){
-	// 	echo $nama;
-	// }
 
 	public function index_visitor(){
 		redirect('visitor/register');
@@ -70,10 +66,15 @@ class Main_controller extends CI_Controller {
 		$data["all_data_saya"] = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
 		$data["all_data_tracking_saya"] = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
 		$data["all_data_tracking_saya_1"] = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+		$data["data_session"] = $this->db->get_where('ci_sessions', ["user_id" => $this->session->userdata("id_visitor")])->row_array();
 		
-		$this->load->view('template/visitor/header', $data);
-		$this->load->view('visitorRegister2', $data);
-		$this->load->view('template/visitor/footer', $data);
+		// $this->load->view('template/visitor/header', $data);
+		// $this->load->view('visitorRegister2', $data);
+		// $this->load->view('template/visitor/footer', $data);
+		
+		$this->load->view('template/visitor/b4/header', $data);
+		$this->load->view('visitor_register', $data);
+		$this->load->view('template/visitor/b4/footer', $data);
 	}
 	
 	public function page_login_staff(){
@@ -221,11 +222,19 @@ class Main_controller extends CI_Controller {
 				$all_data_tracking_saya_1 = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
 				
 				// Load ulang view_register.php agar data yang baru bisa muncul di tabel pada visitorRegister2.php
-				$html = $this->load->view('registrasi/view_register', array(
+				// $html = $this->load->view('registrasi/view_register', array(
+				// 	"all_area" => $all_area,
+				// 	"all_data_saya" => $all_data_saya,
+				// 	"all_data_tracking_saya" => $all_data_tracking_saya,
+				// 	"all_data_tracking_saya_1" => $all_data_tracking_saya_1
+				// ), true);
+				
+				$html = $this->load->view('registrasi/b4/view_register', array(
 					"all_area" => $all_area,
 					"all_data_saya" => $all_data_saya,
 					"all_data_tracking_saya" => $all_data_tracking_saya,
-					"all_data_tracking_saya_1" => $all_data_tracking_saya_1
+					"all_data_tracking_saya_1" => $all_data_tracking_saya_1,
+					"data_session" => $this->db->get_where('ci_sessions', ["user_id" => $id_visitor])->row_array()
 				), true);
 
 				$callback = array(
@@ -238,13 +247,13 @@ class Main_controller extends CI_Controller {
 					'status'=>'gagal',
 					'nama_depan_error' => form_error('nama_depan'),
 					'nama_belakang_error' => form_error('nama_belakang'),
-					'nama_perusahaan_error' => form_error('nama_perusahaan'),
-					'jabatan_error' => form_error('jabatan'),
+					// 'nama_perusahaan_error' => form_error('nama_perusahaan'),
+					// 'jabatan_error' => form_error('jabatan'),
 					'email_pribadi_error' => form_error('email_pribadi'),
-					'email_perusahaan_error' => form_error('email_perusahaan'),
+					// 'email_perusahaan_error' => form_error('email_perusahaan'),
 					'notlp_pribadi_error' => form_error('notlp_pribadi'),
-					'notlp_perusahaan_error' => form_error('notlp_perusahaan'),
-					'alasan_error' => form_error('alasan'),
+					// 'notlp_perusahaan_error' => form_error('notlp_perusahaan'),
+					// 'alasan_error' => form_error('alasan'),
 					// 'pesan'=>validation_errors()
 				);
 			}
@@ -252,5 +261,10 @@ class Main_controller extends CI_Controller {
 		}
 		// var_dump($callback);
 
+	}
+
+	public function visitor_logout(){
+		$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
+		redirect('/');
 	}
 }

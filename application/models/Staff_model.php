@@ -213,8 +213,10 @@ class Staff_model extends CI_Model{
 				unlink(FCPATH . 'assets/img/barcode/' . $id_visitor .'.png');
 			// }
 	
-			// delete ci_sessions visitor
-				$this->db->delete('ci_sessions', ['user_id' => $id_visitor]);
+			// update ci_sessions visitor
+			$this->db->update('ci_sessions', ["status"=>"visitor_telah_keluar_event"], ['user_id' => $id_visitor]);
+			// $this->db->delete('ci_sessions', ['user_id' => $id_visitor]);
+
 		}elseif($tipe_scan == "pintu_area"){
 			// insert tabel_tracking
 				// ambil id_area berdasarkan id_area petugas ini
