@@ -52,27 +52,56 @@ class Staff_model extends CI_Model{
 			return false;
 		}
 	}
-	public function validasi_form_tambah_event(){
-		$this->form_validation->set_rules('nama_event', 'nama event', 'required|trim', [
-			'required' => 'Nama event harus diisi !',
-		]);
-		$this->form_validation->set_rules('tgl_mulai', 'tgl mulai', 'required|trim', [
-			'required' => 'Tanggal mulai event harus diisi !'
-		]);
-		$this->form_validation->set_rules('tgl_selesai', 'tgl selesai', 'required|trim', [
-			'required' => 'Tanggal selesai event harus diisi !'
-		]);
-		// $this->form_validation->set_rules('namaArea[]', 'nama area', 'required|trim|xss_clean', [
-		// 	'required' => 'Nama area harus diisi !'
-		// ]);
-		// $this->form_validation->set_rules('namaPetugas[]', 'nama petugas', 'required|trim|xss_clean', [
-		// 	'required' => 'Nama petugas harus dipilih !'
-		// ]);
+	public function validasi_form_crud_event($mode){
+		if($mode == "tambah"){
+			$this->form_validation->set_rules('nama_event', 'nama event', 'required|trim', [
+				'required' => 'Nama event harus diisi !',
+			]);
+			$this->form_validation->set_rules('custom_url', 'custom_url', 'trim',);
+			$this->form_validation->set_rules('tgl_mulai', 'tgl mulai', 'required|trim', [
+				'required' => 'Tanggal mulai event harus diisi !'
+			]);
+			$this->form_validation->set_rules('tgl_selesai', 'tgl selesai', 'required|trim', [
+				'required' => 'Tanggal selesai event harus diisi !'
+			]);
+			$this->form_validation->set_rules('jam_dibuka', 'jam dibuka', 'required|trim', [
+				'required' => 'Jam dibuka harus diisi !'
+			]);
+			$this->form_validation->set_rules('jam_ditutup', 'jam ditutup', 'required|trim', [
+				'required' => 'Jam ditutup harus diisi !'
+			]);
+			$this->form_validation->set_rules('nama_petugas_pintuKeluar', 'nama_petugas_pintuKeluar', 'required|trim', [
+				'required' => 'Nama petugas pintu keluar harus dipilih !'
+			]);
+	
+			if($this->form_validation->run() == true){
+				return true;
+			}else{
+				return false;
+			}
+		}elseif($mode == "ubah"){
+			$this->form_validation->set_rules('nama_event', 'nama event', 'required|trim', [
+				'required' => 'Nama event harus diisi !',
+			]);
+			$this->form_validation->set_rules('custom_url', 'custom_url', 'trim',);
+			$this->form_validation->set_rules('tgl_mulai', 'tgl mulai', 'required|trim', [
+				'required' => 'Tanggal mulai event harus diisi !'
+			]);
+			$this->form_validation->set_rules('tgl_selesai', 'tgl selesai', 'required|trim', [
+				'required' => 'Tanggal selesai event harus diisi !'
+			]);
+			$this->form_validation->set_rules('jam_dibuka', 'jam dibuka', 'required|trim', [
+				'required' => 'Jam dibuka harus diisi !'
+			]);
+			$this->form_validation->set_rules('jam_ditutup', 'jam ditutup', 'required|trim', [
+				'required' => 'Jam ditutup harus diisi !'
+			]);
 
-		if($this->form_validation->run() == true){
-			return true;
-		}else{
-			return false;
+			if($this->form_validation->run() == true){
+				return true;
+			}else{
+				return false;
+			}
 		}
 	}
 
@@ -97,12 +126,73 @@ class Staff_model extends CI_Model{
 	public function aksi_crud_event($mode, $id_event, $id_area, $id_tugas){
 		if($mode == "tambah"){
 			// insert tabel_event
+				$nama_event = str_replace(' ', '_', $this->input->post('nama_event', true));
+				$custom_url = str_replace(' ', '_', $this->input->post('custom_url', true));
+				if(empty($this->input->post("custom_url", true))){
+					$url = $nama_event;
+				}elseif(!empty($this->input->post("custom_url", true))){
+					$url = $custom_url;
+				}
+
+				// qr code
+					$config['cacheable'] = true; //boolean, the default is true
+					$config['cachedir'] = './assets/'; //string, the default is application/cache/
+					$config['errorlog'] = './assets/'; //string, the default is application/logs/
+					$config['imagedir'] = './assets/img/qrcode/'; //direktori penyimpanan qr code
+					$config['quality'] = true; //boolean, the default is true
+					$config['size'] = '1024'; //interger, the default is 1024
+					$config['black'] = array(224,255,255); // array, default is array(255,255,255)
+					$config['white'] = array(70,130,180); // array, default is array(0,0,0)
+					$this->ciqrcode->initialize($config);
+					$image_name= $id_event.'.png';
+					$params['data'] = base_url().$url; //data yang akan di jadikan QR CODE
+					$params['level'] = 'H'; //H=High
+					$params['size'] = 10;
+					$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
+					$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+				
+				// jika input tanggal_mulai kurang atau sama dengan dari tanggal sekarang
+				if($this->input->post('tgl_mulai', true) <= mdate('%Y-%m-%d')){
+
+					// jika input tanggal_selesai lebih besar atau sama dengan dari tanggal sekarang
+					if($this->input->post('tgl_selesai', true) >= mdate('%Y-%m-%d')){
+
+						// jika input jam dibuka kurang atau sama dengan dari jam sekarang
+						if($this->input->post('jam_dibuka', true) <= mdate('%H:%i:%s')){
+
+							// jika input jam_ditutup lebih besar dari jam sekarang
+							if($this->input->post('jam_ditutup', true) > mdate('%H:%i:%s')){
+								$status = "active";
+							// jika input jam_ditutup kurang dari jam sekarang
+							}elseif($this->input->post('jam_ditutup', true) < mdate('%H:%i:%s')){
+								$status = "not_active";
+							}
+
+						// jika input jam_dibuka lebih besar dari jam sekarang
+						}elseif($this->input->post('jam_dibuka', true) > mdate('%H:%i:%s')){
+							$status = "not_active";
+						}
+						
+					// jika input tanggal_selesai kurang dari tanggal sekarang
+					}elseif($this->input->post('tgl_selesai', true) < mdate('%Y-%m-%d')){
+						$status = "not_active";
+					}
+
+				// jika input tanggal_mulai lebih besar dari tanggal sekarang
+				}elseif($this->input->post('tgl_mulai', true) > mdate('%Y-%m-%d')){
+					$status = "not_active";
+				}
+
 				$data_tabel_event = [
 					"id_event" => htmlspecialchars($id_event),
 					"nama_event" => htmlspecialchars($this->input->post('nama_event', true)),
+					"custom_url" => htmlspecialchars($url),
+					"gambar_qrcode" => htmlspecialchars($id_event.'.png'),
 					"tanggal_dibuka" => htmlspecialchars($this->input->post('tgl_mulai', true)),
 					"tanggal_ditutup" => htmlspecialchars($this->input->post('tgl_selesai', true)),
-					"status" => htmlspecialchars('active'),
+					"jam_dibuka" => htmlspecialchars($this->input->post('jam_dibuka', true)),
+					"jam_ditutup" => htmlspecialchars($this->input->post('jam_ditutup', true)),
+					"status" => htmlspecialchars($status),
 				];
 				$this->db->insert('tabel_event', $data_tabel_event);
 
@@ -163,10 +253,103 @@ class Staff_model extends CI_Model{
 					$this->db->update('tabel_staff', ["id_tugas" => htmlspecialchars($id_tugas).htmlspecialchars($index), "sedang_bertugas" => true], array('staff_id' => htmlspecialchars($nama_petugas[$index])));
 					$index++;
 				}
+		}elseif($mode == "hapus"){
+			// hapus gambar qrcode event
+				unlink(FCPATH . 'assets\\img\\qrcode\\' . $id_event .'.png');
+
+			// hapus tabel_area
+				$this->db->delete('tabel_area', array('id_event' => $id_event));
+
+			// update tabel_staff yang terkena imbas hapus tabel_tugas_staff_petugas
+				$id_tugas = $this->db->get_where('tabel_tugas_staff_petugas', ["id_event" => $id_event])->result();
+				foreach($id_tugas as $data_id_tugas){
+					$this->db->update('tabel_staff', ["sedang_bertugas" => false], array('id_tugas' => $data_id_tugas->id_tugas));
+				}
+			
+			// hapus tabel_tugas_staff_petugas
+				$this->db->delete('tabel_tugas_staff_petugas', array('id_event' => $id_event));
+			
+			// hapus tabel_tracking
+				$this->db->delete('tabel_tracking', array('id_event' => $id_event));
+
+			// hapus tabel_visitor
+				$this->db->delete('tabel_visitor', array('id_event' => $id_event));
+			
+			// hapus tabel_event
+				$this->db->delete('tabel_event', array('id_event' => $id_event));
+		}elseif($mode == "ubah"){
+			// update tabel_event
+				$nama_event = str_replace(' ', '_', $this->input->post('nama_event', true));
+				$custom_url = str_replace(' ', '_', $this->input->post('custom_url', true));
+				if(empty($this->input->post("custom_url", true))){
+					$url = $nama_event;
+				}elseif(!empty($this->input->post("custom_url", true))){
+					$url = $custom_url;
+				}
+
+				unlink(FCPATH . 'assets\\img\\qrcode\\' . $id_event .'.png');
+				
+				// jika input tanggal_mulai kurang atau sama dengan dari tanggal sekarang
+				if($this->input->post('tgl_mulai', true) <= mdate('%Y-%m-%d')){
+
+					// jika input tanggal_selesai lebih besar atau sama dengan dari tanggal sekarang
+					if($this->input->post('tgl_selesai', true) >= mdate('%Y-%m-%d')){
+
+						// jika input jam dibuka kurang atau sama dengan dari jam sekarang
+						if($this->input->post('jam_dibuka', true) <= mdate('%H:%i:%s')){
+
+							// jika input jam_ditutup lebih besar dari jam sekarang
+							if($this->input->post('jam_ditutup', true) > mdate('%H:%i:%s')){
+								$status = "active";
+							// jika input jam_ditutup kurang dari jam sekarang
+							}elseif($this->input->post('jam_ditutup', true) < mdate('%H:%i:%s')){
+								$status = "not_active";
+							}
+
+						// jika input jam_dibuka lebih besar dari jam sekarang
+						}elseif($this->input->post('jam_dibuka', true) > mdate('%H:%i:%s')){
+							$status = "not_active";
+						}
+						
+					// jika input tanggal_selesai kurang dari tanggal sekarang
+					}elseif($this->input->post('tgl_selesai', true) < mdate('%Y-%m-%d')){
+						$status = "not_active";
+					}
+
+				// jika input tanggal_mulai lebih besar dari tanggal sekarang
+				}elseif($this->input->post('tgl_mulai', true) > mdate('%Y-%m-%d')){
+					$status = "not_active";
+				}
+
+				$data_tabel_event = [
+					"nama_event" => htmlspecialchars($this->input->post('nama_event', true)),
+					"custom_url" => htmlspecialchars($url),
+					"gambar_qrcode" => htmlspecialchars($id_event.'.png'),
+					"tanggal_dibuka" => htmlspecialchars($this->input->post('tgl_mulai', true)),
+					"tanggal_ditutup" => htmlspecialchars($this->input->post('tgl_selesai', true)),
+					"jam_dibuka" => htmlspecialchars($this->input->post('jam_dibuka', true)),
+					"jam_ditutup" => htmlspecialchars($this->input->post('jam_ditutup', true)),
+					"status" => htmlspecialchars($status),
+				];
+				$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $id_event]);
+
+				// qr code
+					$config['cacheable'] = true; //boolean, the default is true
+					$config['cachedir'] = './assets/'; //string, the default is application/cache/
+					$config['errorlog'] = './assets/'; //string, the default is application/logs/
+					$config['imagedir'] = './assets/img/qrcode/'; //direktori penyimpanan qr code
+					$config['quality'] = true; //boolean, the default is true
+					$config['size'] = '1024'; //interger, the default is 1024
+					$config['black'] = array(224,255,255); // array, default is array(255,255,255)
+					$config['white'] = array(70,130,180); // array, default is array(0,0,0)
+					$this->ciqrcode->initialize($config);
+					$image_name= $id_event.'.png';
+					$params['data'] = base_url().$url; //data yang akan di jadikan QR CODE
+					$params['level'] = 'H'; //H=High
+					$params['size'] = 10;
+					$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
+					$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
 		}
-		// elseif($mode == "hapus"){
-		// 	$this->db->delete('tabel_staff', array('staff_id' => $staff_id));
-		// }
 	}
 
 	public function validasi_scan_visitor($tipe_scan, $id_visitor){

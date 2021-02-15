@@ -58,7 +58,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">Register:</h6>
                         <a class="collapse-item" href="<?= base_url('staff_only/admin/daftar_staff') ?>">Register staff baru</a>
-                        <a class="collapse-item" href="<?= base_url('staff_only/admin/event_management') ?>">Register event baru</a>
+                        <a class="collapse-item" href="<?= base_url('staff_only/admin/daftar_event') ?>">Register event baru</a>
                     </div>
                 </div>
 			</li>

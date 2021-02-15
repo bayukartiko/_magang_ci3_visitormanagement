@@ -123,37 +123,43 @@ class Main_controller extends CI_Controller {
 
 					if(password_verify($password, $staff['password'])){
 					// if($password == $staff['password']){
-						$log_stat = 'online';
-						$this->db->set('is_active', $log_stat);
-						$this->db->where('staff_id', $staff['staff_id']);
-						$this->db->update('tabel_staff');
-						$staff = $this->db->get_where('tabel_staff', ['username' => $username])->row_array();
 
-						$this->db->update('ci_sessions', ["user_id" => $staff['staff_id'], "status"=>"adalah_staff"], ["id" => session_id()]);
-
-						$data = [
-							"staff_id" => $staff["staff_id"],
-							"role_id" => $staff["role_id"],
-							"username" => $staff["username"],
-							"nama" => $staff["nama"],
-							"sedang_bertugas" => $staff["sedang_bertugas"],
-							"id_tugas" => $staff["id_tugas"],
-							"verified" => $staff["verified"],
-							"is_active" => $staff["is_active"]
-						];
-						// $this->session->sess_expiration = '10';// expires in 4 hours (14400)
-						$this->session->set_userdata($data);
-						// $session = $this->session->set_userdata($data);
-						// var_dump($session);
-						// die;
-
-						// cek tipe user
-						if($role['role_id'] == '1'){
-							redirect('staff_only/admin/home');
-						}elseif($role['role_id'] == '2'){
-							redirect('staff_only/petugas/scan');
+						if($staff["sedang_bertugas"] == true || $role["role_id"] == "1"){
+							$log_stat = 'online';
+							$this->db->set('is_active', $log_stat);
+							$this->db->where('staff_id', $staff['staff_id']);
+							$this->db->update('tabel_staff');
+							$staff = $this->db->get_where('tabel_staff', ['username' => $username])->row_array();
+	
+							$this->db->update('ci_sessions', ["user_id" => $staff['staff_id'], "status"=>"adalah_staff"], ["id" => session_id()]);
+	
+							$data = [
+								"staff_id" => $staff["staff_id"],
+								"role_id" => $staff["role_id"],
+								"username" => $staff["username"],
+								"nama" => $staff["nama"],
+								"sedang_bertugas" => $staff["sedang_bertugas"],
+								"id_tugas" => $staff["id_tugas"],
+								"verified" => $staff["verified"],
+								"is_active" => $staff["is_active"]
+							];
+							// $this->session->sess_expiration = '10';// expires in 4 hours (14400)
+							$this->session->set_userdata($data);
+							// $session = $this->session->set_userdata($data);
+							// var_dump($session);
+							// die;
+	
+							// cek tipe user
+							if($role['role_id'] == '1'){
+								redirect('staff_only/admin/home');
+							}elseif($role['role_id'] == '2'){
+								redirect('staff_only/petugas/scan');
+							}else{
+								echo 'role tidak dikenal !';
+							}
 						}else{
-							echo 'role tidak dikenal !';
+							$this->session->set_flashdata('gagal', 'Maaf, anda belum bertugas pada event manapun, silahkan komunikasikan dengan pihak yang bertanggung jawab');
+							redirect('staff_only/login');
 						}
 
 					}else{

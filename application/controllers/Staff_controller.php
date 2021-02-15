@@ -96,6 +96,7 @@ class Staff_controller extends CI_Controller {
 			$data['staff_nganggur'] = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
 			$data['all_event'] = $this->staff_model->get_tb_event();
 			$data['all_area'] = $this->staff_model->get_tb_area();
+			$data['all_staff'] = $this->staff_model->get_tb_staff();
 			$data['all_tugas_staff_petugas'] = $this->staff_model->get_tb_tugas_staff_petugas();
 
 			// $id_event = $this->db->get('tabel_event')->row_array();
@@ -239,7 +240,7 @@ class Staff_controller extends CI_Controller {
 				if($mode == "tambah"){
 					if($this->input->is_ajax_request()){
 			
-						if($this->staff_model->validasi_form_tambah_event() == true){
+						if($this->staff_model->validasi_form_crud_event("tambah") == true){
 							// buat kostum id tabel event
 								if($this->db->query('SELECT * FROM tabel_event')->num_rows() > 0){
 									$data = $this->db->query('SELECT * FROM tabel_event')->num_rows();
@@ -282,19 +283,34 @@ class Staff_controller extends CI_Controller {
 							$this->staff_model->aksi_crud_event("tambah", $id_event, $id_area, $id_tugas);
 			
 							// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
-							$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => true, 'role_id' => '2'])->result();
+							$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
 							$id_event = $this->db->get('tabel_event')->row_array();
+
 							$view_tabel_event = $this->load->view('tabel/tabel_event', array(
 								'all_event' => $this->staff_model->get_tb_event(),
 								'all_area' => $this->staff_model->get_tb_area(),
 								'staff_nganggur' => $staff_nganggur,
+								'all_staff' => $this->staff_model->get_tb_staff(),
 								'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
+							), true);
+
+							$view_select_petugas_pintu_keluar = $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_keluar', array(
+								'staff_nganggur' => $staff_nganggur
+							), true);
+							$view_select_petugas_pintu_area = $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_area', array(
+								'staff_nganggur' => $staff_nganggur
+							), true);
+							$view_select_petugas_pintu_area_multiple = $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_area_multiple', array(
+								'staff_nganggur' => $staff_nganggur
 							), true);
 			
 							$callback = array(
 								'status'=>'sukses',
 								'pesan'=>'Event berhasil ditambahkan.',
-								'view_tabel_staff'=>$view_tabel_event
+								'view_tabel_event'=>$view_tabel_event,
+								'view_select_petugas_pintu_keluar'=>$view_select_petugas_pintu_keluar,
+								'view_select_petugas_pintu_area'=>$view_select_petugas_pintu_area,
+								'view_select_petugas_pintu_area_multiple'=>$view_select_petugas_pintu_area_multiple,
 							);
 							
 						}else{
@@ -303,6 +319,9 @@ class Staff_controller extends CI_Controller {
 								'nama_event_error' => form_error('nama_event'),
 								'tgl_mulai_error' => form_error('tgl_mulai'),
 								'tgl_selesai_error' => form_error('tgl_selesai'),
+								'jam_dibuka_error' => form_error('jam_dibuka'),
+								'jam_ditutup_error' => form_error('jam_ditutup'),
+								'nama_petugas_pintuKeluar_error' => form_error('nama_petugas_pintuKeluar'),
 								// 'namaArea_error' => form_error('namaArea[]'),
 								// 'namaPetugas_error' => form_error('namaPetugas[]'),
 								// 'pesan'=>validation_errors()
@@ -310,8 +329,93 @@ class Staff_controller extends CI_Controller {
 						}
 						echo json_encode($callback);
 					}
+				}elseif($mode == "hapus"){
+					if($this->input->is_ajax_request()){
+						$this->staff_model->aksi_crud_event("hapus", $event_id, null, null); // panggil fungsi crud_member() di AdminModel
+			
+						// Load ulang tabel_staff.php agar data yang baru bisa muncul di tabel pada admin_daftar_staff.php
+						$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
+						$id_event = $this->db->get('tabel_event')->row_array();
+			
+						$view_tabel_event = $this->load->view('tabel/tabel_event', array(
+							'all_event' => $this->staff_model->get_tb_event(),
+							'all_area' => $this->staff_model->get_tb_area(),
+							'staff_nganggur' => $staff_nganggur,
+							'all_staff' => $this->staff_model->get_tb_staff(),
+							'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
+						), true);
+						$view_select_petugas_pintu_keluar = $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_keluar', array(
+							'staff_nganggur' => $staff_nganggur
+						), true);
+						$view_select_petugas_pintu_area = $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_area', array(
+							'staff_nganggur' => $staff_nganggur
+						), true);
+						$view_select_petugas_pintu_area_multiple = $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_area_multiple', array(
+							'staff_nganggur' => $staff_nganggur
+						), true);
+			
+						$callback = array(
+							'status'=>'sukses',
+							'pesan'=>'Event berhasil dihapus.',
+							'view_tabel_event'=>$view_tabel_event,
+							'view_select_petugas_pintu_keluar'=>$view_select_petugas_pintu_keluar,
+							'view_select_petugas_pintu_area'=>$view_select_petugas_pintu_area,
+							'view_select_petugas_pintu_area_multiple'=>$view_select_petugas_pintu_area_multiple,
+						);
+					}else{
+						$callback = array(
+							'status'=>'gagal'
+						);
+					}
+					echo json_encode($callback);
 				}elseif($mode == "ubah"){
+					if($this->input->is_ajax_request()){
+						if($this->staff_model->validasi_form_crud_event("ubah") == true){
+							$this->staff_model->aksi_crud_event("ubah", $event_id, null, null);
+			
+							// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
+							$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => true, 'role_id' => '2'])->result();
+							$id_event = $this->db->get('tabel_event')->row_array();
 
+							$view_tabel_event = $this->load->view('tabel/tabel_event', array(
+								'all_event' => $this->staff_model->get_tb_event(),
+								'all_area' => $this->staff_model->get_tb_area(),
+								'staff_nganggur' => $staff_nganggur,
+								'all_staff' => $this->staff_model->get_tb_staff(),
+								'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
+							), true);
+							$view_select_petugas_pintu_keluar = $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_keluar', array(
+								'staff_nganggur' => $staff_nganggur
+							), true);
+							$view_select_petugas_pintu_area = $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_area', array(
+								'staff_nganggur' => $staff_nganggur
+							), true);
+							$view_select_petugas_pintu_area_multiple = $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_area_multiple', array(
+								'staff_nganggur' => $staff_nganggur
+							), true);
+			
+							$callback = array(
+								'status'=>'sukses',
+								'pesan'=>'Event berhasil diubah.',
+								'view_tabel_event'=>$view_tabel_event,
+								'view_select_petugas_pintu_keluar'=>$view_select_petugas_pintu_keluar,
+								'view_select_petugas_pintu_area'=>$view_select_petugas_pintu_area,
+								'view_select_petugas_pintu_area_multiple'=>$view_select_petugas_pintu_area_multiple,
+							);
+							
+						}else{
+							$callback = array(
+								'status'=>'gagal',
+								'nama_event_error' => form_error('nama_event'),
+								'tgl_mulai_error' => form_error('tgl_mulai'),
+								'tgl_selesai_error' => form_error('tgl_selesai'),
+								'jam_dibuka_error' => form_error('jam_dibuka'),
+								'jam_ditutup_error' => form_error('jam_ditutup'),
+								// 'pesan'=>validation_errors()
+							);
+						}
+						echo json_encode($callback);
+					}
 				}
 			}
 
