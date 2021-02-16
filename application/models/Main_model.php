@@ -45,7 +45,7 @@ class Main_model extends CI_Model{
 	public function simpan_register_pengunjung($id_visitor){
 		$data_tabel_visitor = [
 			"id_visitor" => htmlspecialchars($id_visitor),
-			"id_event" => htmlspecialchars('EVNT202001210000001'),
+			"id_event" => htmlspecialchars('EVNT2102146814270000001'),
 			"nama_visitor" => htmlspecialchars($this->input->post('nama_depan', true)) . ' ' . htmlspecialchars($this->input->post('nama_belakang', true)),
 			"perusahaan_visitor" => htmlspecialchars($this->input->post('nama_perusahaan', true)),
 			"jabatan_visitor" => htmlspecialchars($this->input->post('jabatan', true)),

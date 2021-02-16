@@ -15,7 +15,7 @@
 			foreach($all_event as $event_data){
 		?>
 			<tr>
-				<td><?= $no ?></td>
+				<td class="text-center"><?= $no ?></td>
 				<td>
 					<a href="<?= base_url() ?>assets/img/qrcode/<?= $event_data->gambar_qrcode ?>" download="<?= base_url() ?><?= $event_data->custom_url ?>" >
 						<img src="<?= base_url() ?>assets/img/qrcode/<?= $event_data->gambar_qrcode ?>" alt="<?= $event_data->gambar_qrcode ?>" style="width: 75px; height: 75px;">
@@ -25,7 +25,13 @@
 				<td>
 					<?= $this->db->get_where('tabel_area', ['id_event' => $event_data->id_event])->num_rows() ?>
 				</td>
-				<td><?= $event_data->status ?></td>
+				<td>
+					<?php if($event_data->status == "active"){
+						echo "Dilaksanakan";
+					}else{
+						echo "Ditutup";
+					} ?>
+				</td>
 				<td>
 					<?php if($event_data->status == "active"){ ?>
 						<a href="javascript:void()" data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_detail_event" class="btn btn-info btn-detail-event m-1" id="btn-detail-event">Detail</a> <br>

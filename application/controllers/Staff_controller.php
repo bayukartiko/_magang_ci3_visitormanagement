@@ -419,6 +419,197 @@ class Staff_controller extends CI_Controller {
 				}
 			}
 
+			public function event_aktivasi_otomatis(){
+				if($this->input->is_ajax_request()){
+					// $this->staff_model->aksi_event_aktivasi_otomatis();
+					$all_event = $this->staff_model->get_tb_event();
+
+					foreach($all_event as $data_event){
+						// jika input tanggal_mulai kurang atau sama dengan dari tanggal sekarang
+						if($data_event->tanggal_dibuka <= mdate('%Y-%m-%d')){
+
+							// jika input tanggal_selesai lebih besar atau sama dengan dari tanggal sekarang
+							if($data_event->tanggal_ditutup >= mdate('%Y-%m-%d')){
+
+								// jika input jam dibuka kurang atau sama dengan dari jam sekarang
+								if($data_event->jam_dibuka <= mdate('%H:%i:%s')){
+
+									// jika input jam_ditutup lebih besar dari jam sekarang
+									if($data_event->jam_ditutup > mdate('%H:%i:%s')){
+										if($data_event->status != "active"){
+											$status = "active";
+
+											$data_tabel_event = [
+												"status" => htmlspecialchars($status),
+											];
+											$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+
+											// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
+											$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
+											$id_event = $this->db->get('tabel_event')->row_array();
+
+											$view_tabel_event = $this->load->view('tabel/tabel_event', array(
+												'all_event' => $this->staff_model->get_tb_event(),
+												'all_area' => $this->staff_model->get_tb_area(),
+												'staff_nganggur' => $staff_nganggur,
+												'all_staff' => $this->staff_model->get_tb_staff(),
+												'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
+											), true);
+
+											$callback = array(
+												'status'=>'sukses',
+												'pesan'=>'Event berhasil ditambahkan.',
+												'view_tabel_event'=>$view_tabel_event,
+											);
+										}else{
+											$callback = array(
+												'status'=>'gagal',
+											);
+										}
+									// jika input jam_ditutup kurang dari jam sekarang
+									}elseif($data_event->jam_ditutup < mdate('%H:%i:%s')){
+										if($data_event->status != "not_active"){
+											$status = "not_active";
+
+											$data_tabel_event = [
+												"status" => htmlspecialchars($status),
+											];
+											$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+
+											// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
+											$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
+											$id_event = $this->db->get('tabel_event')->row_array();
+
+											$view_tabel_event = $this->load->view('tabel/tabel_event', array(
+												'all_event' => $this->staff_model->get_tb_event(),
+												'all_area' => $this->staff_model->get_tb_area(),
+												'staff_nganggur' => $staff_nganggur,
+												'all_staff' => $this->staff_model->get_tb_staff(),
+												'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
+											), true);
+
+											$callback = array(
+												'status'=>'sukses',
+												'pesan'=>'Event berhasil ditambahkan.',
+												'view_tabel_event'=>$view_tabel_event,
+											);
+										}else{
+											$callback = array(
+												'status'=>'gagal',
+											);
+										}
+									}
+
+								// jika input jam_dibuka lebih besar dari jam sekarang
+								}elseif($data_event->jam_dibuka > mdate('%H:%i:%s')){
+									if($data_event->status != "not_active"){
+										$status = "not_active";
+
+										$data_tabel_event = [
+											"status" => htmlspecialchars($status),
+										];
+										$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+
+										// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
+										$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
+										$id_event = $this->db->get('tabel_event')->row_array();
+
+										$view_tabel_event = $this->load->view('tabel/tabel_event', array(
+											'all_event' => $this->staff_model->get_tb_event(),
+											'all_area' => $this->staff_model->get_tb_area(),
+											'staff_nganggur' => $staff_nganggur,
+											'all_staff' => $this->staff_model->get_tb_staff(),
+											'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
+										), true);
+
+										$callback = array(
+											'status'=>'sukses',
+											'pesan'=>'Event berhasil ditambahkan.',
+											'view_tabel_event'=>$view_tabel_event,
+										);
+									}else{
+										$callback = array(
+											'status'=>'gagal',
+										);
+									}
+								}
+								
+							// jika input tanggal_selesai kurang dari tanggal sekarang
+							}elseif($data_event->tanggal_ditutup < mdate('%Y-%m-%d')){
+								if($data_event->status != "not_active"){
+									$status = "not_active";
+
+									$data_tabel_event = [
+										"status" => htmlspecialchars($status),
+									];
+									$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+
+									// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
+									$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
+									$id_event = $this->db->get('tabel_event')->row_array();
+
+									$view_tabel_event = $this->load->view('tabel/tabel_event', array(
+										'all_event' => $this->staff_model->get_tb_event(),
+										'all_area' => $this->staff_model->get_tb_area(),
+										'staff_nganggur' => $staff_nganggur,
+										'all_staff' => $this->staff_model->get_tb_staff(),
+										'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
+									), true);
+
+									$callback = array(
+										'status'=>'sukses',
+										'pesan'=>'Event berhasil ditambahkan.',
+										'view_tabel_event'=>$view_tabel_event,
+									);
+								}else{
+									$callback = array(
+										'status'=>'gagal',
+									);
+								}
+							}
+
+						// jika input tanggal_mulai lebih besar dari tanggal sekarang
+						}elseif($data_event->tanggal_dibuka > mdate('%Y-%m-%d')){
+							if($data_event->status != "not_active"){
+								$status = "not_active";
+
+								$data_tabel_event = [
+									"status" => htmlspecialchars($status),
+								];
+								$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+
+								// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
+								$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
+								$id_event = $this->db->get('tabel_event')->row_array();
+
+								$view_tabel_event = $this->load->view('tabel/tabel_event', array(
+									'all_event' => $this->staff_model->get_tb_event(),
+									'all_area' => $this->staff_model->get_tb_area(),
+									'staff_nganggur' => $staff_nganggur,
+									'all_staff' => $this->staff_model->get_tb_staff(),
+									'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
+								), true);
+
+								$callback = array(
+									'status'=>'sukses',
+									'pesan'=>'Event berhasil ditambahkan.',
+									'view_tabel_event'=>$view_tabel_event,
+								);
+							}else{
+								$callback = array(
+									'status'=>'gagal',
+								);
+							}
+						}
+					}
+				}else{
+					$callback = array(
+						'status'=>'gagal',
+					);
+				}
+				echo json_encode($callback);
+			}
+
 	// page petugas
 		public function page_petugas_scan(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();

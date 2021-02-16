@@ -74,6 +74,8 @@ $route['staff_only/admin/daftar_staff'] = 'staff_controller/page_admin_daftar_st
 $route['staff_only/admin/data_list'] = 'staff_controller/page_admin_data_list';
 $route['staff_only/admin/logout'] = 'staff_controller/logout';
 
+$route['staff_only/admin/aktivasi_event_otomatis'] = 'staff_controller/event_aktivasi_otomatis';
+
 $route['staff_only/petugas/scan'] = 'staff_controller/page_petugas_scan';
 $route['staff_only/petugas/logout'] = 'staff_controller/logout';
 

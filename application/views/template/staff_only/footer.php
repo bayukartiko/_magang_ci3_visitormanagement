@@ -42,6 +42,43 @@
 
 	<!-- select2 -->
 	<!-- <script src="</?= base_url() ?>vendor/select2/dist/js/select2.min.js"></script> -->
+	<script>
+		$(document).ready(function(){
+			function aktivasi_event_otomatis(){
+				$.ajax({
+					url: '<?= base_url(); ?>staff_only/admin/aktivasi_event_otomatis', // URL tujuan
+					type: 'POST', // Tentukan type nya POST atau GET
+					// data: new FormData(document.getElementById('modal_hapus_event')),
+					// processData:false,
+					// contentType:false,
+					// cache:false,
+					// async:false,
+					dataType: 'JSON',
+					success: function(callback){ // Ketika proses pengiriman berhasil
+
+						if(callback.status == "sukses"){
+
+							// Ganti isi dari div view dengan view yang diambil dari view_register.php
+							if($('#view_tabel_event').is(':visible')){
+								$('#view_tabel_event').html(callback.view_tabel_event);
+							}
+
+						}
+
+					},
+					error: function(xhr, ajaxOptions, thrownError, errorMessage, callback) {
+						console.log("error :", errorMessage);
+						console.log(callback)
+						// alert(xhr.responseText);
+						console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+			}
+			setInterval(function(){
+				aktivasi_event_otomatis();
+			}, 10000); // 10 detik
+		});
+	</script>
 
 
 </body>
