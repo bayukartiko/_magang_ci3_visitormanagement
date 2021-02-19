@@ -2,6 +2,8 @@
 
 class Staff_model extends CI_Model{
 
+	protected $id_area, $id_event, $id_tugas, $id_visitor, $event_id, $staff_id, $id_petugas, $ci_session_visitor_id, $password;
+
 	public function get_tb_staff(){
 		$data = $this->db->get("tabel_staff");
 		return $data->result();
@@ -413,6 +415,7 @@ class Staff_model extends CI_Model{
 				// ambil semua data tabel_tracking
 				$tabel_tracking = $this->get_tb_tracking();
 				$tabel_visitor = $this->get_tb_visitor();
+				$visitor = $this->db->get_where("tabel_visitor", ["id_visitor" => $id_visitor])->row_array();
 
 				if($tabel_tracking == null){
 					$data_tabel_tracking = [
@@ -468,6 +471,7 @@ class Staff_model extends CI_Model{
 
 									$data_tabel_tracking = [
 										"id_visitor" => htmlspecialchars($id_visitor),
+										"id_event" => htmlspecialchars($visitor["id_event"]),
 										"id_petugas_pintu_area" => htmlspecialchars($this->session->userdata('staff_id')),
 										"id_area" => htmlspecialchars($id_area),
 										"time_in_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),

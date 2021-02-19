@@ -56,14 +56,32 @@
 					dataType: 'JSON',
 					success: function(callback){ // Ketika proses pengiriman berhasil
 
-						if(callback.status == "sukses"){
+						callback.forEach(callback_data => {
+							if(callback_data.status == "sukses"){
+	
+								// Ganti isi dari div view dengan view yang diambil dari view_register.php
+								if($('#view_tabel_event').is(':visible')){
+									$('#view_tabel_event').html(callback_data.view_tabel_event);
+								}
 
-							// Ganti isi dari div view dengan view yang diambil dari view_register.php
-							if($('#view_tabel_event').is(':visible')){
-								$('#view_tabel_event').html(callback.view_tabel_event);
+								const Toast = Swal.mixin({
+									toast: true,
+									position: 'top-start',
+									showConfirmButton: false,
+									timer: 5000,
+									timerProgressBar: true,
+									didOpen: (toast) => {
+										toast.addEventListener('mouseenter', Swal.stopTimer)
+										toast.addEventListener('mouseleave', Swal.resumeTimer)
+									}
+								});
+								Toast.fire({
+									icon: 'info',
+									title: callback_data.pesan
+								});
+	
 							}
-
-						}
+						});
 
 					},
 					error: function(xhr, ajaxOptions, thrownError, errorMessage, callback) {
@@ -75,7 +93,11 @@
 				});
 			}
 			setInterval(function(){
-				aktivasi_event_otomatis();
+				<?php if($this->session->userdata("nama")){ ?> // jika ada session [gk jalan]
+					<?php if($this->session->userdata("role_id") == "1"){ ?> // jika user saat ini adalah admin [gk jalan]
+						aktivasi_event_otomatis();
+					<?php } ?> // [gk jalan]
+				<?php } ?> // [gk jalan]
 			}, 10000); // 10 detik
 		});
 	</script>

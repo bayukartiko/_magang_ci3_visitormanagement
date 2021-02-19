@@ -2,6 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Staff_controller extends CI_Controller {
+
+	protected $id_area, $id_event, $id_tugas, $id_visitor, $event_id, $staff_id, $ci_session_visitor_id, $password;
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper('main_helper');
@@ -420,6 +423,7 @@ class Staff_controller extends CI_Controller {
 			}
 
 			public function event_aktivasi_otomatis(){
+				$callback = [];
 				if($this->input->is_ajax_request()){
 					// $this->staff_model->aksi_event_aktivasi_otomatis();
 					$all_event = $this->staff_model->get_tb_event();
@@ -435,7 +439,7 @@ class Staff_controller extends CI_Controller {
 								if($data_event->jam_dibuka <= mdate('%H:%i:%s')){
 
 									// jika input jam_ditutup lebih besar dari jam sekarang
-									if($data_event->jam_ditutup > mdate('%H:%i:%s')){
+									if($data_event->jam_ditutup >= mdate('%H:%i:%s')){
 										if($data_event->status != "active"){
 											$status = "active";
 
@@ -456,45 +460,84 @@ class Staff_controller extends CI_Controller {
 												'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
 											), true);
 
-											$callback = array(
+											$callback[] = array(
 												'status'=>'sukses',
-												'pesan'=>'Event berhasil ditambahkan.',
 												'view_tabel_event'=>$view_tabel_event,
+												'pesan'=>"event ".$data_event->nama_event." telah dibuka."
 											);
 										}else{
-											$callback = array(
+											$callback[] = array(
 												'status'=>'gagal',
 											);
 										}
 									// jika input jam_ditutup kurang dari jam sekarang
-									}elseif($data_event->jam_ditutup < mdate('%H:%i:%s')){
+									}elseif($data_event->jam_ditutup <= mdate('%H:%i:%s')){
 										if($data_event->status != "not_active"){
-											$status = "not_active";
+											// update tabel_event
+												$data_tabel_event = [
+													"status" => htmlspecialchars("not_active"),
+												];
+												$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+												
+											// delete session staff petugas pintu (logout)
+												$session_user = $this->db->get_where('ci_sessions', ["id_event"=>$data_event->id_event])->result();
 
-											$data_tabel_event = [
-												"status" => htmlspecialchars($status),
-											];
-											$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+												$tabel_staff = $this->staff_model->get_tb_staff();
+												foreach($tabel_staff as $data_tabel_staff){
+													foreach($session_user as $data_staff){
+														if($data_staff->user_id == $data_tabel_staff->staff_id){
+															$log_stat = 'offline';
+															$this->db->set('is_active', $log_stat);
+															$this->db->where('staff_id', $data_staff->user_id);
+															$this->db->update('tabel_staff');
+													
+															$this->db->delete('ci_sessions', ["user_id" => $data_staff->user_id, "id_event" => $data_staff->id_event]); // hapus data sesion dari database
+														}
+													}
+												}
+
+											// scan keluar visitor
+												$tabel_visitor = $this->staff_model->get_tb_visitor();
+												
+												foreach($tabel_visitor as $data_tabel_visitor){
+													foreach($session_user as $data_visitor){
+														if($data_visitor->user_id == $data_tabel_visitor->id_visitor){
+															if($data_tabel_visitor->status == "didalam_area"){
+																$data_update_tabel_tracking = [
+																	"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+																];
+																$this->db->order_by('time_in_area', 'DESC')->limit(1)->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$data_tabel_visitor->id_visitor]);
+															}
+															$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'id_petugas_pintu_keluar' => null, 'time_out_event' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'telah_keluar_event'], ['id_visitor' => $data_tabel_visitor->id_visitor]);
+														
+															// hapus gambar barcode visitor berdasarkan id_visitor
+															unlink(FCPATH . 'assets/img/barcode/' . $data_tabel_visitor->id_visitor .'.png');
+												
+															// update ci_sessions visitor
+															$this->db->delete('ci_sessions', ['user_id' => $data_tabel_visitor->id_visitor]);
+														}
+													}
+												}
 
 											// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
-											$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
-											$id_event = $this->db->get('tabel_event')->row_array();
+												$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
+												$id_event = $this->db->get('tabel_event')->row_array();
 
-											$view_tabel_event = $this->load->view('tabel/tabel_event', array(
-												'all_event' => $this->staff_model->get_tb_event(),
-												'all_area' => $this->staff_model->get_tb_area(),
-												'staff_nganggur' => $staff_nganggur,
-												'all_staff' => $this->staff_model->get_tb_staff(),
-												'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
-											), true);
+												$view_tabel_event = $this->load->view('tabel/tabel_event', array(
+													'all_event' => $this->staff_model->get_tb_event(),
+													'all_area' => $this->staff_model->get_tb_area(),
+													'staff_nganggur' => $staff_nganggur,
+													'all_staff' => $this->staff_model->get_tb_staff(),
+													'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
+												), true);
 
-											$callback = array(
+											$callback[] = array(
 												'status'=>'sukses',
-												'pesan'=>'Event berhasil ditambahkan.',
 												'view_tabel_event'=>$view_tabel_event,
+												'pesan'=>"event ".$data_event->nama_event." telah ditutup."
 											);
 										}else{
-											$callback = array(
+											$callback[] = array(
 												'status'=>'gagal',
 											);
 										}
@@ -503,12 +546,52 @@ class Staff_controller extends CI_Controller {
 								// jika input jam_dibuka lebih besar dari jam sekarang
 								}elseif($data_event->jam_dibuka > mdate('%H:%i:%s')){
 									if($data_event->status != "not_active"){
-										$status = "not_active";
+										// update tabel_event
+											$data_tabel_event = [
+												"status" => htmlspecialchars("not_active"),
+											];
+											$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+											
+										// delete session staff petugas pintu (logout)
+											$session_user = $this->db->get_where('ci_sessions', ["id_event"=>$data_event->id_event])->result();
 
-										$data_tabel_event = [
-											"status" => htmlspecialchars($status),
-										];
-										$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+											$tabel_staff = $this->staff_model->get_tb_staff();
+											foreach($tabel_staff as $data_tabel_staff){
+												foreach($session_user as $data_staff){
+													if($data_staff->user_id == $data_tabel_staff->staff_id){
+														$log_stat = 'offline';
+														$this->db->set('is_active', $log_stat);
+														$this->db->where('staff_id', $data_staff->user_id);
+														$this->db->update('tabel_staff');
+												
+														$this->db->delete('ci_sessions', ["user_id" => $data_staff->user_id, "id_event" => $data_staff->id_event]); // hapus data sesion dari database
+													}
+												}
+											}
+
+										// scan keluar visitor
+											$tabel_visitor = $this->staff_model->get_tb_visitor();
+											
+											foreach($tabel_visitor as $data_tabel_visitor){
+												foreach($session_user as $data_visitor){
+													if($data_visitor->user_id == $data_tabel_visitor->id_visitor){
+														if($data_tabel_visitor->status == "didalam_area"){
+															$data_update_tabel_tracking = [
+																"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+															];
+															$this->db->order_by('time_in_area', 'DESC')->limit(1)->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$data_tabel_visitor->id_visitor]);
+														}
+														$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'id_petugas_pintu_keluar' => null, 'time_out_event' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'telah_keluar_event'], ['id_visitor' => $data_tabel_visitor->id_visitor]);
+													
+														// hapus gambar barcode visitor berdasarkan id_visitor
+														unlink(FCPATH . 'assets/img/barcode/' . $data_tabel_visitor->id_visitor .'.png');
+											
+														// update ci_sessions visitor
+														$this->db->delete('ci_sessions', ['user_id' => $data_tabel_visitor->id_visitor]);
+													}
+												}
+											}
+
 
 										// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
 										$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
@@ -522,13 +605,13 @@ class Staff_controller extends CI_Controller {
 											'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
 										), true);
 
-										$callback = array(
+										$callback[] = array(
 											'status'=>'sukses',
-											'pesan'=>'Event berhasil ditambahkan.',
 											'view_tabel_event'=>$view_tabel_event,
+											'pesan'=>"event ".$data_event->nama_event." telah ditutup."
 										);
 									}else{
-										$callback = array(
+										$callback[] = array(
 											'status'=>'gagal',
 										);
 									}
@@ -537,12 +620,52 @@ class Staff_controller extends CI_Controller {
 							// jika input tanggal_selesai kurang dari tanggal sekarang
 							}elseif($data_event->tanggal_ditutup < mdate('%Y-%m-%d')){
 								if($data_event->status != "not_active"){
-									$status = "not_active";
+									// update tabel_event
+										$data_tabel_event = [
+											"status" => htmlspecialchars("not_active"),
+										];
+										$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+										
+									// delete session staff petugas pintu (logout)
+										$session_user = $this->db->get_where('ci_sessions', ["id_event"=>$data_event->id_event])->result();
 
-									$data_tabel_event = [
-										"status" => htmlspecialchars($status),
-									];
-									$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+										$tabel_staff = $this->staff_model->get_tb_staff();
+										foreach($tabel_staff as $data_tabel_staff){
+											foreach($session_user as $data_staff){
+												if($data_staff->user_id == $data_tabel_staff->staff_id){
+													$log_stat = 'offline';
+													$this->db->set('is_active', $log_stat);
+													$this->db->where('staff_id', $data_staff->user_id);
+													$this->db->update('tabel_staff');
+											
+													$this->db->delete('ci_sessions', ["user_id" => $data_staff->user_id, "id_event" => $data_staff->id_event]); // hapus data sesion dari database
+												}
+											}
+										}
+
+									// scan keluar visitor
+										$tabel_visitor = $this->staff_model->get_tb_visitor();
+										
+										foreach($tabel_visitor as $data_tabel_visitor){
+											foreach($session_user as $data_visitor){
+												if($data_visitor->user_id == $data_tabel_visitor->id_visitor){
+													if($data_tabel_visitor->status == "didalam_area"){
+														$data_update_tabel_tracking = [
+															"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+														];
+														$this->db->order_by('time_in_area', 'DESC')->limit(1)->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$data_tabel_visitor->id_visitor]);
+													}
+													$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'id_petugas_pintu_keluar' => null, 'time_out_event' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'telah_keluar_event'], ['id_visitor' => $data_tabel_visitor->id_visitor]);
+												
+													// hapus gambar barcode visitor berdasarkan id_visitor
+													unlink(FCPATH . 'assets/img/barcode/' . $data_tabel_visitor->id_visitor .'.png');
+										
+													// update ci_sessions visitor
+													$this->db->delete('ci_sessions', ['user_id' => $data_tabel_visitor->id_visitor]);
+												}
+											}
+										}
+
 
 									// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
 									$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
@@ -556,13 +679,13 @@ class Staff_controller extends CI_Controller {
 										'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
 									), true);
 
-									$callback = array(
+									$callback[] = array(
 										'status'=>'sukses',
-										'pesan'=>'Event berhasil ditambahkan.',
 										'view_tabel_event'=>$view_tabel_event,
+										'pesan'=>"event ".$data_event->nama_event." telah ditutup."
 									);
 								}else{
-									$callback = array(
+									$callback[] = array(
 										'status'=>'gagal',
 									);
 								}
@@ -571,12 +694,52 @@ class Staff_controller extends CI_Controller {
 						// jika input tanggal_mulai lebih besar dari tanggal sekarang
 						}elseif($data_event->tanggal_dibuka > mdate('%Y-%m-%d')){
 							if($data_event->status != "not_active"){
-								$status = "not_active";
+								// update tabel_event
+									$data_tabel_event = [
+										"status" => htmlspecialchars("not_active"),
+									];
+									$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+									
+								// delete session staff petugas pintu (logout)
+									$session_user = $this->db->get_where('ci_sessions', ["id_event"=>$data_event->id_event])->result();
 
-								$data_tabel_event = [
-									"status" => htmlspecialchars($status),
-								];
-								$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+									$tabel_staff = $this->staff_model->get_tb_staff();
+									foreach($tabel_staff as $data_tabel_staff){
+										foreach($session_user as $data_staff){
+											if($data_staff->user_id == $data_tabel_staff->staff_id){
+												$log_stat = 'offline';
+												$this->db->set('is_active', $log_stat);
+												$this->db->where('staff_id', $data_staff->user_id);
+												$this->db->update('tabel_staff');
+										
+												$this->db->delete('ci_sessions', ["user_id" => $data_staff->user_id, "id_event" => $data_staff->id_event]); // hapus data sesion dari database
+											}
+										}
+									}
+
+								// scan keluar visitor
+									$tabel_visitor = $this->staff_model->get_tb_visitor();
+									
+									foreach($tabel_visitor as $data_tabel_visitor){
+										foreach($session_user as $data_visitor){
+											if($data_visitor->user_id == $data_tabel_visitor->id_visitor){
+												if($data_tabel_visitor->status == "didalam_area"){
+													$data_update_tabel_tracking = [
+														"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+													];
+													$this->db->order_by('time_in_area', 'DESC')->limit(1)->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$data_tabel_visitor->id_visitor]);
+												}
+												$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'id_petugas_pintu_keluar' => null, 'time_out_event' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'telah_keluar_event'], ['id_visitor' => $data_tabel_visitor->id_visitor]);
+											
+												// hapus gambar barcode visitor berdasarkan id_visitor
+												unlink(FCPATH . 'assets/img/barcode/' . $data_tabel_visitor->id_visitor .'.png');
+									
+												// update ci_sessions visitor
+												$this->db->delete('ci_sessions', ['user_id' => $data_tabel_visitor->id_visitor]);
+											}
+										}
+									}
+
 
 								// Load ulang tabel_event.php agar data yang baru bisa muncul di tabel pada admin_event.php
 								$staff_nganggur = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
@@ -590,20 +753,20 @@ class Staff_controller extends CI_Controller {
 									'all_tugas_staff_petugas' => $this->staff_model->get_tb_tugas_staff_petugas(),
 								), true);
 
-								$callback = array(
+								$callback[] = array(
 									'status'=>'sukses',
-									'pesan'=>'Event berhasil ditambahkan.',
 									'view_tabel_event'=>$view_tabel_event,
+									'pesan'=>"event ".$data_event->nama_event." telah ditutup."
 								);
 							}else{
-								$callback = array(
+								$callback[] = array(
 									'status'=>'gagal',
 								);
 							}
 						}
 					}
 				}else{
-					$callback = array(
+					$callback[] = array(
 						'status'=>'gagal',
 					);
 				}

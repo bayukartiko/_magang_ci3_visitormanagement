@@ -27,7 +27,7 @@
 				</td>
 				<td>
 					<?php if($event_data->status == "active"){
-						echo "Dilaksanakan";
+						echo "Dibuka";
 					}else{
 						echo "Ditutup";
 					} ?>

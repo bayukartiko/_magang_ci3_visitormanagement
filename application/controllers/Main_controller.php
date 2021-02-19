@@ -18,6 +18,9 @@ class Main_controller extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+
+	protected $id_event, $id_visitor, $id_area, $id_petugas, $id_tugas, $event_id, $staff_id, $ci_session_visitor_id, $password;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -32,36 +35,158 @@ class Main_controller extends CI_Controller {
 		redirect('staff_only/login');
 	}
 
-	// public function coba_barcode(){
-		// 	$generatorHTML = new Picqer\Barcode\BarcodeGeneratorHTML();
-		// 	$generatorSVG = new Picqer\Barcode\BarcodeGeneratorSVG();
-		// 	$generatorPNG = new Picqer\Barcode\BarcodeGeneratorPNG();
-		// 	$generatorJPG = new Picqer\Barcode\BarcodeGeneratorJPG();
-
-		// 	// Most used types are TYPE_CODE_128 and TYPE_CODE_39. Because of the best scanner support, variable length and most chars supported.
-		// 	// Code 128 and Code 39 should not be used for products that are for sale in retail stores (retail products need EAN barcodes).
-
-		// 	$kode_angka = '1234567890';
-		// 	$kode_huruf = 'abcdefghijklmnopqrstuvwxyz';
-		// 	// echo $generatorHTML->getBarcode('210131000001', $generatorHTML::TYPE_CODE_128);
-		// 	// file_put_contents('assets/img/barcode/'.$kode.'.jpg', $generatorJPG->getBarcode($kode, $generatorJPG::TYPE_CODABAR));
-		// 	file_put_contents('assets/img/barcode/'.$kode_angka.'.png', $generatorJPG->getBarcode($kode_angka, $generatorJPG::TYPE_CODE_128));
-		// 	echo '<img src="assets/img/barcode/'.$kode_angka.'.png">';
-		// 	// echo '<img src="data:image/png;base64,' . base64_encode($generatorPNG->getBarcode($kode, $generatorPNG::TYPE_CODE_128)) . '">';
-
-		// 	// save jpg barcode to disk
-		// 	// $generator = new Picqer\Barcode\BarcodeGeneratorJPG();
-		// 	// file_put_contents('barcode.jpg', $generator->getBarcode('081231723897', $generator::TYPE_CODABAR));
-	// }
-
 	public function redirect_register(){
 		redirect('visitor/register');
 	}
 
-	public function page_register_visitor(){
-		// $this->session->sess_destroy();
-		$data["nama_event"] = 'nama event';
+	public function cek_event_jamDitutup($custom_url){
+		if($this->input->is_ajax_request()){
+			$event = $this->db->get_where('tabel_event', ['custom_url' => $custom_url])->row_array();
+			
+			if($event["status"] == "active"){ // jika status event aktif
+				if(mdate('%H:%i:%s') >= $event["jam_ditutup"]){ // jika jam sekarang lebih atau sama dengan dari jam tutup event
 
+					if($this->session->userdata("id_visitor")){ // jika masih ada session
+						$tabel_tracking = $this->db->get("tabel_tracking")->result();
+						$tabel_visitor = $this->db->get("tabel_visitor")->result();
+						
+						foreach($tabel_visitor as $data_tabel_visitor){
+							if($data_tabel_visitor->id_visitor == $this->session->userdata("id_visitor")){
+								if($data_tabel_visitor->status == "didalam_area"){
+									$data_update_tabel_tracking = [
+										"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+									];
+									$this->db->order_by('time_in_area', 'DESC')->limit(1)->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$this->session->userdata("id_visitor")]);
+								}
+							}
+						}
+		
+						$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'id_petugas_pintu_keluar' => $this->session->userdata('staff_id'), 'time_out_event' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'telah_keluar_event'], ['id_visitor' => $this->session->userdata("id_visitor")]);
+						// hapus gambar barcode visitor berdasarkan id_visitor
+		
+							unlink(FCPATH . 'assets/img/barcode/' . $this->session->userdata("id_visitor") .'.png');
+				
+						// update ci_sessions visitor
+						// $this->db->update('ci_sessions', ["status"=>"visitor_telah_keluar_event"], ['user_id' => $id_visitor]);
+						$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
+	
+						$event_data = $this->db->get_where('tabel_event', ['custom_url' => $custom_url])->row_array();
+						$all_area = $this->db->get('tabel_area')->result();
+						$all_data_saya = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
+						$all_data_tracking_saya = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+						$all_data_tracking_saya_1 = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+						$data_session = $this->db->get_where('ci_sessions', ["user_id" => $this->session->userdata("id_visitor")])->row_array();
+
+						$view_register = $this->load->view('registrasi/b4/view_register', array(
+							"event" => $event_data,
+							"nama_event" => $event_data["nama_event"],
+							"all_data_saya" => $all_data_saya, 
+							"all_data_tracking_saya" => $all_data_tracking_saya, 
+							"all_data_tracking_saya_1" => $all_data_tracking_saya_1, 
+							"all_area" => $all_area, 
+							"data_session"=>$data_session
+						), true);
+
+						$callback = array(
+							"view_register" => $view_register,
+							"event_status" => $event["status"]
+						);
+						// redirect($custom_url);
+						// header('Location: '.base_url().$custom_url); 
+						// header("Refresh:0");
+					}else{ // jika tidak ada session
+						$event_data = $this->db->get_where('tabel_event', ['custom_url' => $custom_url])->row_array();
+						$all_area = $this->db->get('tabel_area')->result();
+						$all_data_saya = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
+						$all_data_tracking_saya = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+						$all_data_tracking_saya_1 = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+						$data_session = $this->db->get_where('ci_sessions', ["user_id" => $this->session->userdata("id_visitor")])->row_array();
+
+						$view_register = $this->load->view('registrasi/b4/view_register', array(
+							"event" => $event_data,
+							"nama_event" => $event_data["nama_event"],
+							"all_data_saya" => $all_data_saya, 
+							"all_data_tracking_saya" => $all_data_tracking_saya, 
+							"all_data_tracking_saya_1" => $all_data_tracking_saya_1, 
+							"all_area" => $all_area, 
+							"data_session"=>$data_session
+						), true);
+
+						$callback = array(
+							"view_register" => $view_register,
+							"event_status" => $event_data["status"]
+						);
+						// header('Location: '.base_url().$custom_url); 
+						// header("Refresh:0");
+					}
+					
+				}else{ // jika jam sekarang kurang dari jam tutup event
+					$callback = array(
+						// "event_status" => $event["status"]
+					);
+				}
+			}else{ // jika status event tidak aktif
+				if($this->session->userdata("id_visitor")){ // jika session masih ada
+					$tabel_tracking = $this->db->get("tabel_tracking")->result();
+					$tabel_visitor = $this->db->get("tabel_visitor")->result();
+					
+					foreach($tabel_visitor as $data_tabel_visitor){
+						if($data_tabel_visitor->id_visitor == $this->session->userdata("id_visitor")){
+							if($data_tabel_visitor->status == "didalam_area"){
+								$data_update_tabel_tracking = [
+									"time_out_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),
+								];
+								$this->db->order_by('time_in_area', 'DESC')->limit(1)->update('tabel_tracking', $data_update_tabel_tracking, ["id_visitor"=>$this->session->userdata("id_visitor")]);
+							}
+						}
+					}
+	
+					$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'id_petugas_pintu_keluar' => $this->session->userdata('staff_id'), 'time_out_event' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'telah_keluar_event'], ['id_visitor' => $this->session->userdata("id_visitor")]);
+					// hapus gambar barcode visitor berdasarkan id_visitor
+	
+						unlink(FCPATH . 'assets/img/barcode/' . $this->session->userdata("id_visitor") .'.png');
+			
+					// update ci_sessions visitor
+					// $this->db->update('ci_sessions', ["status"=>"visitor_telah_keluar_event"], ['user_id' => $id_visitor]);
+					$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
+				}
+
+				$event_data = $this->db->get_where('tabel_event', ['custom_url' => $custom_url])->row_array();
+				$all_area = $this->db->get('tabel_area')->result();
+				$all_data_saya = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
+				$all_data_tracking_saya = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+				$all_data_tracking_saya_1 = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+				$data_session = $this->db->get_where('ci_sessions', ["user_id" => $this->session->userdata("id_visitor")])->row_array();
+
+				$view_register = $this->load->view('registrasi/b4/view_register', array(
+					"event" => $event_data,
+					"nama_event" => $event_data["nama_event"],
+					"all_data_saya" => $all_data_saya, 
+					"all_data_tracking_saya" => $all_data_tracking_saya, 
+					"all_data_tracking_saya_1" => $all_data_tracking_saya_1, 
+					"all_area" => $all_area, 
+					"data_session"=>$data_session
+				), true);
+
+				$callback = array(
+					"view_register" => $view_register,
+					"event_status" => $event["status"]
+				);
+			}
+		};
+		// var_dump($callback_status);
+		echo json_encode($callback);
+	}
+
+	public function page_register_visitor($custom_url){
+		$event_data = $this->db->get_where('tabel_event', ['custom_url' => $custom_url])->row_array();
+
+		// $this->session->sess_destroy();
+		$data["id_event"] = $event_data["id_event"];
+		$data["nama_event"] = $event_data["nama_event"];
+		$data["custom_url"] = $event_data["custom_url"];
+
+		$data["event"] = $event_data;
 		$data["all_area"] = $this->db->get('tabel_area')->result();
 		$data["all_data_saya"] = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
 		$data["all_data_tracking_saya"] = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
@@ -116,6 +241,8 @@ class Main_controller extends CI_Controller {
 
 		$staff = $this->db->get_where('tabel_staff', ['username' => $username])->row_array();
 		$role = $this->db->get_where('tabel_role', ['role_id' => $staff['role_id']])->row_array();
+		$tugas_staff = $this->db->get_where('tabel_tugas_staff_petugas', ["id_tugas"=>$staff["id_tugas"]])->row_array();
+		$event = $this->db->get_where('tabel_event', ["id_event"=>$tugas_staff["id_event"]])->row_array();
 
 		if($staff){ // staff terdeteksi ada
 			if($staff['verified'] == '1'){
@@ -125,38 +252,46 @@ class Main_controller extends CI_Controller {
 					// if($password == $staff['password']){
 
 						if($staff["sedang_bertugas"] == true || $role["role_id"] == "1"){
-							$log_stat = 'online';
-							$this->db->set('is_active', $log_stat);
-							$this->db->where('staff_id', $staff['staff_id']);
-							$this->db->update('tabel_staff');
-							$staff = $this->db->get_where('tabel_staff', ['username' => $username])->row_array();
-	
-							$this->db->update('ci_sessions', ["user_id" => $staff['staff_id'], "status"=>"adalah_staff"], ["id" => session_id()]);
-	
-							$data = [
-								"staff_id" => $staff["staff_id"],
-								"role_id" => $staff["role_id"],
-								"username" => $staff["username"],
-								"nama" => $staff["nama"],
-								"sedang_bertugas" => $staff["sedang_bertugas"],
-								"id_tugas" => $staff["id_tugas"],
-								"verified" => $staff["verified"],
-								"is_active" => $staff["is_active"]
-							];
-							// $this->session->sess_expiration = '10';// expires in 4 hours (14400)
-							$this->session->set_userdata($data);
-							// $session = $this->session->set_userdata($data);
-							// var_dump($session);
-							// die;
-	
-							// cek tipe user
-							if($role['role_id'] == '1'){
-								redirect('staff_only/admin/home');
-							}elseif($role['role_id'] == '2'){
-								redirect('staff_only/petugas/scan');
+							
+							if($event["status"] != "not_active"){
+								$log_stat = 'online';
+								$this->db->set('is_active', $log_stat);
+								$this->db->where('staff_id', $staff['staff_id']);
+								$this->db->update('tabel_staff');
+								$staff = $this->db->get_where('tabel_staff', ['username' => $username])->row_array();
+								
+								if($staff["role_id"] == "1"){
+									$this->db->update('ci_sessions', ["user_id" => $staff['staff_id'], "status"=>"adalah_staff"], ["id" => session_id()]);
+								}elseif($staff["role_id"] == "2"){
+									$this->db->update('ci_sessions', ["user_id" => $staff['staff_id'], "id_event"=>$tugas_staff['id_event'], "status"=>"adalah_staff"], ["id" => session_id()]);
+								}
+		
+								$data = [
+									"staff_id" => $staff["staff_id"],
+									"role_id" => $staff["role_id"],
+									"username" => $staff["username"],
+									"nama" => $staff["nama"],
+									"sedang_bertugas" => $staff["sedang_bertugas"],
+									"id_tugas" => $staff["id_tugas"],
+									"verified" => $staff["verified"],
+									"is_active" => $staff["is_active"]
+								];
+								// $this->session->sess_expiration = '60';// expires in 4 hours (14400)
+								$this->session->set_userdata($data);
+		
+								// cek tipe user
+								if($role['role_id'] == '1'){
+									redirect('staff_only/admin/home');
+								}elseif($role['role_id'] == '2'){
+									redirect('staff_only/petugas/scan');
+								}else{
+									echo 'role tidak dikenal !';
+								}
 							}else{
-								echo 'role tidak dikenal !';
+								$this->session->set_flashdata('gagal', 'Maaf, event ini sudah ditutup');
+								redirect('staff_only/login');
 							}
+
 						}else{
 							$this->session->set_flashdata('gagal', 'Maaf, anda belum bertugas pada event manapun, silahkan komunikasikan dengan pihak yang bertanggung jawab');
 							redirect('staff_only/login');
@@ -184,7 +319,7 @@ class Main_controller extends CI_Controller {
 		
 	}
 
-	public function aksi_register_visitor(){
+	public function aksi_register_visitor($id_event){
 		if($this->input->is_ajax_request()){
 	
 			if($this->main_model->validasi_register_pengunjung() == true){
@@ -201,10 +336,9 @@ class Main_controller extends CI_Controller {
 					$d = new DateTime();
 					$tgl = $d->format("ymdu");
 					$batas_user = str_pad($kode, 7, "0", STR_PAD_LEFT);
-					// $id_visitor = "VSTR".$tgl.$batas_user;
 					$id_visitor = "VSTR".$tgl.$batas_user;
 
-				$this->main_model->simpan_register_pengunjung($id_visitor);
+				$this->main_model->simpan_register_pengunjung($id_visitor, $id_event);
 
 				// qr code
 					// $config['cacheable'] = true; //boolean, the default is true
@@ -227,10 +361,12 @@ class Main_controller extends CI_Controller {
 					$generatorJPG = new Picqer\Barcode\BarcodeGeneratorJPG();
 					file_put_contents('assets/img/barcode/'.$id_visitor.'.png', $generatorJPG->getBarcode($id_visitor, $generatorJPG::TYPE_CODE_128));
 
+				$event_data = $this->db->get_where('tabel_event', ['id_event' => $id_event])->row_array();
 				$all_area = $this->db->get('tabel_area')->result();
 				$all_data_saya = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
 				$all_data_tracking_saya = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
 				$all_data_tracking_saya_1 = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+				$data_session = $this->db->get_where('ci_sessions', ["user_id" => $this->session->userdata("id_visitor")])->row_array();
 				
 				// Load ulang view_register.php agar data yang baru bisa muncul di tabel pada visitorRegister2.php
 				// $html = $this->load->view('registrasi/view_register', array(
@@ -241,16 +377,18 @@ class Main_controller extends CI_Controller {
 				// ), true);
 				
 				$html = $this->load->view('registrasi/b4/view_register', array(
-					"all_area" => $all_area,
-					"all_data_saya" => $all_data_saya,
-					"all_data_tracking_saya" => $all_data_tracking_saya,
-					"all_data_tracking_saya_1" => $all_data_tracking_saya_1,
-					"data_session" => $this->db->get_where('ci_sessions', ["user_id" => $id_visitor])->row_array()
+					"event" => $event_data,
+					"nama_event" => $event_data["nama_event"],
+					"all_data_saya" => $all_data_saya, 
+					"all_data_tracking_saya" => $all_data_tracking_saya, 
+					"all_data_tracking_saya_1" => $all_data_tracking_saya_1, 
+					"all_area" => $all_area, 
+					"data_session"=>$data_session
 				), true);
 
 				$callback = array(
 					'status'=>'sukses',
-					'pesan'=>'Selamat! anda sudah terdaftar.',
+					'pesan'=>'Hore! anda sudah terdaftar.',
 					'html'=>$html
 				);
 			}else{

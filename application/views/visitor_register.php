@@ -1,5 +1,7 @@
+<input type="hidden" id="id_event" value="<?= $id_event ?>" hidden aria-hidden="true">
+<input type="hidden" id="custom_url" value="<?= $custom_url ?>" hidden aria-hidden="true">
 <div id="view">
-	<?php $this->load->view('registrasi/b4/view_register', ["all_data_saya" => $all_data_saya, "all_data_tracking_saya" => $all_data_tracking_saya, "all_data_tracking_saya_1" => $all_data_tracking_saya_1, "all_area" => $all_area, "data_session"=>$data_session]); ?>
+	<?php $this->load->view('registrasi/b4/view_register', ["all_data_saya" => $all_data_saya, "all_data_tracking_saya" => $all_data_tracking_saya, "all_data_tracking_saya_1" => $all_data_tracking_saya_1, "all_area" => $all_area, "data_session"=>$data_session, "event"=>$event]); ?>
 </div>
 
 	<!-- modal form register -->
@@ -105,6 +107,11 @@
 	<script>
 		$(document).ready(function(){
 
+			// window.addEventListener('beforeunload', function (e) { 
+			// 	e.preventDefault(); 
+			// 	e.returnValue = '';
+			// });
+
 			$('[data-toggle="tooltip"]').tooltip();
 
 			$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
@@ -116,7 +123,7 @@
 
 			function register_visitor(){
 				$.ajax({
-					url: '<?= base_url(); ?>main_controller/aksi_register_visitor', // URL tujuan
+					url: '<?= base_url(); ?>visitor/register/'+$("#id_event").val()+'', // URL tujuan
 					type: 'POST',
 					// data: $("#form-modal form").serialize(),
 					data: new FormData(document.getElementById('form-register')),
@@ -246,6 +253,37 @@
 					}
 				});
 			}
+
+			var sudah_reload = false;
+			function cek_event(){
+				$.ajax({
+					url: '<?= base_url(); ?>visitor/cek_event_jamDitutup/'+$('#custom_url').val()+'', // URL tujuan
+					type: 'POST', // Tentukan type nya POST atau GET
+					dataType: 'JSON',
+					success: function(callback){ // Ketika proses pengiriman berhasil
+
+						if(callback.event_status == "not_active"){
+							
+							if(sudah_reload == false){
+								// window.location.reload();
+								$("#view").html(callback.view_register);
+								sudah_reload = true;
+							}
+							
+						}
+
+					},
+					error: function(xhr, ajaxOptions, thrownError, errorMessage, callback) {
+						console.log("error :", errorMessage);
+						console.log(callback)
+						// alert(xhr.responseText);
+						console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+			}
+			setInterval(function(){
+				cek_event();
+			}, 10000); // 10 detik
 
 		});
 	</script>

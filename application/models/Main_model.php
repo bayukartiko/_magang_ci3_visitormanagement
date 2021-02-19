@@ -2,6 +2,8 @@
 
 class Main_model extends CI_Model{
 
+	protected $id_event, $id_visitor, $ci_session_visitor_id, $password;
+
 	public function validasi_register_pengunjung(){
 		$this->form_validation->set_rules('nama_depan', 'nama depan', 'required|trim', [
 			'required' => 'Nama depan harus diisi !'
@@ -42,10 +44,10 @@ class Main_model extends CI_Model{
 		}
 	}
 
-	public function simpan_register_pengunjung($id_visitor){
+	public function simpan_register_pengunjung($id_visitor, $id_event){
 		$data_tabel_visitor = [
 			"id_visitor" => htmlspecialchars($id_visitor),
-			"id_event" => htmlspecialchars('EVNT2102146814270000001'),
+			"id_event" => htmlspecialchars($id_event),
 			"nama_visitor" => htmlspecialchars($this->input->post('nama_depan', true)) . ' ' . htmlspecialchars($this->input->post('nama_belakang', true)),
 			"perusahaan_visitor" => htmlspecialchars($this->input->post('nama_perusahaan', true)),
 			"jabatan_visitor" => htmlspecialchars($this->input->post('jabatan', true)),
@@ -64,7 +66,7 @@ class Main_model extends CI_Model{
 		$this->db->insert('tabel_visitor', $data_tabel_visitor);
 
 		$this->session->set_userdata($data_tabel_visitor);
-		$this->db->update('ci_sessions', ["user_id" => $this->session->userdata('id_visitor'), "status"=>"visitor_telah_masuk_event"], ["id" => session_id()]);
+		$this->db->update('ci_sessions', ["user_id" => $this->session->userdata('id_visitor'), "id_event" => $id_event, "status"=>"visitor_telah_masuk_event"], ["id" => session_id()]);
 	}
 }
 

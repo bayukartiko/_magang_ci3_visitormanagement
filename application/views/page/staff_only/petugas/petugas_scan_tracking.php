@@ -665,6 +665,15 @@
 					}
 				});
 			};
+
+			setInterval(function(){
+				// <.?php if(!$this->session->userdata("nama")){
+				// 	if($this->session->userdata("role_id") == "2"){ // jika user saat ini adalah admin
+				// 		$this->session->set_flashdata('gagal', 'Oops, event ini sudah ditutup !');
+				// 		redirect('staff_only/login'); 
+				// 	}
+				// } ?> [lupa, php gk bisa jalan di JS. kecuali buat echo]
+			}, 10000); // 10 detik
 		});
 	</script>
 
