@@ -67,7 +67,7 @@ $route['visitor/logout'] = 'main_controller/visitor_logout';
 $route['staff_only'] = 'main_controller/index_staff';
 $route['staff_only/login'] = 'main_controller/page_login_staff';
 $route['staff_only/admin/home'] = 'staff_controller/page_admin_dashboard';
-$route['staff_only/admin/tracking'] = 'staff_controller/page_admin_tracking';
+$route['staff_only/admin/data_tracking'] = 'staff_controller/page_admin_tracking';
 $route['staff_only/admin/report'] = 'staff_controller/page_admin_report';
 $route['staff_only/admin/daftar_event'] = 'staff_controller/page_admin_event_management';
 $route['staff_only/admin/daftar_staff'] = 'staff_controller/page_admin_daftar_staff';
@@ -75,6 +75,8 @@ $route['staff_only/admin/data_list'] = 'staff_controller/page_admin_data_list';
 $route['staff_only/admin/logout'] = 'staff_controller/logout';
 
 $route['staff_only/admin/aktivasi_event_otomatis'] = 'staff_controller/event_aktivasi_otomatis';
+$route['staff_only/admin/ubah_view_tracking_event/(:any)'] = 'staff_controller/ubah_view_tracking_event/$1';
+$route['staff_only/admin/ubah_view_grafik_tracking_event_total_visitor/(:any)/(:any)'] = 'staff_controller/ubah_view_grafik_tracking_event_total_visitor/$1/$2';
 
 $route['staff_only/petugas/scan'] = 'staff_controller/page_petugas_scan';
 $route['staff_only/petugas/logout'] = 'staff_controller/logout';

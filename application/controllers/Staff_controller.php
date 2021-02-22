@@ -40,6 +40,7 @@ class Staff_controller extends CI_Controller {
 
 		public function page_admin_tracking(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["all_event"] = $this->staff_model->get_tb_event();
 
 			// echo 'selamat datang ' . $data['tb_user']['username'];
 			$this->load->view('template/staff_only/header', $data);
@@ -48,6 +49,73 @@ class Staff_controller extends CI_Controller {
 			$this->load->view('page/staff_only/admin/admin_tracking', $data);
 			$this->load->view('template/staff_only/footer', $data);
 		}
+
+			public function ubah_view_tracking_event($id_event){
+				if($this->input->is_ajax_request()){
+					$tabel_event = $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array();
+					$tabel_area = $this->db->get_where("tabel_area", ["id_event"=>$id_event])->row_array();
+
+					$view_tracking_event = $this->load->view('page/staff_only/admin/tracking_event/view_tracking', array(
+						'event' => $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array(), 
+						'id_event'=>$id_event,
+						'all_area' => $this->db->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
+						'all_visitor_join' => $this->db->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
+						'total_visitor' => $this->db->query("SELECT DATE(registered_at) 'mendaftar_pada', COUNT(DISTINCT id_visitor) 'total_visitor' FROM tabel_visitor WHERE registered_at BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY mendaftar_pada")->result(),
+						'visitor_in' => $this->db->query("SELECT DATE(time_in_event) 'waktu_masuk_event', COUNT(DISTINCT id_visitor) 'visitor_in' FROM tabel_visitor WHERE time_in_event BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY waktu_masuk_event")->result(),
+						'visitor_out' => $this->db->query("SELECT DATE(time_out_event) 'waktu_keluar_event', COUNT(DISTINCT id_visitor) 'visitor_out' FROM tabel_visitor WHERE time_out_event BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY waktu_keluar_event")->result(),
+						'all_area'=>$this->db->get_where('tabel_area', ["id_event"=>$id_event])->result(),
+						'hitung_visitor_in_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area"=>null])->num_rows(),
+						'visitor_in_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area"=>null])->result(),
+						'hitung_visitor_out_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area !="=>'NULL'])->num_rows(),
+						'visitor_out_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area !="=>'NULL'])->result(),
+					), true);
+	
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Menampilkan data tracking '.$this->db->get_where("tabel_event", ["id_event"=>$id_event])->row("nama_event").'',
+						'view_tracking_event'=>$view_tracking_event
+					);
+				}
+				echo json_encode($callback);
+			}
+
+			public function ubah_view_grafik_tracking_event_total_visitor($pilihan_grafik, $id_event){
+				if($this->input->is_ajax_request()){
+					if($pilihan_grafik == "hari"){
+						$tabel_event = $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array();
+	
+						$view_grafik_tracking_event_total_visitor = $this->load->view('chart/grafik_tracking_event_total_visitor', array(
+							'event' => $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array(), 
+							'all_visitor' => $this->db->get_where("tabel_visitor", ["id_event"=>$id_event])->row_array(),
+							'id_event'=>$id_event,
+							'total_visitor' => $this->db->query("SELECT DATE(registered_at) 'mendaftar_pada', COUNT(DISTINCT id_visitor) 'total_visitor' FROM tabel_visitor WHERE registered_at BETWEEN '".$tabel_event['tanggal_dibuka'].' '.$tabel_event["jam_dibuka"]."' AND '".$tabel_event['tanggal_ditutup'].' '.$tabel_event["jam_ditutup"]."' GROUP BY mendaftar_pada")->result(),
+							"pilih_grafik"=>"hari"
+						), true);
+		
+						$callback = array(
+							'view_grafik_tracking_event_total_visitor'=>$view_grafik_tracking_event_total_visitor
+						);
+
+					}elseif($pilihan_grafik == "jam"){
+						$tabel_event = $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array();
+	
+						$view_grafik_tracking_event_total_visitor = $this->load->view('chart/grafik_tracking_event_total_visitor', array(
+							'event' => $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array(), 
+							'all_visitor' => $this->db->get_where("tabel_visitor", ["id_event"=>$id_event])->row_array(),
+							'id_event'=>$id_event,
+							'total_visitor' => $this->db->query("SELECT DATE(registered_at) 'mendaftar_pada', COUNT(DISTINCT id_visitor) 'total_visitor' FROM tabel_visitor WHERE registered_at BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY mendaftar_pada")->result(),
+							'visitor_in' => $this->db->query("SELECT CONCAT(DATE(time_in_event), ' ', HOUR(time_in_event), ':00') 'waktu_masuk_event', COUNT(DISTINCT id_visitor) 'visitor_in' FROM tabel_visitor WHERE time_in_event BETWEEN '".$tabel_event['tanggal_dibuka'] .' '.$tabel_event['jam_dibuka']."' AND '".$tabel_event['tanggal_ditutup'] .' '.$tabel_event['jam_ditutup']."' GROUP BY waktu_masuk_event")->result(),
+							'visitor_out' => $this->db->query("SELECT CONCAT(DATE(time_out_event), ' ', HOUR(time_out_event), ':00') 'waktu_keluar_event', COUNT(DISTINCT id_visitor) 'visitor_out' FROM tabel_visitor WHERE time_out_event BETWEEN'".$tabel_event['tanggal_dibuka'] .' '.$tabel_event['jam_dibuka']."' AND '".$tabel_event['tanggal_ditutup'] .' '.$tabel_event['jam_ditutup']."' GROUP BY waktu_keluar_event")->result(),
+							"pilih_grafik"=>"jam"
+						), true);
+		
+						$callback = array(
+							'view_grafik_tracking_event_total_visitor'=>$view_grafik_tracking_event_total_visitor
+						);
+					}
+				}
+				echo json_encode($callback);
+			}
 
 		public function page_admin_report(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();

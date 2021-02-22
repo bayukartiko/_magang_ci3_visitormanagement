@@ -1,123 +1,31 @@
 
-
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Tracking</h1>
-                    <p class="mb-4"><a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Data List / Data tracking</h1>
+					</div>
 
-                    <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <!-- <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Data List Example</h6>
-                        </div> -->
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama</th>
-                                            <th>Perusahaan</th>
-                                            <th>Kantor</th>
-                                            <th>Jabatan</th>
-                                            <th>Email Pribadi</th>
-                                            <th>Email Kantor</th>
-                                            <th>Telepon Pribadi</th>
-                                            <th>Telepon Kantor</th>
-                                            <th>Area</th>
-                                            <th>Waktu</th>
-                                            <th>Status</th>
-                                            <th>Asalan Mengikuti Event</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Nama</th>
-                                            <th>Perusahaan</th>
-                                            <th>Kantor</th>
-                                            <th>Jabatan</th>
-                                            <th>Email Pribadi</th>
-                                            <th>Email Kantor</th>
-                                            <th>Telepon Pribadi</th>
-                                            <th>Telepon Kantor</th>
-                                            <th>Area</th>
-                                            <th>Waktu</th>
-                                            <th>Status</th>
-                                            <th>Asalan Mengikuti Event</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>$86,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cedric Kelly</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>$433,060</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Airi Satou</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>33</td>
-                                            <td>2008/11/28</td>
-                                            <td>$162,700</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Brielle Williamson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>New York</td>
-                                            <td>61</td>
-                                            <td>2012/12/02</td>
-                                            <td>$372,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Herrod Chandler</td>
-                                            <td>Sales Assistant</td>
-                                            <td>San Francisco</td>
-                                            <td>59</td>
-                                            <td>2012/08/06</td>
-                                            <td>$137,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Rhona Davidson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>Tokyo</td>
-                                            <td>55</td>
-                                            <td>2010/10/14</td>
-                                            <td>$327,900</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+						<!-- Card Header - Dropdown -->
+						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+							<h6 class="m-0 font-weight-bold text-primary">List data tracking</h6>
+							<select id="pilih-event" class="form-control w-auto">
+								<option value="" selected disabled>Pilih Event</option>
+								<?php foreach($all_event as $data_event){ ?>
+									<option value="<?= $data_event->id_event ?>"><?= $data_event->nama_event ?></option>
+								<?php } ?>
+							</select>
+						</div>
+						<div class="card-body">
+
+							<div id="view_tracking_event">
+								<?php $this->load->view('page/staff_only/admin/tracking_event/view_tracking', ['id_event'=>null]); ?>
+							</div>
+
+						</div>
+					</div>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -125,18 +33,52 @@
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
+
+	<script>
+		$(document).ready(function(){
+			$("#pilih-event").on('change', function(){
+
+				$.ajax({
+					url: '<?= base_url(); ?>staff_only/admin/ubah_view_tracking_event/'+$(this).val()+'', // URL tujuan
+					type: 'POST',
+					dataType: 'JSON',
+					success: function(callback){ // Ketika proses pengiriman berhasil
+
+						// window.location.reload();
+						// Ganti isi dari div view dengan view yang diambil dari view_register.php
+						$('#view_tracking_event').html(callback.view_tracking_event);
+						
+						const Toast = Swal.mixin({
+							toast: true,
+							position: 'top-start',
+							showConfirmButton: false,
+							timer: 5000,
+							timerProgressBar: true,
+							didOpen: (toast) => {
+								toast.addEventListener('mouseenter', Swal.stopTimer)
+								toast.addEventListener('mouseleave', Swal.resumeTimer)
+							}
+						});
+						Toast.fire({
+							icon: 'success',
+							title: callback.pesan
+						});
+
+					},
+					error: function(xhr, ajaxOptions, thrownError, errorMessage, callback) {
+						console.log("error :", errorMessage);
+						console.log(callback)
+						// alert(xhr.responseText);
+						console.log(thrownError + "\r\n" + xhr.status + "\r\n"  + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+
+			});
+
+		});
+	</script>

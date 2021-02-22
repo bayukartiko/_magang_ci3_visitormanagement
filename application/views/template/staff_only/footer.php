@@ -101,6 +101,8 @@
 			}, 10000); // 10 detik
 		});
 	</script>
+	<!-- buat event baru bug:
+pilih petugas area pas klik tambah gk reload [abis hapus]-->
 
 
 </body>

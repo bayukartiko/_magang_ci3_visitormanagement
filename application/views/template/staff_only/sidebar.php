@@ -73,7 +73,8 @@
                 <div id="datalist" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">Data List:</h6>
-                        <a class="collapse-item" href="<?= base_url('staff_only/admin/tracking') ?>">Tracking</a>
+                        <a class="collapse-item" href="<?= base_url('staff_only/admin/data_tracking') ?>">Data Tracking</a>
+                        <a class="collapse-item" href="<?= base_url('staff_only/admin/data_visitor') ?>">Data Visitor</a>
                     </div>
                 </div>
 			</li>
@@ -81,7 +82,7 @@
 			<li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#report"
                     aria-expanded="true" aria-controls="report">
-                    <i class="fas fa-fw fa-folder"></i>
+                    <i class="fas fa-fw fa-print"></i>
                     <span>Report</span>
                 </a>
                 <div id="report" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
