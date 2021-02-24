@@ -117,16 +117,103 @@ class Staff_controller extends CI_Controller {
 				echo json_encode($callback);
 			}
 
-		public function page_admin_report(){
+		public function page_admin_report_filter(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["all_staff"] = $this->staff_model->get_tb_staff();
+			$data["all_role"] = $this->staff_model->get_tb_role();
+			$data["all_event"] = $this->staff_model->get_tb_event();
+			$data["all_area"] = $this->staff_model->get_tb_area();
+			$data["all_tugas_staff_petugas"] = $this->staff_model->get_tb_tugas_staff_petugas();
+			$data["all_visitor"] = $this->staff_model->get_tb_visitor();
 
 			// echo 'selamat datang ' . $data['tb_user']['username'];
 			$this->load->view('template/staff_only/header', $data);
 			$this->load->view('template/staff_only/sidebar', $data);
 			$this->load->view('template/staff_only/topbar', $data);
-			$this->load->view('page/staff_only/admin/admin_report', $data);
+			$this->load->view('page/staff_only/admin/admin_report_filter', $data);
 			$this->load->view('template/staff_only/footer', $data);
 		}
+			public function ubah_view_report_filter($id_event){
+				if($this->input->is_ajax_request()){
+					$view_report_filter = $this->load->view('page/staff_only/admin/report/view_report_filter', array(
+						'event' => $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array(), 
+						'id_event'=>$id_event,
+						'all_staff'=>$this->staff_model->get_tb_staff(),
+						'all_role'=>$this->staff_model->get_tb_role(),
+						'all_event'=>$this->staff_model->get_tb_event(),
+						'all_area'=>$this->staff_model->get_tb_area(),
+						'all_tugas_staff_petugas'=>$this->staff_model->get_tb_tugas_staff_petugas(),
+						'all_visitor'=>$this->staff_model->get_tb_visitor(),
+					), true);
+
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Menampilkan menu filter '.$this->db->get_where("tabel_event", ["id_event"=>$id_event])->row("nama_event").'',
+						'view_report_filter'=>$view_report_filter
+					);
+				}
+				echo json_encode($callback);
+			}
+			public function aksi_print_report_filter(){
+				// if($this->input->is_ajax_request()){
+					$conv_daritgl = date('Y-m-d H:i:s', strtotime($this->input->post('daritgl')));
+					$conv_smptgl = date('Y-m-d H:i:s', strtotime($this->input->post('smptgl')));
+
+					$tabel_event = $this->db->get_where('tabel_event', ['id_event'=>$this->input->post("id_event")])->row_array();
+
+					if($this->input->post('daritgl') == null && $this->input->post('smptgl') == null){
+						$data["all_visitor"] = $this->db->get_where('tabel_visitor', ['id_event'=>$this->input->post("id_event")])->result();
+					}else{
+						if($this->input->post('smptgl') == null){
+							$data["all_visitor"] = $this->db->query("SELECT * FROM tabel_visitor WHERE id_event='".$this->input->post("id_event")."' AND registered_at BETWEEN '".$conv_daritgl."' AND '".$tabel_event['tanggal_ditutup'].' '.$tabel_event['jam_ditutup']."'")->result();
+						}else{
+							$data["all_visitor"] = $this->db->query("SELECT * FROM tabel_visitor WHERE id_event='".$this->input->post("id_event")."' AND registered_at BETWEEN '".$conv_daritgl."' AND '".$conv_smptgl."'")->result();
+						}
+					}
+
+					header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+					header('Content-Disposition: attachment; filename="filter_report.xls"');
+					header('Cache-Control: max-age=0');
+					$this->load->view('tabel/tabel_report_filter', $data);
+
+					// $callback = array(
+					// 	'status'=>'sukses',
+					// 	'pesan'=>'Sukses memproses data',
+					// );
+				// }
+				// echo json_encode($callback);
+			}
+
+		public function page_admin_report_all(){
+			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["all_staff"] = $this->staff_model->get_tb_staff();
+			$data["all_role"] = $this->staff_model->get_tb_role();
+			$data["all_event"] = $this->staff_model->get_tb_event();
+			$data["all_area"] = $this->staff_model->get_tb_area();
+			$data["all_tugas_staff_petugas"] = $this->staff_model->get_tb_tugas_staff_petugas();
+			$data["all_visitor"] = $this->staff_model->get_tb_visitor();
+
+			// echo 'selamat datang ' . $data['tb_user']['username'];
+			$this->load->view('template/staff_only/header', $data);
+			$this->load->view('template/staff_only/sidebar', $data);
+			$this->load->view('template/staff_only/topbar', $data);
+			$this->load->view('page/staff_only/admin/admin_report_all', $data);
+			$this->load->view('template/staff_only/footer', $data);
+		}
+			public function aksi_print_report_all(){
+				header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+				header('Content-Disposition: attachment; filename="All_report.xls"');
+				header('Cache-Control: max-age=0');
+
+				$data["all_staff"] = $this->staff_model->get_tb_staff();
+				$data["all_role"] = $this->staff_model->get_tb_role();
+				$data["all_event"] = $this->staff_model->get_tb_event();
+				$data["all_area"] = $this->staff_model->get_tb_area();
+				$data["all_tugas_staff_petugas"] = $this->staff_model->get_tb_tugas_staff_petugas();
+				$data["all_visitor"] = $this->staff_model->get_tb_visitor();
+				$this->load->view('tabel/tabel_report_all', $data);
+			}
+			
 
 		public function page_admin_daftar_staff(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
