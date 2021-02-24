@@ -11,11 +11,52 @@ class Staff_controller extends CI_Controller {
 		cek_staff_login();
 		$this->load->library('form_validation');
 		$this->load->model('staff_model');
+
+		if(!empty($_SESSION['staff_id'])) {
+			// if (time()-$_SESSION['waktu_aktif']>ini_get("session.gc_maxlifetime")){
+			if (time()-$_SESSION['waktu_aktif']>86400){ // 1 hari waktu session
+				$log_stat = 'offline';
+				$this->db->set('is_active', $log_stat);
+				$this->db->where('staff_id', $this->session->userdata('staff_id'));
+				$this->db->update('tabel_staff');
+
+				$this->db->delete('ci_sessions', ["user_id" => $this->session->userdata('staff_id'), "id" => session_id()]); // hapus data sesion dari database
+
+				$session_aktif = array('staff_id', 'role_id', 'username', 'nama', 'sedang_bertugas', 'id_tugas', 'verified', 'is_active', 'waktu_aktif');
+				$this->session->unset_userdata($session_aktif);
+
+				session_regenerate_id(); // Update the current session id with a newly generated one
+				$this->session->set_flashdata('sukses', 'Sesi anda telah berakhir !');
+				redirect('staff_only/login');
+			}else{
+				$_SESSION['waktu_aktif']=time();
+			}
+		}else{
+			$tabel_session = $this->db->get('ci_sessions')->result();
+			$tabel_staff = $this->db->get('tabel_staff')->result();
+
+			foreach($tabel_session as $data_session){
+				foreach($tabel_staff as $data_staff){
+					if($data_session->user_id == $data_staff->staff_id){
+						if(time()-$data_session->timestamp>86400){ // 1 hari waktu session
+							$log_stat = 'offline';
+							$this->db->set('is_active', $log_stat);
+							$this->db->where('staff_id', $data_session->user_id);
+							$this->db->update('tabel_staff');
+
+							$this->db->delete('ci_sessions', ["user_id" => $data_session->user_id]); // hapus data sesion dari database
+						}
+					}
+				}
+			}
+			
+		}
 	}
 
 	// page admin
 		public function page_admin_dashboard(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["title"] = "VM - Dashboard";
 
 			$event_aktif = $this->db->get_where('tabel_event', ['status' => 'active'])->row_array();
 			$data['hitung_visitor'] = $this->db->get('tabel_visitor')->num_rows();
@@ -40,6 +81,7 @@ class Staff_controller extends CI_Controller {
 
 		public function page_admin_tracking(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["title"] = "VM - Data tracking";
 			$data["all_event"] = $this->staff_model->get_tb_event();
 
 			// echo 'selamat datang ' . $data['tb_user']['username'];
@@ -119,6 +161,8 @@ class Staff_controller extends CI_Controller {
 
 		public function page_admin_report_filter(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["title"] = "VM - Filter report";
+
 			$data["all_staff"] = $this->staff_model->get_tb_staff();
 			$data["all_role"] = $this->staff_model->get_tb_role();
 			$data["all_event"] = $this->staff_model->get_tb_event();
@@ -186,6 +230,8 @@ class Staff_controller extends CI_Controller {
 
 		public function page_admin_report_all(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["title"] = "VM - All report";
+
 			$data["all_staff"] = $this->staff_model->get_tb_staff();
 			$data["all_role"] = $this->staff_model->get_tb_role();
 			$data["all_event"] = $this->staff_model->get_tb_event();
@@ -217,6 +263,8 @@ class Staff_controller extends CI_Controller {
 
 		public function page_admin_daftar_staff(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["title"] = "VM - Register staff";
+
 			$data['all_staff'] = $this->staff_model->get_tb_staff();
 			$data['all_role'] = $this->staff_model->get_tb_role();
 			$data['all_area'] = $this->staff_model->get_tb_area();
@@ -251,6 +299,8 @@ class Staff_controller extends CI_Controller {
 
 		public function page_admin_event_management(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["title"] = "VM - Register event";
+
 			$data['staff_nganggur'] = $this->db->get_where('tabel_staff', ['sedang_bertugas' => false, 'role_id' => '2'])->result();
 			$data['all_event'] = $this->staff_model->get_tb_event();
 			$data['all_area'] = $this->staff_model->get_tb_area();
@@ -931,6 +981,8 @@ class Staff_controller extends CI_Controller {
 	// page petugas
 		public function page_petugas_scan(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
+			$data["title"] = "VM - Scan";
+
 			$data['all_visitor'] = $this->staff_model->get_tb_visitor();
 			$data['all_staff'] = $this->staff_model->get_tb_staff();
 			$data['all_role'] = $this->staff_model->get_tb_role();
@@ -1048,7 +1100,7 @@ class Staff_controller extends CI_Controller {
 
 		$this->db->delete('ci_sessions', ["user_id" => $this->session->userdata('staff_id'), "id" => session_id()]); // hapus data sesion dari database
 
-		$session_aktif = array('staff_id', 'role_id', 'username', 'password', 'nama', 'verified', 'is_active');
+		$session_aktif = array('staff_id', 'role_id', 'username', 'nama', 'sedang_bertugas', 'id_tugas', 'verified', 'is_active', 'waktu_aktif');
 		$this->session->unset_userdata($session_aktif);
 
 		session_regenerate_id(); // Update the current session id with a newly generated one

@@ -11,7 +11,7 @@
     <meta name="author" content="">
 
     <title>
-		Event Registration
+		<?= $title ?>
 	</title>
 
     <!-- Custom fonts for this template-->

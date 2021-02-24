@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Visitor Management - Login</title>
+    <title><?= $title ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= base_url() ?>assets/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">

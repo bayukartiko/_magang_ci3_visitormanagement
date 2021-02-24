@@ -50,13 +50,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'main_controller';
-$route['404_override'] = '';
+// $route['404_override'] = '';
+$route['404_override'] = 'main_controller/block';
 $route['translate_uri_dashes'] = FALSE;
 
 // routing
 // (untuk meng-hide controller-name)
 
 $route[''] = 'main_controller/index';
+$route['block'] = 'main_controller/block';
 
 $route['visitor'] = 'main_controller/index_visitor';
 $route['(:any)'] = 'main_controller/page_register_visitor/$1';

@@ -26,6 +26,46 @@ class Main_controller extends CI_Controller {
 		parent::__construct();
 		$this->load->model('main_model');
 		$this->load->library('form_validation', 'ciqrcode', 'session');
+
+		if(!empty($_SESSION['staff_id'])) {
+			// if (time()-$_SESSION['waktu_aktif']>ini_get("session.gc_maxlifetime")){
+			if (time()-$_SESSION['waktu_aktif']>86400){ // 1 hari waktu session
+				$log_stat = 'offline';
+				$this->db->set('is_active', $log_stat);
+				$this->db->where('staff_id', $this->session->userdata('staff_id'));
+				$this->db->update('tabel_staff');
+
+				$this->db->delete('ci_sessions', ["user_id" => $this->session->userdata('staff_id'), "id" => session_id()]); // hapus data sesion dari database
+
+				$session_aktif = array('staff_id', 'role_id', 'username', 'nama', 'sedang_bertugas', 'id_tugas', 'verified', 'is_active', 'waktu_aktif');
+				$this->session->unset_userdata($session_aktif);
+
+				session_regenerate_id(); // Update the current session id with a newly generated one
+				$this->session->set_flashdata('sukses', 'Sesi anda telah berakhir !');
+				redirect('staff_only/login');
+			}else{
+				$_SESSION['waktu_aktif']=time();
+			}
+		}else{
+			$tabel_session = $this->db->get('ci_sessions')->result();
+			$tabel_staff = $this->db->get('tabel_staff')->result();
+
+			foreach($tabel_session as $data_session){
+				foreach($tabel_staff as $data_staff){
+					if($data_session->user_id == $data_staff->staff_id){
+						if(time()-$data_session->timestamp>86400){ // 1 hari waktu session
+							$log_stat = 'offline';
+							$this->db->set('is_active', $log_stat);
+							$this->db->where('staff_id', $data_session->user_id);
+							$this->db->update('tabel_staff');
+
+							$this->db->delete('ci_sessions', ["user_id" => $data_session->user_id]); // hapus data sesion dari database
+						}
+					}
+				}
+			}
+
+		}
 	}
 
 	public function index_visitor(){
@@ -181,29 +221,34 @@ class Main_controller extends CI_Controller {
 	public function page_register_visitor($custom_url){
 		$event_data = $this->db->get_where('tabel_event', ['custom_url' => $custom_url])->row_array();
 
-		// $this->session->sess_destroy();
-		$data["id_event"] = $event_data["id_event"];
-		$data["nama_event"] = $event_data["nama_event"];
-		$data["custom_url"] = $event_data["custom_url"];
-
-		$data["event"] = $event_data;
-		$data["all_area"] = $this->db->get('tabel_area')->result();
-		$data["all_data_saya"] = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
-		$data["all_data_tracking_saya"] = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
-		$data["all_data_tracking_saya_1"] = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
-		$data["data_session"] = $this->db->get_where('ci_sessions', ["user_id" => $this->session->userdata("id_visitor")])->row_array();
-		
-		// $this->load->view('template/visitor/header', $data);
-		// $this->load->view('visitorRegister2', $data);
-		// $this->load->view('template/visitor/footer', $data);
-		
-		$this->load->view('template/visitor/b4/header', $data);
-		$this->load->view('visitor_register', $data);
-		$this->load->view('template/visitor/b4/footer', $data);
-
-		$cek_visitor_keluar_event = $this->db->get_where('ci_sessions', ["id" => session_id(), "user_id"=>$this->session->userdata("id_visitor")])->row_array();
-		if($cek_visitor_keluar_event["status"] == "visitor_telah_keluar_event"){
-			$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
+		if($event_data){
+			// $this->session->sess_destroy();
+			$data["id_event"] = $event_data["id_event"];
+			$data["nama_event"] = $event_data["nama_event"];
+			$data["custom_url"] = $event_data["custom_url"];
+			$data["title"] = "VM - Welcome";
+	
+			$data["event"] = $event_data;
+			$data["all_area"] = $this->db->get('tabel_area')->result();
+			$data["all_data_saya"] = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
+			$data["all_data_tracking_saya"] = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+			$data["all_data_tracking_saya_1"] = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+			$data["data_session"] = $this->db->get_where('ci_sessions', ["user_id" => $this->session->userdata("id_visitor")])->row_array();
+			
+			// $this->load->view('template/visitor/header', $data);
+			// $this->load->view('visitorRegister2', $data);
+			// $this->load->view('template/visitor/footer', $data);
+			
+			$this->load->view('template/visitor/b4/header', $data);
+			$this->load->view('visitor_register', $data);
+			$this->load->view('template/visitor/b4/footer', $data);
+	
+			$cek_visitor_keluar_event = $this->db->get_where('ci_sessions', ["id" => session_id(), "user_id"=>$this->session->userdata("id_visitor")])->row_array();
+			if($cek_visitor_keluar_event["status"] == "visitor_telah_keluar_event"){
+				$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
+			}
+		}else{
+			redirect('block');
 		}
 	}
 	
@@ -226,7 +271,8 @@ class Main_controller extends CI_Controller {
 			'required' => 'field password harus diisi !'
 		]);
 		if($this->form_validation->run() == false){
-			$this->load->view('template/staff_only/header');
+			$data["title"] = "VM - Login";
+			$this->load->view('template/staff_only/header', $data);
 			$this->load->view('login');
 			$this->load->view('template/staff_only/footer');
 		}else{
@@ -274,7 +320,8 @@ class Main_controller extends CI_Controller {
 									"sedang_bertugas" => $staff["sedang_bertugas"],
 									"id_tugas" => $staff["id_tugas"],
 									"verified" => $staff["verified"],
-									"is_active" => $staff["is_active"]
+									"is_active" => $staff["is_active"],
+									"waktu_aktif" => time()
 								];
 								// $this->session->sess_expiration = '60';// expires in 4 hours (14400)
 								$this->session->set_userdata($data);
@@ -422,5 +469,12 @@ class Main_controller extends CI_Controller {
 		}else{
 			redirect('/');
 		}
+	}
+
+	public function block(){
+		$data["title"] = "VM - Block";
+		$this->load->view('template/visitor/b4/header', $data);
+		$this->load->view('block');
+		$this->load->view('template/visitor/b4/footer');
 	}
 }
