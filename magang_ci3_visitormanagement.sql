@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2021 at 03:59 PM
+-- Generation Time: Feb 24, 2021 at 04:32 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -42,7 +42,7 @@ CREATE TABLE `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`id`, `user_id`, `id_event`, `status`, `ip_address`, `timestamp`, `data`) VALUES
-('2m1a08mvgo2tvs12faqufg7akdubr175', NULL, NULL, NULL, '::1', 1614005944, 0x736564616e675f62657274756761737c733a313a2230223b69645f74756761737c4e3b73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d);
+('94m1m6fio7k7gvdv26657uvhi4tfsjrm', NULL, NULL, NULL, '::1', 1614180594, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d);
 
 -- --------------------------------------------------------
 
@@ -146,7 +146,11 @@ INSERT INTO `tabel_staff` (`staff_id`, `role_id`, `username`, `password`, `nama`
 ('STF202102041819060000010', 2, 'petugaspintukeluar2', '$2y$10$qAdsLyZKUlE1eoG1ZjKOfu99QzSesWEe1Yay3ITZVYdQnuYl6jBtq', 'petugaspintukeluar2', 1, 'TGS2102190822160000004', '1', 'offline'),
 ('STF202102051000500000011', 2, 'petugaspintukeluar3', '$2y$10$IIgYNdVXHYlW5AnO7Ar/YO4hyD66ldzv6c/QaKePPKTvbHiBt/G/.', 'petugaspintukeluar3', 0, NULL, '1', 'offline'),
 ('STF202102051001110000012', 2, 'petugaspintukeluar4', '$2y$10$Azr4GXo8n2Xqij4wIXhceO2GsyKLBbZ87l2AbhibX7tO3cx7eCJRu', 'petugaspintukeluar4', 0, NULL, '1', 'offline'),
-('STF202102051001230000013', 2, 'petugaspintukeluar5', '$2y$10$28jfQMcn9SraZwzaYFjcpu.JQi9AecqeTyRtzzkdB8XGdskq8AVw2', 'petugaspintukeluar5', 0, NULL, '1', 'offline');
+('STF202102051001230000013', 2, 'petugaspintukeluar5', '$2y$10$28jfQMcn9SraZwzaYFjcpu.JQi9AecqeTyRtzzkdB8XGdskq8AVw2', 'petugaspintukeluar5', 0, NULL, '1', 'offline'),
+('STF2102232334160000017', 1, 'admin5', '$2y$10$m1CwcRN0A2T1vai8hZUvcei7jz9gwvuKMFR6qu79SYmN1RGYL8tty', 'admin5', 0, NULL, '1', 'offline'),
+('STF2102232700380000015', 1, 'admin3', '$2y$10$1B1n8b62xmbl1K9fMzkMUOXRe3kZzlP/PoNpNrJmeNHe/CcsUhORm', 'admin3', 0, NULL, '1', 'offline'),
+('STF2102237670860000014', 1, 'admin2', '$2y$10$FOEGkxzl9eMawXlKxmSZ7.0gS3Ey/CRMpoG4MORP.IVWa4D2QhrGG', 'admin2', 0, NULL, '1', 'offline'),
+('STF2102238367610000016', 1, 'admin4', '$2y$10$jyLWxMAcOtPcVOn1uGvbLugrQNOMHbeuV56/cDaC.xly2qGlZ2MZ6', 'admin4', 0, NULL, '1', 'offline');
 
 -- --------------------------------------------------------
 

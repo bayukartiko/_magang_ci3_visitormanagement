@@ -68,6 +68,15 @@ class Main_controller extends CI_Controller {
 		}
 	}
 
+	public function index(){
+
+		$data["title"] = "Visitor Management";
+		$this->load->view('template/visitor/b4/header', $data);
+		$this->load->view('index');
+		$this->load->view('template/visitor/b4/footer');
+
+	}
+
 	public function index_visitor(){
 		redirect('visitor/register');
 	}
