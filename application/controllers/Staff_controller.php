@@ -62,7 +62,7 @@ class Staff_controller extends CI_Controller {
 			$data['hitung_visitor'] = $this->db->get('tabel_visitor')->num_rows();
 			$data['hitung_staff'] = $this->db->get_where('tabel_staff', ['verified' => '1'])->num_rows();
 			$data['hitung_event'] = $this->db->get_where('tabel_event', ['status' => 'active'])->num_rows();
-			$data['hitung_area'] = $this->db->get_where('tabel_area', ['id_event' => $event_aktif['id_event']])->num_rows();
+			// $data['hitung_area'] = $this->db->get_where('tabel_area', ['id_event' => $event_aktif['id_event']])->num_rows();
 			$data['hitung_visitor_loggedin'] = $this->db->get_where('tabel_visitor', ['status' => 'logged in'])->num_rows();
 			$data['hitung_visitor_loggedout'] = $this->db->get_where('tabel_visitor', ['status' => 'logged out'])->num_rows();
 			$data['hitung_visitor_inarea'] = $this->db->get_where('tabel_visitor', ['status' => 'in area'])->num_rows();
@@ -108,8 +108,8 @@ class Staff_controller extends CI_Controller {
 						'all_area'=>$this->db->get_where('tabel_area', ["id_event"=>$id_event])->result(),
 						'hitung_visitor_in_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area"=>null])->num_rows(),
 						'visitor_in_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area"=>null])->result(),
-						'hitung_visitor_out_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area !="=>'NULL'])->num_rows(),
-						'visitor_out_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area !="=>'NULL'])->result(),
+						'hitung_visitor_out_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area !="=>NULL])->num_rows(),
+						'visitor_out_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area !="=>NULL])->result(),
 					), true);
 	
 					$callback = array(
@@ -525,6 +525,7 @@ class Staff_controller extends CI_Controller {
 							$callback = array(
 								'status'=>'gagal',
 								'nama_event_error' => form_error('nama_event'),
+								'custom_url_error' => form_error('custom_url'),
 								'tgl_mulai_error' => form_error('tgl_mulai'),
 								'tgl_selesai_error' => form_error('tgl_selesai'),
 								'jam_dibuka_error' => form_error('jam_dibuka'),
@@ -627,6 +628,47 @@ class Staff_controller extends CI_Controller {
 				}
 			}
 
+			public function print_qrcode($id_event){
+				// $data = [
+				// 	"nama_aplikasi" => "visitor management",
+				// 	"nama_event" => $this->db->get_where('tabel_event', ["id_event" => $id_event])->row("nama_event"),
+				// 	"qrcode_event" => $this->db->get_where('tabel_event', ["id_event" => $id_event])->row("gambar_qrcode"),
+				// 	"link_akses_event" => base_url().$this->db->get_where('tabel_event', ["id_event" => $id_event])->row("custom_url")
+				// ];
+				// $html = $this->load->view('page/staff_only/admin/print_qrcode',$data);
+
+				ob_start();
+				// panggil untuk menggunakan class dompdf
+				
+				$dompdf = new Dompdf\Dompdf();
+				
+				$data = [
+					"nama_aplikasi" => "visitor management",
+					"nama_event" => $this->db->get_where('tabel_event', ["id_event" => $id_event])->row("nama_event"),
+					"qrcode_event" => $this->db->get_where('tabel_event', ["id_event" => $id_event])->row("gambar_qrcode"),
+					"link_akses_event" => base_url().$this->db->get_where('tabel_event', ["id_event" => $id_event])->row("custom_url")
+				];
+				$html = $this->load->view('page/staff_only/admin/print_qrcode',$data,true);
+				
+				
+				$dompdf->loadHtml($html);
+				$dompdf->set_option('isRemoteEnabled', TRUE);
+				
+				// (Opsional) atur ukuran dan orientasi kertas
+				$dompdf->setPaper('A4', 'potrait');
+				
+				// Render HTML ke PDF
+				$dompdf->render();
+				
+				// Get the generated PDF file contents
+				$pdf = $dompdf->output();
+				
+				// Output the generated PDF to Browser
+				ob_end_clean();
+				$filename = base_url().$this->db->get_where('tabel_event', ["id_event"=>$id_event])->row("custom_url");
+				$dompdf->stream($filename.".pdf", array("Attachment" => false));
+			}
+
 			public function event_aktivasi_otomatis(){
 				$callback = [];
 				if($this->input->is_ajax_request()){
@@ -716,7 +758,8 @@ class Staff_controller extends CI_Controller {
 															$this->db->update('tabel_visitor', ['id_petugas_pintu_area' => null, 'id_petugas_pintu_keluar' => null, 'time_out_event' => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")), 'status' => 'telah_keluar_event'], ['id_visitor' => $data_tabel_visitor->id_visitor]);
 														
 															// hapus gambar barcode visitor berdasarkan id_visitor
-															unlink(FCPATH . 'assets/img/barcode/' . $data_tabel_visitor->id_visitor .'.png');
+															// unlink(FCPATH . 'assets/img/barcode/' . $data_tabel_visitor->id_visitor .'.png');
+															unlink(FCPATH . 'assets/img/qrcode/' . $data_tabel_visitor->id_visitor .'.png');
 												
 															// update ci_sessions visitor
 															$this->db->delete('ci_sessions', ['user_id' => $data_tabel_visitor->id_visitor]);

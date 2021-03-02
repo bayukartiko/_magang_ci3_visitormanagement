@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2021 at 04:32 PM
+-- Generation Time: Mar 02, 2021 at 04:08 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -42,7 +42,9 @@ CREATE TABLE `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`id`, `user_id`, `id_event`, `status`, `ip_address`, `timestamp`, `data`) VALUES
-('94m1m6fio7k7gvdv26657uvhi4tfsjrm', NULL, NULL, NULL, '::1', 1614180594, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d);
+('7n14744sf4gtemcs909oatg3hrsblgju', NULL, NULL, NULL, '::1', 1614697675, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
+('g9937bsa45epgou2jh6b57ds47n89gav', NULL, NULL, NULL, '::1', 1614570423, ''),
+('vedapqhborpfb9f9cutqv47foe0gvb4b', NULL, NULL, NULL, '::1', 1614604716, '');
 
 -- --------------------------------------------------------
 
@@ -63,8 +65,7 @@ CREATE TABLE `tabel_area` (
 INSERT INTO `tabel_area` (`id_area`, `id_event`, `nama_area`) VALUES
 ('AR21021468164400000010', 'EVNT2102146814270000001', 'areaA'),
 ('AR21021468164400000011', 'EVNT2102146814270000001', 'areaB'),
-('AR21021468164400000012', 'EVNT2102146814270000001', 'areaC'),
-('AR21021908066100000040', 'EVNT2102190792220000002', 'a');
+('AR21021468164400000012', 'EVNT2102146814270000001', 'areaC');
 
 -- --------------------------------------------------------
 
@@ -89,8 +90,7 @@ CREATE TABLE `tabel_event` (
 --
 
 INSERT INTO `tabel_event` (`id_event`, `nama_event`, `custom_url`, `gambar_qrcode`, `tanggal_dibuka`, `tanggal_ditutup`, `jam_dibuka`, `jam_ditutup`, `status`) VALUES
-('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', 'gjui', 'EVNT2102146814270000001.png', '2021-02-16', '2021-02-21', '08:00:00', '21:50:00', 'not_active'),
-('EVNT2102190792220000002', 'Starbhak Day', 'tbday', 'EVNT2102190792220000002.png', '2021-02-19', '2021-02-19', '17:54:00', '22:54:00', 'not_active');
+('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', 'gjui', 'EVNT2102146814270000001.png', '2021-02-16', '2021-03-02', '08:00:00', '13:50:00', 'not_active');
 
 -- --------------------------------------------------------
 
@@ -138,12 +138,12 @@ INSERT INTO `tabel_staff` (`staff_id`, `role_id`, `username`, `password`, `nama`
 ('STF202102011946130000002', 2, 'petugas1', '$2y$10$iW628pKXrvgtpjChzkPAmeFmKuEyyv0o8dqnt3Z.aeSLikqywK32e', 'petugas1', 1, 'TGS21021468178000000010', '1', 'offline'),
 ('STF202102031313020000003', 2, 'petugas2', '$2y$10$Bx4GsO4luPGFu0A0I2JLouaMdYmxeVq.HVp0ayvmDMkYLLGPZ/9qW', 'petugas2', 1, 'TGS21021468178000000011', '1', 'offline'),
 ('STF202102031313240000004', 2, 'petugas3', '$2y$10$jTti8PnyZp8hNJkYqA3Rgut3eaU5WMv6Yw32xbmy55orhZztllbsq', 'petugas3', 1, 'TGS21021468178000000012', '1', 'offline'),
-('STF202102031314180000005', 2, 'petugas4', '$2y$10$KZxAVnfystO.zMGHjrd6CuvzSZM5Owga4K8EZsJlQmHENteprH2Zu', 'petugas4', 1, 'TGS21021908221600000040', '1', 'offline'),
+('STF202102031314180000005', 2, 'petugas4', '$2y$10$KZxAVnfystO.zMGHjrd6CuvzSZM5Owga4K8EZsJlQmHENteprH2Zu', 'petugas4', 0, NULL, '1', 'offline'),
 ('STF202102031314360000006', 2, 'petugas5', '$2y$10$wuKg4zQ9OdRuprtJ43jalOpGzNjyKQVBbZLRbFX6tA2A6Y5qLUb9m', 'petugas5', 0, NULL, '1', 'offline'),
 ('STF202102040906150000007', 2, 'petugas6', '$2y$10$5WPE96/MAFuD3Ch5cvxRSeGeqQF6ZAaIp8eQotxyDBBx0ISCQ6Cf6', 'petugas6', 0, NULL, '1', 'offline'),
 ('STF202102040907200000008', 2, 'petugas7', '$2y$10$j4gky274DsmymOh9/YHYZucn1G2nnWEGTrH4yNtXTPs1Jh1elJ0KG', 'petugas7', 0, NULL, '1', 'offline'),
 ('STF202102041818440000009', 2, 'petugaspintukeluar1', '$2y$10$HgIAM1vjizSPnfJRBoFLD.tsk0WDPrz321b8klxqkVCUYa9oPbxHy', 'petugaspintukeluar1', 1, 'TGS2102146817800000001', '1', 'offline'),
-('STF202102041819060000010', 2, 'petugaspintukeluar2', '$2y$10$qAdsLyZKUlE1eoG1ZjKOfu99QzSesWEe1Yay3ITZVYdQnuYl6jBtq', 'petugaspintukeluar2', 1, 'TGS2102190822160000004', '1', 'offline'),
+('STF202102041819060000010', 2, 'petugaspintukeluar2', '$2y$10$qAdsLyZKUlE1eoG1ZjKOfu99QzSesWEe1Yay3ITZVYdQnuYl6jBtq', 'petugaspintukeluar2', 0, NULL, '1', 'offline'),
 ('STF202102051000500000011', 2, 'petugaspintukeluar3', '$2y$10$IIgYNdVXHYlW5AnO7Ar/YO4hyD66ldzv6c/QaKePPKTvbHiBt/G/.', 'petugaspintukeluar3', 0, NULL, '1', 'offline'),
 ('STF202102051001110000012', 2, 'petugaspintukeluar4', '$2y$10$Azr4GXo8n2Xqij4wIXhceO2GsyKLBbZ87l2AbhibX7tO3cx7eCJRu', 'petugaspintukeluar4', 0, NULL, '1', 'offline'),
 ('STF202102051001230000013', 2, 'petugaspintukeluar5', '$2y$10$28jfQMcn9SraZwzaYFjcpu.JQi9AecqeTyRtzzkdB8XGdskq8AVw2', 'petugaspintukeluar5', 0, NULL, '1', 'offline'),
@@ -175,7 +175,10 @@ CREATE TABLE `tabel_tracking` (
 INSERT INTO `tabel_tracking` (`nomor`, `id_visitor`, `id_event`, `id_petugas_pintu_area`, `id_area`, `time_in_area`, `time_out_area`) VALUES
 (54, 'VSTR2102160753260000001', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000010', '2021-02-16 09:45:54', '2021-02-16 09:48:17'),
 (55, 'VSTR2102177412020000002', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000010', '2021-02-17 13:26:38', '2021-02-17 13:29:18'),
-(56, 'VSTR2102177412020000002', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000011', '2021-02-17 13:29:25', '2021-02-17 13:34:06');
+(56, 'VSTR2102177412020000002', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000011', '2021-02-17 13:29:25', '2021-02-17 13:34:06'),
+(57, 'VSTR2103010040410000008', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000010', '2021-03-01 11:01:31', '2021-03-01 11:02:05'),
+(58, 'VSTR2103010040410000008', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000010', '2021-03-01 11:02:13', '2021-03-01 11:02:41'),
+(59, 'VSTR2103010040410000008', NULL, 'STF202102031313020000003', 'AR21021468164400000011', '2021-03-01 11:02:42', '2021-03-01 11:04:11');
 
 -- --------------------------------------------------------
 
@@ -200,9 +203,7 @@ INSERT INTO `tabel_tugas_staff_petugas` (`id_tugas`, `staff_id`, `petugas_pintu_
 ('TGS2102146817800000001', 'STF202102041818440000009', 1, 0, 'EVNT2102146814270000001', NULL),
 ('TGS21021468178000000010', 'STF202102011946130000002', 0, 1, 'EVNT2102146814270000001', 'AR21021468164400000010'),
 ('TGS21021468178000000011', 'STF202102031313020000003', 0, 1, 'EVNT2102146814270000001', 'AR21021468164400000011'),
-('TGS21021468178000000012', 'STF202102031313240000004', 0, 1, 'EVNT2102146814270000001', 'AR21021468164400000012'),
-('TGS2102190822160000004', 'STF202102041819060000010', 1, 0, 'EVNT2102190792220000002', NULL),
-('TGS21021908221600000040', 'STF202102031314180000005', 0, 1, 'EVNT2102190792220000002', 'AR21021908066100000040');
+('TGS21021468178000000012', 'STF202102031313240000004', 0, 1, 'EVNT2102146814270000001', 'AR21021468164400000012');
 
 -- --------------------------------------------------------
 
@@ -241,7 +242,9 @@ INSERT INTO `tabel_visitor` (`id_visitor`, `id_event`, `nama_visitor`, `perusaha
 ('VSTR2102186572610000003', 'EVNT2102146814270000001', 'qwe we', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2102186572610000003.png', '2021-02-18 11:31:08', NULL, NULL, '2021-02-18 11:31:08', '2021-02-18 11:34:00', 'telah_keluar_event'),
 ('VSTR2102190326350000006', 'EVNT2102146814270000001', 'nmm m', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2102190326350000006.png', '2021-02-19 19:29:27', NULL, NULL, '2021-02-19 19:29:27', '2021-02-19 19:31:01', 'telah_keluar_event'),
 ('VSTR2102194854600000005', 'EVNT2102146814270000001', 'iop po', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2102194854600000005.png', '2021-02-19 19:19:31', NULL, NULL, '2021-02-19 19:19:31', '2021-02-19 19:21:07', 'telah_keluar_event'),
-('VSTR2102203756750000007', 'EVNT2102146814270000001', 'fgh h', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2102203756750000007.png', '2021-02-20 10:36:06', NULL, 'STF202102041818440000009', '2021-02-20 10:36:06', '2021-02-20 10:36:51', 'telah_keluar_event');
+('VSTR2102203756750000007', 'EVNT2102146814270000001', 'fgh h', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2102203756750000007.png', '2021-02-20 10:36:06', NULL, 'STF202102041818440000009', '2021-02-20 10:36:06', '2021-02-20 10:36:51', 'telah_keluar_event'),
+('VSTR2103010040410000008', 'EVNT2102146814270000001', 'bayu K', '', '', 'asd@asd.asd', 'asd@asd.asd', '123', '', '', 'VSTR2103010040410000008.png', '2021-03-01 10:44:34', NULL, 'STF202102041818440000009', '2021-03-01 10:44:34', '2021-03-01 11:04:11', 'telah_keluar_event'),
+('VSTR2103017187430000010', 'EVNT2102146814270000001', 'a s', '', '', 'asd@asd.asd', 'asd@asd.asd', '123', '', '', 'VSTR2103017187430000010.png', '2021-03-01 13:35:31', NULL, NULL, '2021-03-01 13:35:31', '2021-03-01 13:50:07', 'telah_keluar_event');
 
 --
 -- Indexes for dumped tables
@@ -323,7 +326,7 @@ ALTER TABLE `tabel_role`
 -- AUTO_INCREMENT for table `tabel_tracking`
 --
 ALTER TABLE `tabel_tracking`
-  MODIFY `nomor` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `nomor` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- Constraints for dumped tables

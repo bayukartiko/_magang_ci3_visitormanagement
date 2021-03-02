@@ -28,7 +28,8 @@
 										<?= join("-", str_split($this->session->userdata("id_visitor"), 4)) ?>
 									</b>
 								</h5>
-								<img src="<?= base_url() ?>assets/img/barcode/<?= $this->session->userdata("gambar_qrcode"); ?>" alt="<?= $this->session->userdata("id_visitor"); ?>" data-toggle="tooltip" data-placement="bottom" title="<?= $this->session->userdata("id_visitor"); ?>" data-container="body" class="img-thumbnail rounded mx-auto d-block shadow-sm" style="height: 60px;">
+								<!-- <img src="<?= base_url() ?>assets/img/barcode/<?= $this->session->userdata("gambar_qrcode"); ?>" alt="<?= $this->session->userdata("id_visitor"); ?>" data-toggle="tooltip" data-placement="bottom" title="<?= $this->session->userdata("id_visitor"); ?>" data-container="body" class="img-thumbnail rounded mx-auto d-block shadow-sm" style="height: 60px;"> -->
+								<img src="<?= base_url() ?>assets/img/qrcode/<?= $this->session->userdata("gambar_qrcode"); ?>" alt="<?= $this->session->userdata("id_visitor"); ?>" data-toggle="tooltip" data-placement="bottom" title="<?= $this->session->userdata("id_visitor"); ?>" data-container="body" class="img-thumbnail rounded mx-auto d-block shadow-sm" style="width: 250px; height: 250px;">
 								<small>disarankan tingkatkan kecerahan layar anda, agar proses scanning bisa lebih cepat</small>
 
 								<br>

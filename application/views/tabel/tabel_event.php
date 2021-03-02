@@ -16,10 +16,12 @@
 		?>
 			<tr>
 				<td class="text-center"><?= $no ?></td>
-				<td>
-					<a href="<?= base_url() ?>assets/img/qrcode/<?= $event_data->gambar_qrcode ?>" download="<?= base_url() ?><?= $event_data->custom_url ?>" >
+				<td class="text-center">
+					<!-- <a href="<?= base_url() ?>assets/img/qrcode/<?= $event_data->gambar_qrcode ?>" download="<?= base_url() ?><?= $event_data->custom_url ?>.png" > -->
+					<a href="javascript:void()" data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_preview_qrcode" id="btn-preview-qrcode" class="btn-preview-qrcode">
 						<img src="<?= base_url() ?>assets/img/qrcode/<?= $event_data->gambar_qrcode ?>" alt="<?= $event_data->gambar_qrcode ?>" style="width: 75px; height: 75px;">
 					</a>
+					<br><small>klik QRcode diatas untuk perbesar</small>
 				</td>
 				<td><?= $event_data->nama_event ?></td>
 				<td>
@@ -45,7 +47,8 @@
 							<input type="hidden" class="id_event-value_data" value="<?= $event_data->id_event; ?>">
 							<input type="hidden" class="src_qrcode_event-value_data" value="<?= base_url() ?>assets/img/qrcode/<?= $event_data->gambar_qrcode ?>">
 							<input type="hidden" class="alt_qrcode_event-value_data" value="<?= $event_data->gambar_qrcode ?>">
-							<input type="hidden" class="download_qrcode_event-value_data" value="<?= base_url() ?><?= $event_data->custom_url ?>">
+							<input type="hidden" class="download_qrcode_event-value_data" value="<?= base_url() ?><?= $event_data->custom_url ?>.png">
+							<input type="hidden" class="link_akses_event-value_data" value="<?= base_url() ?><?= $event_data->custom_url ?>">
 							<input type="hidden" class="nama_event-value_data" value="<?= $event_data->nama_event; ?>">
 							<input type="hidden" class="custom_url-value_data" value="<?= $event_data->custom_url; ?>">
 							<input type="hidden" class="gambar_qrcode-value_data" value="<?= $event_data->gambar_qrcode; ?>">

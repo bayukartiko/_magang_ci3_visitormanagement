@@ -88,6 +88,10 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Report:</h6>
                         <!-- <a class="collapse-item" href="login.html">Login</a> -->
+                        <a class="collapse-item" href="">Visitor Tracking</a>
+                        <a class="collapse-item" href="">Data Visitor</a>
+                        <a class="collapse-item" href="">Data Event & Staff</a>
+						<hr>
                         <a class="collapse-item" href="<?= base_url('staff_only/admin/report_all') ?>">All Report</a>
                         <a class="collapse-item" href="<?= base_url('staff_only/admin/report_filter') ?>">Filter Report</a>
                         <!-- <div class="collapse-divider"></div>

@@ -32,6 +32,29 @@
     </div>
     <!-- End of Page Wrapper -->
 
+	<!-- modal preview qrcode  -->
+		<div class="modal fade" id="modal_preview_qrcode" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg text-justify modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Preview QR code</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body mx-auto text-center">
+						<!-- <span class="nama_event-preview_qrcode m-1"></span><br> -->
+						<img src="" alt="" class="gambar_qrcode-preview_qrcode img-thumbnail shadow-sm m-1" style="width: 400px; height: 400px;"><br>
+						<!-- <span class="link_event-preview_qrcode text-primary m-1"></span> -->
+					</div>
+					<div class="modal-footer">
+						<a href="" class="btn btn-primary btn-download-pdf-qrcode">Download PDF</a> | 
+						<a href="" download="" class="btn btn-primary btn-download-png-qrcode">Download PNG</a>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+					</div>
+				</div>
+			</div>
+		</div>
     <!-- modal tambah event -->
 		<div class="modal fade" id="modal_tambah_event" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
@@ -64,6 +87,7 @@
 												</td>
 											</tr>
 										</table>
+										<small id="error_custom_url" class="invalid-feedback"></small>
 										<small class="text-muted">akan membuat url event custom untuk visitor akses event ini, jika tidak di-isi maka url akan mengikuti isi field nama event</small><br>
 										<small class="text-muted">jika <u>tidak di-isi</u>, url event akan menjadi seperti ini: <b><?= base_url() ?>nama_event</b></small><br>
 										<small class="text-muted">jika <u>di-isi</u>, url event akan menjadi seperti ini: <b><?= base_url() ?>custom_url</b></small>
@@ -478,6 +502,28 @@
 				$("#jumlah-form").val(nextform);
 			});
 
+			// fungsi preview qrcode
+				$('#view_tabel_event').on('click', '.btn-preview-qrcode', function(){
+					id_event = $(this).data('id');
+					
+					var tr = $(this).closest('tr');
+					var id_event = tr.find('.id_event-value_data').val();
+					var src_qrcode_event = tr.find('.src_qrcode_event-value_data').val();
+					var alt_qrcode_event = tr.find('.alt_qrcode_event-value_data').val();
+					var download_qrcode_event = tr.find('.download_qrcode_event-value_data').val();
+					var nama_event = tr.find('.nama_event-value_data').val();
+					var link_akses = tr.find('.link_akses_event-value_data').val();
+					
+					$('.gambar_qrcode-preview_qrcode').attr("src", src_qrcode_event);
+					$('.gambar_qrcode-preview_qrcode').attr("alt", alt_qrcode_event);
+					$('.field_href_qrcode-detail').attr("href", src_qrcode_event);
+					$('.btn-download-png-qrcode').attr("href", src_qrcode_event);
+					$('.btn-download-png-qrcode').attr("download", download_qrcode_event);
+					$('.btn-download-pdf-qrcode').attr("href", "print_qrcode/"+id_event);
+					$('.nama_event-preview_qrcode').html("<h4>"+nama_event+"</h4>");
+					$('.link_event-preview_qrcode').html("<h5>"+link_akses+"</h5>");
+				});
+				
 			// fungsi tambah event
 				$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
 					// e.preventDefault();
@@ -634,6 +680,14 @@
 									}else{
 										$('#field_nama_event').removeClass('is-invalid');
 										$('#error_nama_event').html('');
+									}
+									
+									if(callback.custom_url_error){
+										$('#field_custom_url').addClass('is-invalid');
+										$('#error_custom_url').html(callback.custom_url_error);
+									}else{
+										$('#field_custom_url').removeClass('is-invalid');
+										$('#error_custom_url').html('');
 									}
 									
 									if(callback.tgl_mulai_error){
@@ -970,8 +1024,8 @@
 					
 					$('#field_qrcode-detail').attr("src", src_qrcode_event);
 					$('#field_qrcode-detail').attr("alt", alt_qrcode_event);
-					$('#field_href_qrcode-detail').attr("href", src_qrcode_event);
-					$('#field_href_qrcode-detail').attr("download", download_qrcode_event);
+					// $('#field_href_qrcode-detail').attr("href", src_qrcode_event);
+					$('#field_href_qrcode-detail').attr("download", download_qrcode_event+".png");
 					$('#field_nama_event-detail').val(nama_event);
 					$('#field_custom_url-detail').val(custom_url);
 					$('#field_tgl_mulai-detail').val(tanggal_dibuka);

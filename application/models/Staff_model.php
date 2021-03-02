@@ -59,7 +59,9 @@ class Staff_model extends CI_Model{
 			$this->form_validation->set_rules('nama_event', 'nama event', 'required|trim', [
 				'required' => 'Nama event harus diisi !',
 			]);
-			$this->form_validation->set_rules('custom_url', 'custom_url', 'trim',);
+			$this->form_validation->set_rules('custom_url', 'custom_url', 'is_unique[tabel_event.custom_url]|trim', [
+				'is_unique' => 'Custom url ini sudah digunakan sebelumnya, harap membuat custom url yang baru !'
+			]);
 			$this->form_validation->set_rules('tgl_mulai', 'tgl mulai', 'required|trim', [
 				'required' => 'Tanggal mulai event harus diisi !'
 			]);
@@ -257,7 +259,7 @@ class Staff_model extends CI_Model{
 				}
 		}elseif($mode == "hapus"){
 			// hapus gambar qrcode event
-				unlink(FCPATH . 'assets\\img\\qrcode\\' . $id_event .'.png');
+				unlink(FCPATH . 'assets/img/qrcode/' . $id_event .'.png');
 
 			// hapus tabel_area
 				$this->db->delete('tabel_area', array('id_event' => $id_event));
@@ -289,7 +291,7 @@ class Staff_model extends CI_Model{
 					$url = $custom_url;
 				}
 
-				unlink(FCPATH . 'assets\\img\\qrcode\\' . $id_event .'.png');
+				unlink(FCPATH . 'assets/img/qrcode/' . $id_event .'.png');
 				
 				// jika input tanggal_mulai kurang atau sama dengan dari tanggal sekarang
 				if($this->input->post('tgl_mulai', true) <= mdate('%Y-%m-%d')){
@@ -395,7 +397,8 @@ class Staff_model extends CI_Model{
 	
 			// $gambar_lama = $this->input->post('gambarlama');
 			// if($gambar_lama != 'default.jpg'){
-				unlink(FCPATH . 'assets/img/barcode/' . $id_visitor .'.png');
+				// unlink(FCPATH . 'assets/img/barcode/' . $id_visitor .'.png');
+				unlink(FCPATH . 'assets/img/qrcode/' . $data_tabel_visitor->id_visitor .'.png');
 			// }
 	
 			// update ci_sessions visitor

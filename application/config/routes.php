@@ -70,6 +70,7 @@ $route['staff_only'] = 'main_controller/index_staff';
 $route['staff_only/login'] = 'main_controller/page_login_staff';
 $route['staff_only/admin/home'] = 'staff_controller/page_admin_dashboard';
 $route['staff_only/admin/daftar_event'] = 'staff_controller/page_admin_event_management';
+$route['staff_only/admin/print_qrcode/(:any)'] = 'staff_controller/print_qrcode/$1';
 $route['staff_only/admin/daftar_staff'] = 'staff_controller/page_admin_daftar_staff';
 $route['staff_only/admin/data_tracking'] = 'staff_controller/page_admin_tracking';
 // $route['staff_only/admin/report_all'] = 'staff_controller/page_admin_report_all';
