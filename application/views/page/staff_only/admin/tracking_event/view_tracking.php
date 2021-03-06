@@ -2,6 +2,14 @@
 	<div class="text-right float-right">
 		<i class="fas fa-arrow-up fa-5x"></i>
 		<h3>Pilih event untuk menampilkan data tracking</h3>
+		<!-- </?php 
+			function secondsToTime($seconds) {
+				$dtF = new \DateTime('@0');
+				$dtT = new \DateTime("@$seconds");
+				return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+			}
+			echo secondsToTime(1630467);
+		?> -->
 	</div>
 <?php }else{ ?>
 	<div class="row">
@@ -35,7 +43,7 @@
 		</div>
 	</div>
 
-	<!-- grafik hitung visitor -->
+	<!-- grafik total visitor per-hari/jam-->
 		<div class="card shadow-sm mb-4">
 			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 				<h6 class="m-0 font-weight-bold text-primary">Grafik total visitor <?= $event["nama_event"] ?></h6>
@@ -48,9 +56,22 @@
 			<div class="card-body" id="view_grafik_tracking_event_total_visitor">
 				<?php $this->load->view('chart/grafik_tracking_event_total_visitor', ['pilih_grafik'=>null]) ?>
 			</div>
-
 		</div>
 
+	<!-- grafik popularitas area  -->
+		<div class="card shadow-sm mb-4">
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Grafik popularitas area</h6>
+			</div>
+			<div class="card-body" id="view_grafik_tracking_event_total_visitor">
+				<?php $this->load->view('chart/grafik_tracking_total_waktu_visitor_berkunjung_diarea') ?>
+				<br>
+				<hr>
+				<br>
+				<?php $this->load->view('chart/grafik_tracking_total_visitor_berkunjung_diarea') ?>
+			</div>
+		</div>
+		
 	<!-- data visitor in/out [nama_area] -->
 		<?php foreach($all_area as $data_area){ ?>
 			<div class="card shadow-sm mb-4">
@@ -76,7 +97,7 @@
 									
 									<div id="visitorin<?= $data_area->nama_area ?>" class="collapse" aria-labelledby="visitormasuk" data-parent="#accordionVisitorInOut<?= $data_area->nama_area ?>">
 										<div class="card-body">
-											<table class="table table-hover table-striped table-responsive-sm tabel-visitor">
+											<table class="table table-visitor-inout table-hover table-striped table-responsive-sm tabel-visitor">
 												<thead>
 													<tr>
 														<th>Nama Visitor</th>
@@ -103,7 +124,7 @@
 																		<input type="hidden" class="tlp_visitor-value_data" value="<?= $data_visitor->tlp_visitor; ?>">
 																		<input type="hidden" class="tlp_perusahaan-value_data" value="<?= $data_visitor->tlp_perusahaan; ?>">
 																		<input type="hidden" class="alasan_ikut-value_data" value="<?= $data_visitor->alasan_ikut; ?>">
-																		<input type="hidden" class="dvioa-value_data" value="<table class='table text-center table-responsive-sm'><thead><tr><th colspan='2'>Waktu Berkunjung ke Area</th></tr></thead><tbody><tr><td>Waktu Masuk ke Area <br><b><?= date('D, d-M-Y H:i:s', strtotime($data_tracking->time_in_area)); ?></b></span></td><td>Waktu Keluar dari Area <br> <b><?= date('D, d-M-Y H:i:s', strtotime($data_tracking->time_out_area)); ?></b></span></td></tr><tr><td colspan='2'>Lama Berkunjung ke Area <br> <b><?php $get_waktu_berkunjung_area = $this->db->query("SELECT TIMEDIFF(time_out_area,time_in_area) as 'lama_berkunjung_area' FROM tabel_tracking WHERE id_visitor='".$data_visitor->id_visitor."' AND id_area='".$data_tracking->id_area."'")->row("lama_berkunjung_area"); echo date('H', strtotime($get_waktu_berkunjung_area)).' jam '.date('i', strtotime($get_waktu_berkunjung_area)).' menit '.date('s', strtotime($get_waktu_berkunjung_area)). ' detik '; ?></b></td></tr></tbody></table>">
+																		<input type="hidden" class="dvioa-value_data" value="<table class='table text-center table-responsive-sm'><thead><tr><th colspan='2'>Waktu Berkunjung ke Area</th></tr></thead><tbody><tr><td>Waktu Masuk ke Area <br><b><?= date('D, d-M-Y H:i:s', strtotime($data_tracking->time_in_area)); ?></b></span></td><td>Waktu Keluar dari Area <br> <b><?= date('D, d-M-Y H:i:s', strtotime($data_tracking->time_out_area)); ?></b></span></td></tr><tr><td colspan='2'>Lama Berkunjung ke Area <br> <b><?php $get_waktu_berkunjung_area = $this->db->query("SELECT SUM(TIMEDIFF(time_out_area,time_in_area)) as 'total_lama_berkunjung_area' FROM tabel_tracking WHERE id_visitor='".$data_visitor->id_visitor."' AND id_area='".$data_tracking->id_area."'")->row("total_lama_berkunjung_area"); echo floor($get_waktu_berkunjung_area / 3600).' jam '.floor(($get_waktu_berkunjung_area / 60) % 60). ' menit '.floor($get_waktu_berkunjung_area % 60).' detik'; ?></b></td></tr></tbody></table>">
 																</tr>
 															<?php }
 														}
@@ -121,14 +142,14 @@
 											<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#visitorout<?= $data_area->nama_area ?>" aria-expanded="false" aria-controls="visitorout<?= $data_area->nama_area ?>">
 												Visitor out
 	
-												<span class="badge badge-secondary float-right d-flex align-items-center"><?= $this->db->get_where('tabel_tracking', ["id_event"=>$event["id_event"], "id_area"=>$data_area->id_area, "time_out_area !="=>null])->num_rows() ?></span>
+												<span class="badge badge-secondary float-right d-flex align-items-center"><?= $this->db->group_by('id_visitor')->get_where('tabel_tracking', ["id_event"=>$event["id_event"], "id_area"=>$data_area->id_area, "time_out_area !="=>null])->num_rows() ?></span>
 											</button>
 										</h2>
 									</div>
 	
 									<div id="visitorout<?= $data_area->nama_area ?>" class="collapse" aria-labelledby="visitorkeluar" data-parent="#accordionVisitorInOut<?= $data_area->nama_area ?>">
 										<div class="card-body">
-											<table class="table table-hover table-striped table-responsive-sm tabel-visitor">
+											<table class="table table-visitor-inout table-hover table-striped table-responsive-sm tabel-visitor">
 												<thead>
 													<tr>
 														<th>Nama Visitor</th>
@@ -137,7 +158,7 @@
 												</thead>
 												<tbody>
 													<?php 
-														$all_tracking = $this->db->get_where('tabel_tracking', ["id_event"=>$event["id_event"], "id_area"=>$data_area->id_area, "time_out_area !="=>null])->result();
+														$all_tracking = $this->db->order_by('nomor', 'DESC')->group_by('id_visitor')->get_where('tabel_tracking', ["id_event"=>$event["id_event"], "id_area"=>$data_area->id_area, "time_out_area !="=>null])->result();
 														foreach($all_tracking as $data_tracking){
 															$all_visitor = $this->db->get_where('tabel_visitor', ["id_visitor"=>$data_tracking->id_visitor])->result(); 
 
@@ -155,7 +176,7 @@
 																		<input type="hidden" class="tlp_visitor-value_data" value="<?= $data_visitor->tlp_visitor; ?>">
 																		<input type="hidden" class="tlp_perusahaan-value_data" value="<?= $data_visitor->tlp_perusahaan; ?>">
 																		<input type="hidden" class="alasan_ikut-value_data" value="<?= $data_visitor->alasan_ikut; ?>">
-																		<input type="hidden" class="dvioa-value_data" value="<table class='table text-center table-responsive-sm'><thead><tr><th colspan='2'>Waktu Berkunjung ke Area</th></tr></thead><tbody><tr><td>Waktu Masuk ke Area <br><b><?= date('D, d-M-Y H:i:s', strtotime($data_tracking->time_in_area)); ?></b></span></td><td>Waktu Keluar dari Area <br> <b><?= date('D, d-M-Y H:i:s', strtotime($data_tracking->time_out_area)); ?></b></span></td></tr><tr><td colspan='2'>Lama Berkunjung ke Area <br> <b><?php $get_waktu_berkunjung_area = $this->db->query("SELECT TIMEDIFF(time_out_area,time_in_area) as 'lama_berkunjung_area' FROM tabel_tracking WHERE id_visitor='".$data_visitor->id_visitor."' AND id_area='".$data_tracking->id_area."'")->row("lama_berkunjung_area"); echo date('H', strtotime($get_waktu_berkunjung_area)).' jam '.date('i', strtotime($get_waktu_berkunjung_area)).' menit '.date('s', strtotime($get_waktu_berkunjung_area)). ' detik '; ?></b></td></tr></tbody></table>">
+																		<input type="hidden" class="dvioa-value_data" value="<table class='table text-center table-responsive-sm'><thead><tr><th colspan='2'>Waktu Berkunjung ke Area</th></tr></thead><tbody><tr><td>Waktu Masuk ke Area <br><b><?= date('D, d-M-Y H:i:s', strtotime($data_tracking->time_in_area)); ?></b></span></td><td>Waktu Keluar dari Area <br> <b><?= date('D, d-M-Y H:i:s', strtotime($data_tracking->time_out_area)); ?></b></span></td></tr><tr><td colspan='2'>Lama Berkunjung ke Area <br> <b><?php $get_waktu_berkunjung_area = $this->db->query("SELECT SUM(TIMEDIFF(time_out_area,time_in_area)) as 'total_lama_berkunjung_area' FROM tabel_tracking WHERE id_visitor='".$data_visitor->id_visitor."' AND id_area='".$data_tracking->id_area."'")->row("total_lama_berkunjung_area"); echo floor($get_waktu_berkunjung_area / 3600).' jam '.floor(($get_waktu_berkunjung_area / 60) % 60). ' menit '.floor($get_waktu_berkunjung_area % 60).' detik'; ?></b></td></tr></tbody></table>">
 																</tr>
 															<?php }
 														}
@@ -248,10 +269,10 @@
 											colorByPoint: true,
 											data: [{
 													name: 'visitor in',
-													y: <?= $this->db->get_where('tabel_tracking', ["id_event"=>$event["id_event"], "id_area"=>$data_area->id_area, "time_out_area"=>null])->num_rows() ?>
+													y: <?= $this->db->order_by('nomor', 'DESC')->group_by('id_visitor')->get_where('tabel_tracking', ["id_event"=>$event["id_event"], "id_area"=>$data_area->id_area, "time_out_area"=>null])->num_rows() ?>
 												}, {
 													name: 'visitor out',
-													y: <?= $this->db->get_where('tabel_tracking', ["id_event"=>$event["id_event"], "id_area"=>$data_area->id_area, "time_out_area !="=>null])->num_rows() ?>
+													y: <?= $this->db->order_by('nomor', 'DESC')->group_by('id_visitor')->get_where('tabel_tracking', ["id_event"=>$event["id_event"], "id_area"=>$data_area->id_area, "time_out_area !="=>null])->num_rows() ?>
 												}]
 										}]
 									})
@@ -270,11 +291,10 @@
 				<h6 class="m-0 font-weight-bold text-primary">Data visitor yang berpartisipasi</h6>
 			</div>
 			<div class="card-body">
-				<table class="table tabel table-hover table-striped table-responsive-sm tabel-data-visitor-berpartisipasi">
+				<table class="table tabel-dvyb table-hover table-striped table-responsive-sm tabel-data-visitor-berpartisipasi">
 					<thead>
 						<tr>
 							<th>Nama</th>
-							<th>Perusahaan</th>
 							<th>Waktu Masuk</th>
 							<th>Waktu Keluar</th>
 							<th>Aksi</th>
@@ -284,9 +304,8 @@
 						<?php foreach($all_visitor_join as $data_visitor){ ?>
 							<tr>
 								<td><?= $data_visitor->nama_visitor ?></td>
-								<td><?= $data_visitor->perusahaan_visitor ?></td>
 								<td><?= date('D, d-M-Y H:i:s', strtotime($data_visitor->time_in_event)) ?></td>
-								<td><?= date('D, d-M-Y H:i:s', strtotime($data_visitor->time_out_event)) ?></td>
+								<td><?php if($data_visitor->time_out_event != "0000-00-00 00:00:00"){ echo date('D, d-M-Y H:i:s', strtotime($data_visitor->time_out_event)); }else{ echo "Belum Scan Keluar Event"; } ?></td>
 								<td><a href="javascript:void()" data-id="<?= $data_visitor->id_visitor; ?>" data-toggle="modal" data-target="#modal_detail_visitor" class="btn btn-info btn-detail-visitor m-1">Detail</a></td>
 
 								<!-- Membuat sebuah textbox hidden yang akan digunakan untuk detail visitor -->
@@ -302,14 +321,13 @@
 									<!-- <input type="hidden" class="time_in_event-value_data" value="</?= date('D, d-M-Y H:i:s', strtotime($data_visitor->time_in_event)); ?>">
 									<input type="hidden" class="time_out_event-value_data" value="</?= date('D, d-M-Y H:i:s', strtotime($data_visitor->time_out_event)); ?>">
 									<input type="hidden" class="lama_berkunjung_event-value_data" value="</?php $get_waktu_berkunjung_event = $this->db->query("SELECT TIMEDIFF(time_out_event,time_in_event) as 'lama_berkunjung_event' FROM tabel_visitor WHERE id_visitor='".$data_visitor->id_visitor."'")->row("lama_berkunjung_event"); echo date('H', strtotime($get_waktu_berkunjung_event)).' jam '.date('i', strtotime($get_waktu_berkunjung_event)).' menit '.date('s', strtotime($get_waktu_berkunjung_event)). ' detik '; ?>"> -->
-									<input type="hidden" class="dvyb-value_data" value="<table class='table text-center table-responsive-sm'><thead><tr><th colspan='2'>Waktu Berkunjung ke Event</th></tr></thead><tbody><tr><td>Waktu Masuk ke Event <br><b><?= date('D, d-M-Y H:i:s', strtotime($data_visitor->time_in_event)); ?></b></span></td><td>Waktu Keluar dari Event <br> <b><?= date('D, d-M-Y H:i:s', strtotime($data_visitor->time_out_event)); ?></b></span></td></tr><tr><td colspan='2'>Lama Berkunjung ke Event <br> <b><?php $get_waktu_berkunjung_event = $this->db->query("SELECT TIMEDIFF(time_out_event,time_in_event) as 'lama_berkunjung_event' FROM tabel_visitor WHERE id_visitor='".$data_visitor->id_visitor."'")->row("lama_berkunjung_event"); echo date('H', strtotime($get_waktu_berkunjung_event)).' jam '.date('i', strtotime($get_waktu_berkunjung_event)).' menit '.date('s', strtotime($get_waktu_berkunjung_event)). ' detik '; ?></b></td></tr></tbody></table><hr><table class='table table-responsive-sm text-center'><thead><tr><th colspan='2'>Waktu Berkunjung ke Area</th></tr><tr><th>Nama Area</th><th>Lama Berkunjung</th></tr></thead><tbody><?php $data_visitor_tracking = $this->db->get_where('tabel_tracking', ['id_event'=>$id_event, 'id_visitor'=>$data_visitor->id_visitor])->result(); foreach($data_visitor_tracking as $data_track_visitor){?> <tr><td><?php foreach($all_area as $data_area){if($data_track_visitor->id_area == $data_area->id_area){echo $data_area->nama_area;}} ?></td><td><?php $get_waktu_berkunjung_area = $this->db->query("SELECT TIMEDIFF(time_out_area,time_in_area) as 'lama_berkunjung_area' FROM tabel_tracking WHERE id_visitor='".$data_track_visitor->id_visitor."' AND id_area='".$data_track_visitor->id_area."'")->row("lama_berkunjung_area"); echo date('H', strtotime($get_waktu_berkunjung_area)).' jam '.date('i', strtotime($get_waktu_berkunjung_area)).' menit '.date('s', strtotime($get_waktu_berkunjung_area)).' detik'; ?></td></tr> <?php } ?></tbody></table>">
+									<input type="hidden" class="dvyb-value_data" value="<table class='table text-center table-responsive-sm'><thead><tr><th colspan='2'>Waktu Berkunjung ke Event</th></tr></thead><tbody><tr><td>Waktu Masuk ke Event <br><b><?= date('D, d-M-Y H:i:s', strtotime($data_visitor->time_in_event)); ?></b></span></td><td>Waktu Keluar dari Event <br> <b><?= date('D, d-M-Y H:i:s', strtotime($data_visitor->time_out_event)); ?></b></span></td></tr><tr><td colspan='2'>Lama Berkunjung ke Event <br> <b><?php $get_waktu_berkunjung_event = $this->db->query("SELECT SUM(TIMEDIFF(time_out_event,time_in_event)) as 'lama_berkunjung_event' FROM tabel_visitor WHERE id_visitor='".$data_visitor->id_visitor."'")->row("lama_berkunjung_event"); echo floor($get_waktu_berkunjung_event / 3600).' jam '.floor(($get_waktu_berkunjung_event / 60) % 60). ' menit '.floor($get_waktu_berkunjung_event % 60).' detik'; ?></b></td></tr></tbody></table><hr><table class='table table-responsive-sm text-center'><thead><tr><th colspan='2'>Waktu Berkunjung ke Area</th></tr><tr><th>Nama Area</th><th>Lama Berkunjung</th></tr></thead><tbody><?php $data_visitor_tracking = $this->db->get_where('tabel_tracking', ['id_event'=>$id_event, 'id_visitor'=>$data_visitor->id_visitor])->result(); foreach($data_visitor_tracking as $data_track_visitor){?> <tr><td><?php foreach($all_area as $data_area){if($data_track_visitor->id_area == $data_area->id_area){echo $data_area->nama_area;}} ?></td><td><?php $get_waktu_berkunjung_area = $this->db->query("SELECT SUM(TIMEDIFF(time_out_area,time_in_area)) as 'total_lama_berkunjung_area' FROM tabel_tracking WHERE id_visitor='".$data_track_visitor->id_visitor."' AND id_area='".$data_track_visitor->id_area."'")->row("total_lama_berkunjung_area"); echo floor($get_waktu_berkunjung_area / 3600).' jam '.floor(($get_waktu_berkunjung_area / 60) % 60). ' menit '.floor($get_waktu_berkunjung_area % 60).' detik'; ?></td></tr> <?php } ?></tbody></table>">
 							</tr>
 						<?php } ?>
 					</tbody>
 					<tfoot>
 						<tr>
 							<th>Nama</th>
-							<th>Perusahaan</th>
 							<th>Waktu Masuk</th>
 							<th>Waktu Keluar</th>
 							<th>Aksi</th>
@@ -390,6 +408,14 @@
 		$(document).ready(function(){
 			$("#tabel_aktifitas_terbaru").DataTable();
 			$(".tabel").DataTable();
+			$(".tabel-dvyb").DataTable({
+				ordering: false
+			});
+			$(".table-visitor-inout").DataTable({
+				ordering: false,
+				searching: false,
+				
+			});
 
 			$("#pilih-grafik").on('change', function(){
 				$.ajax({

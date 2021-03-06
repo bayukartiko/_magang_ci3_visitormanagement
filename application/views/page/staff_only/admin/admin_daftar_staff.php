@@ -19,7 +19,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Total Staff</div>
+                                                Total Keseluruhan Staff</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
 												<span id="total_staff">
 													<?= $hitung_staff ?>
@@ -197,29 +197,33 @@
 					</div>
 					<div class="modal-body">
 						<fieldset disabled="disabled">
-							<div class="form-group">
-								<label for="username_detail">Username</label>
-								<input type="text" class="form-control" id="username_detail" disabled>
-							</div>
-							<div class="form-group">
-								<label for="nama_detail">Nama</label>
-								<input type="text" class="form-control" id="nama_detail" disabled>
-							</div>
-							<div class="form-group">
-								<label for="jabatan_detail">Jabatan</label>
-								<select id="jabatan_detail" class="form-control" disabled>
-									<option value="" selected disabled>Pilih Jabatan</option>
-									<option value="1">admin</option>
-									<option value="2">petugas</option>
-								</select>
+							<div class="row">
+								<div class="col md-6">
+									<div class="form-group">
+										<label for="username_detail">Username</label>
+										<input type="text" class="form-control" id="username_detail" disabled>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="nama_detail">Nama</label>
+										<input type="text" class="form-control" id="nama_detail" disabled>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="jabatan_detail">Jabatan</label>
+										<select id="jabatan_detail" class="form-control" disabled>
+											<option value="" selected disabled>Pilih Jabatan</option>
+											<option value="1">admin</option>
+											<option value="2">petugas</option>
+										</select>
+									</div>
+								</div>
 							</div>
 							<div class="form-group">
 								<label for="nama_area_detail">Bertugas di</label>
 								<input type="text" class="form-control" id="nama_area_detail" disabled>
-							</div>
-							<div class="form-group">
-								<label for="verified_detail">Terverifikasi?</label>
-								<input type="text" class="form-control" id="verified_detail" disabled>
 							</div>
 							<div class="form-group">
 								<label for="status_detail">Status</label><br>
@@ -279,7 +283,7 @@
 				var username = tr.find('.username-value_detail').val();
 				var nama = tr.find('.nama-value_detail').val();
 				var id_area = tr.find('.id_area-value_detail').val();
-				var verified = tr.find('.verified-value_detail').val();
+				// var verified = tr.find('.verified-value_detail').val();
 				var role = tr.find('.role-value_detail').val();
 				var is_active = tr.find('.is_active-value_detail').val();
 				
@@ -291,11 +295,11 @@
 					$('#jabatan_detail option[value=2]').attr('selected', 'selected');
 				}
 				$('#nama_area_detail').val(id_area);
-				if(verified == '1'){
-					$('#verified_detail').val('ya');
-				}else{
-					$('#verified_detail').val('tidak');
-				}
+				// if(verified == '1'){
+				// 	$('#verified_detail').val('ya');
+				// }else{
+				// 	$('#verified_detail').val('tidak');
+				// }
 				$('#status_detail').html(is_active);
 
 			});

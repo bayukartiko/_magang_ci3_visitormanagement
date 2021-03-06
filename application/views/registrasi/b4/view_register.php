@@ -29,7 +29,7 @@
 									</b>
 								</h5>
 								<!-- <img src="<?= base_url() ?>assets/img/barcode/<?= $this->session->userdata("gambar_qrcode"); ?>" alt="<?= $this->session->userdata("id_visitor"); ?>" data-toggle="tooltip" data-placement="bottom" title="<?= $this->session->userdata("id_visitor"); ?>" data-container="body" class="img-thumbnail rounded mx-auto d-block shadow-sm" style="height: 60px;"> -->
-								<img src="<?= base_url() ?>assets/img/qrcode/<?= $this->session->userdata("gambar_qrcode"); ?>" alt="<?= $this->session->userdata("id_visitor"); ?>" data-toggle="tooltip" data-placement="bottom" title="<?= $this->session->userdata("id_visitor"); ?>" data-container="body" class="img-thumbnail rounded mx-auto d-block shadow-sm" style="width: 250px; height: 250px;">
+								<img src="<?= base_url() ?>assets/img/qrcode/<?= $this->session->userdata("gambar_qrcode"); ?>" alt="<?= $this->session->userdata("id_visitor"); ?>" data-toggle="tooltip" data-placement="bottom" title="<?= $this->session->userdata("id_visitor"); ?>" data-container="body" class="img-thumbnail rounded mx-auto d-block shadow-sm" style="width: 200px; height: 200px;">
 								<small>disarankan tingkatkan kecerahan layar anda, agar proses scanning bisa lebih cepat</small>
 
 								<br>
@@ -37,24 +37,28 @@
 								<br>
 
 								<!-- tabel data tracking -->
-									<h6 class="text-center">List area yang anda kunjungi</h6>
+									<h5 class="text-center">List area yang anda kunjungi</h5>
 
-									<div class="alert alert-success ml-auto mr-auto" role="alert">
-										<h6>Anda sekarang berada di area berikut:</h6>
-										<?php
-											if($all_data_saya["status"] == "didalam_area"){
-												foreach($all_data_tracking_saya_1 as $data_tracking_saya_1){
-													foreach($all_area as $data_area){
-														if($data_tracking_saya_1->id_area == $data_area->id_area){
-															echo "<h5><b>".$data_area->nama_area."</b></h5>";
+									<?php
+										if($all_data_saya["status"] == "didalam_area"){
+									?>
+											<div class="alert alert-success ml-auto mr-auto" role="alert">
+												<h6>Anda sekarang berada di area berikut:</h6>
+													<?php 
+														foreach($all_data_tracking_saya_1 as $data_tracking_saya_1){
+															foreach($all_area as $data_area){
+																if($data_tracking_saya_1->id_area == $data_area->id_area){
+																	echo "<h5><b>".$data_area->nama_area."</b></h5>";
+																}
+															}
 														}
-													}
-												}
-											}else{
-												echo "<h5><b>anda sedang berada diluar area</b></h5>";
-											}
-										?>
-									</div>
+													?>
+											</div>
+									<?php
+										}else{
+											// echo "<h5><b>anda sedang berada diluar area</b></h5>";
+										}
+									?>
 									<br>
 									<table class="table table-responsive-sm table-hover table-striped" id="track-area">
 										<thead>

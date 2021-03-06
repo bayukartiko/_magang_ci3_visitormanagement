@@ -90,8 +90,12 @@
 					<?php if($staff_data->is_active == 'online'){ ?>
 						<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff">Detail</a>
 					<?php }else{ ?>
+						<?php if($staff_data->sedang_bertugas == true){ ?>
+							<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff m-1">Detail</a>
+						<?php }else{ ?>
 							<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff m-1">Detail</a>
 							<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_hapus_staff" class="btn btn-danger btn-hapus-staff m-1">Hapus</a>
+						<?php } ?>
 					<?php } ?>
 
 				<!-- Membuat sebuah textbox hidden yang akan digunakan untuk form detail -->

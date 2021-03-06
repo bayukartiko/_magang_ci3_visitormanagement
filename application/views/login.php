@@ -81,7 +81,7 @@
 										<div class="form-group">
 											<input type="password" class="form-control form-control-user text-center" id="input_password" name="password" placeholder="Masukkan Password" value="<?= set_value('password'); ?>">
 											<div class="lihat-password">
-												<span toggle="#inputPassword" class="ikon-mata far fa-eye"></span>
+												<span toggle="#inputPassword" class="ikon-mata far fa-eye-slash"></span>
 											</div>
 
 											<small id="error_password" class="form-text text-muted text-danger text-center"><?= form_error('password'); ?></small>
@@ -118,7 +118,7 @@
 	<script>
 		$(document).ready(function(){
 			$('.lihat-password').click(function(){
-				$(this).children().toggleClass('far fa-eye far fa-eye-slash');
+				$(this).children().toggleClass('far fa-eye-slash far fa-eye');
 				let input = $(this).prev();
 				input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
 			});

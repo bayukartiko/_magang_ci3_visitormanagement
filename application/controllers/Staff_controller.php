@@ -101,7 +101,7 @@ class Staff_controller extends CI_Controller {
 						'event' => $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array(), 
 						'id_event'=>$id_event,
 						'all_area' => $this->db->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
-						'all_visitor_join' => $this->db->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
+						'all_visitor_join' => $this->db->order_by('id_visitor', 'DESC')->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
 						'total_visitor' => $this->db->query("SELECT DATE(registered_at) 'mendaftar_pada', COUNT(DISTINCT id_visitor) 'total_visitor' FROM tabel_visitor WHERE registered_at BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY mendaftar_pada")->result(),
 						'visitor_in' => $this->db->query("SELECT DATE(time_in_event) 'waktu_masuk_event', COUNT(DISTINCT id_visitor) 'visitor_in' FROM tabel_visitor WHERE time_in_event BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY waktu_masuk_event")->result(),
 						'visitor_out' => $this->db->query("SELECT DATE(time_out_event) 'waktu_keluar_event', COUNT(DISTINCT id_visitor) 'visitor_out' FROM tabel_visitor WHERE time_out_event BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY waktu_keluar_event")->result(),
@@ -110,6 +110,7 @@ class Staff_controller extends CI_Controller {
 						'visitor_in_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area"=>null])->result(),
 						'hitung_visitor_out_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area !="=>NULL])->num_rows(),
 						'visitor_out_area'=>$this->db->get_where('tabel_tracking', ["id_event"=>$id_event, "id_area"=>$tabel_area["id_area"], "time_out_area !="=>NULL])->result(),
+						// 'hitung_total_lama_waktu_visitor_berkunjung'=>$this->db->query("SELECT SEC_TO_TIME(SUM(TIMEDIFF(time_out_area,time_in_area))) as 'lama_berkunjung_area' FROM tabel_tracking WHERE id_area='".$tabel_area["id_area"]."'")->result()
 					), true);
 	
 					$callback = array(
