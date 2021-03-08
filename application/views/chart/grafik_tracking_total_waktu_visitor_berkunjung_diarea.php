@@ -105,6 +105,28 @@
 			shared: true,
 			useHTML: true
 		},
+		plotOptions: {
+			column: {
+				dataLabels: {
+					enabled: true,
+					pointFormatter: function() {
+						var time = this.y;
+						var jam=parseInt(time/3600);
+						var menit=parseInt((parseInt(time%3600))/60);
+						var detik=parseInt(time%60);
+						if(jam == 0 && menit != 0){
+							return '<b>'+ menit + ' menit </b>';
+						}else if(jam == 0 && menit == 0){
+							return '<b> Belum Dikunjungi </b>';
+						}else{
+							return '<b>'+ jam + ' jam ' + menit + ' menit ' + detik + ' detik </b>';
+						}
+					},
+				},
+				pointPadding: 0.2,
+				borderWidth: 0
+			},
+		},
 		credits: {
 			enabled: true
 		},

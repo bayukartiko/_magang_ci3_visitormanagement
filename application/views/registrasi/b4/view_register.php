@@ -88,7 +88,7 @@
 															<td><?= $data_tracking_saya->time_in_area ?></td>
 															<td>
 																<?php
-																	if($data_tracking_saya->time_out_area == "0000-00-00 00:00:00"){
+																	if($data_tracking_saya->time_out_area == "0000-00-00 00:00:00" || $data_tracking_saya->time_out_area == null){
 																		echo "anda belum keluar area ini";
 																	}else{
 																		echo $data_tracking_saya->time_out_area;
@@ -180,7 +180,7 @@
 					<!-- <h3>Hore! Data kamu telah berhasil dibuat! Tunjukkan barcode dibawah ke petugas ketika memasuki salah satu area didalam</h3> -->
 					<h3><b>Terima kasih telah mengunjungi <?= $nama_event ?>!</b></h3>
 					<br>
-					<h6>Periksa kembali barang bawaan anda dan pastikan tidak ada yang tertinggal di didalam</h6>
+					<h6>Periksa kembali barang bawaan anda dan pastikan tidak ada yang tertinggal didalam</h6>
 				</div>
 			</div>
 			<br>

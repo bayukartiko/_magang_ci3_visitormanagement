@@ -96,6 +96,10 @@
 			},
 			plotOptions: {
 				column: {
+					dataLabels: {
+						enabled: true,
+						format: "{point.y:1f} orang"
+					},
 					pointPadding: 0.2,
 					borderWidth: 0
 				}
@@ -202,6 +206,10 @@
 			},
 			plotOptions: {
 				column: {
+					dataLabels: {
+						enabled: true,
+						format: "{point.y:1f} orang"
+					},
 					pointPadding: 0.2,
 					borderWidth: 0
 				}

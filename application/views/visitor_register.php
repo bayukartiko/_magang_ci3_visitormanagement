@@ -21,7 +21,7 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group" id="field_nama_depan">
-											<label for="nama_depan">Nama Depan</label>
+											<label for="nama_depan">Nama Depan <span class="text-danger">*</span></label>
 											<input type="text" class="form-control" id="nama_depan" name="nama_depan" value="<?= set_value('nama_depan') ?>">
 												
 											<small id="error_nama_depan" class="invalid-feedback"></small>
@@ -29,7 +29,7 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-group" id="field_nama_belakang">
-											<label for="nama_belakang">Nama Belakang</label>
+											<label for="nama_belakang">Nama Belakang <span class="text-danger">*</span></label>
 											<input type="text" class="form-control" id="nama_belakang" name="nama_belakang" value="<?= set_value('nama_belakang') ?>">
 
 											<small id="error_nama_belakang" class="invalid-feedback"></small>
@@ -53,7 +53,7 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-group" id="field_email_pribadi">
-											<label for="email_pribadi">Email Pribadi</label>
+											<label for="email_pribadi">Email Pribadi <span class="text-danger">*</span></label>
 											<input type="email" class="form-control" id="email_pribadi" name="email_pribadi" value="<?= set_value('email_pribadi') ?>">
 
 											<small id="error_email_pribadi" class="invalid-feedback"></small>
@@ -69,7 +69,7 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-group" id="field_notlp_pribadi">
-											<label for="notlp_pribadi">No Telpon Pribadi</label>
+											<label for="notlp_pribadi">No Telpon Pribadi <span class="text-danger">*</span></label>
 											<input type="number" class="form-control" id="notlp_pribadi" name="notlp_pribadi" value="<?= set_value('notlp_pribadi') ?>">
 
 											<small id="error_notlp_pribadi" class="invalid-feedback"></small>

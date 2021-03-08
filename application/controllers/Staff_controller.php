@@ -258,9 +258,47 @@ class Staff_controller extends CI_Controller {
 				$data["all_area"] = $this->staff_model->get_tb_area();
 				$data["all_tugas_staff_petugas"] = $this->staff_model->get_tb_tugas_staff_petugas();
 				$data["all_visitor"] = $this->staff_model->get_tb_visitor();
-				$this->load->view('tabel/tabel_report_all', $data);
+				$this->load->view('page/staff_only/admin/report/tabel_report_all', $data);
 			}
-			
+			public function aksi_print_report_data_visitorTracking(){
+				header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+				header('Content-Disposition: attachment; filename="report_data_visitor&tracking.xls"');
+				header('Cache-Control: max-age=0');
+
+				$data["all_staff"] = $this->staff_model->get_tb_staff();
+				$data["all_role"] = $this->staff_model->get_tb_role();
+				$data["all_event"] = $this->staff_model->get_tb_event();
+				$data["all_area"] = $this->staff_model->get_tb_area();
+				$data["all_tugas_staff_petugas"] = $this->staff_model->get_tb_tugas_staff_petugas();
+				$data["all_visitor"] = $this->staff_model->get_tb_visitor();
+				$this->load->view('page/staff_only/admin/report/tabel_report_visitorTracking', $data);
+			}
+			public function aksi_print_report_data_event(){
+				header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+				header('Content-Disposition: attachment; filename="report_data_event.xls"');
+				header('Cache-Control: max-age=0');
+
+				$data["all_staff"] = $this->staff_model->get_tb_staff();
+				$data["all_role"] = $this->staff_model->get_tb_role();
+				$data["all_event"] = $this->staff_model->get_tb_event();
+				$data["all_area"] = $this->staff_model->get_tb_area();
+				$data["all_tugas_staff_petugas"] = $this->staff_model->get_tb_tugas_staff_petugas();
+				$data["all_visitor"] = $this->staff_model->get_tb_visitor();
+				$this->load->view('page/staff_only/admin/report/tabel_report_event', $data);
+			}
+			public function aksi_print_report_data_staff(){
+				header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+				header('Content-Disposition: attachment; filename="report_data_staff.xls"');
+				header('Cache-Control: max-age=0');
+
+				$data["all_staff"] = $this->staff_model->get_tb_staff();
+				$data["all_role"] = $this->staff_model->get_tb_role();
+				$data["all_event"] = $this->staff_model->get_tb_event();
+				$data["all_area"] = $this->staff_model->get_tb_area();
+				$data["all_tugas_staff_petugas"] = $this->staff_model->get_tb_tugas_staff_petugas();
+				$data["all_visitor"] = $this->staff_model->get_tb_visitor();
+				$this->load->view('page/staff_only/admin/report/tabel_report_staff', $data);
+			}
 
 		public function page_admin_daftar_staff(){
 			$data['tabel_staff'] = $this->db->get_where('tabel_staff', ['username' => $this->session->userdata('username')])->row_array();
@@ -1071,11 +1109,13 @@ class Staff_controller extends CI_Controller {
 							$hitung_visitor_keluar_event = $this->db->get_where('tabel_visitor', ['status' => 'telah_keluar_event'])->num_rows();
 
 							$view_tabel_data_visitor_keluar = $this->load->view('tabel/tabel_data_visitor_keluar', array(
+								'all_area' => $this->db->get("tabel_area")->result(),
 								'visitor_scan_keluar' => $visitor_scan_keluar, 
 								'hitung_visitor_scan_keluar' => $hitung_visitor_scan_keluar
 							), true);
 
 							$view_chart_visitor_keluar_masuk_event = $this->load->view('chart/chart_visitor_keluar_masuk_event', array(
+								'all_area' => $this->db->get("tabel_visitor")->result(),
 								'hitung_visitor_masuk_event' => $hitung_visitor_masuk_event,
 								'hitung_visitor_keluar_event' => $hitung_visitor_keluar_event
 							), true);

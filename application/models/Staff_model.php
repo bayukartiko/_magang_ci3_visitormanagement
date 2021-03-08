@@ -449,6 +449,7 @@ class Staff_model extends CI_Model{
 
 									$data_insert_tabel_tracking = [
 										"id_visitor" => htmlspecialchars($id_visitor),
+										"id_event" => htmlspecialchars($visitor["id_event"]),
 										"id_petugas_pintu_area" => htmlspecialchars($this->session->userdata('staff_id')),
 										"id_area" => htmlspecialchars($id_area),
 										"time_in_area" => htmlspecialchars(mdate("%Y-%m-%d %H:%i:%s")),

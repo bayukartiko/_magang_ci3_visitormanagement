@@ -42,7 +42,7 @@
             <!-- <li class="nav-item active"> -->
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('staff_only/admin/home') ?>">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-home"></i>
                     <span>Dashboard</span>
 				</a>
             </li>
@@ -88,10 +88,11 @@
                 <div id="report" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Report:</h6>
-                        <!-- <a class="collapse-item" href="login.html">Login</a> -->
-                        <a class="collapse-item" href="">Visitor Tracking</a>
-                        <a class="collapse-item" href="">Data Visitor</a>
-                        <a class="collapse-item" href="">Data Event & Staff</a>
+                        <!-- <a class="collapse-item" href="">Visitor Tracking</a> -->
+                        <a class="collapse-item" href="<?= base_url('staff_only/admin/report_data_visitorTracking') ?>">Data Visitor & Tracking</a>
+                        <!-- <a class="collapse-item" href="">Data Event & Staff</a> -->
+                        <a class="collapse-item" href="<?= base_url('staff_only/admin/report_data_event') ?>">Data Event</a>
+                        <a class="collapse-item" href="<?= base_url('staff_only/admin/report_data_staff') ?>">Data Staff</a>
 						<hr>
                         <a class="collapse-item" href="<?= base_url('staff_only/admin/report_all') ?>">All Report</a>
                         <a class="collapse-item" href="<?= base_url('staff_only/admin/report_filter') ?>">Filter Report</a>

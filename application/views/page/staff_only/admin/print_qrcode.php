@@ -23,12 +23,12 @@
 	<div class="text-center m-4">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="font-weight-bold"><?= $nama_aplikasi ?></h1>
+				<h1 class="font-weight-bold" style="color: #ffffff;"><?= $nama_aplikasi ?></h1>
 				<br><br>
 			</div>
 			<div class="col-md-12">
 				<div class="card mx-auto w-50 h-100">
-					<div class="card-body">
+					<div class="card-body" style="color: #ffffff;">
 						<h3><?= $nama_event ?></h3>
 						<br><br>
 						<img src="<?= base_url() ?>assets/img/qrcode/<?= $qrcode_event ?>" alt="" style="width: 350px; height: 350px;">
