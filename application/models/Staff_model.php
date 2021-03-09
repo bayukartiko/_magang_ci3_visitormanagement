@@ -398,7 +398,7 @@ class Staff_model extends CI_Model{
 			// $gambar_lama = $this->input->post('gambarlama');
 			// if($gambar_lama != 'default.jpg'){
 				// unlink(FCPATH . 'assets/img/barcode/' . $id_visitor .'.png');
-				unlink(FCPATH . 'assets/img/qrcode/' . $data_tabel_visitor->id_visitor .'.png');
+				unlink(FCPATH . 'assets/img/qrcode/' . $id_visitor .'.png');
 			// }
 	
 			// update ci_sessions visitor

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2021 at 05:03 PM
+-- Generation Time: Mar 09, 2021 at 10:20 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -44,11 +44,11 @@ CREATE TABLE `ci_sessions` (
 INSERT INTO `ci_sessions` (`id`, `user_id`, `id_event`, `status`, `ip_address`, `timestamp`, `data`) VALUES
 ('f93lv6o9gb9dgk7ijumm8niltgju2vpj', NULL, NULL, NULL, '::1', 1615194611, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226e6577223b7d),
 ('g9937bsa45epgou2jh6b57ds47n89gav', NULL, NULL, NULL, '::1', 1614570423, ''),
+('hm2st0blkkem6bl55cf5pje5q6ph6s34', NULL, NULL, NULL, '::1', 1615281619, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
 ('inchflpnd3hnif6urcufdk5ge3l67nl6', NULL, NULL, NULL, '::1', 1615219328, ''),
 ('jvsr52qgaav01vs28f6abql95psegbj8', NULL, NULL, NULL, '::1', 1615184323, ''),
 ('kd3oh1nhijvk7asg01sd69ook9cas646', NULL, NULL, NULL, '::1', 1614903998, ''),
-('ntq7o59s32pkkb7o2eu9iin51gcj9ajg', 'STF202101300925250000001', NULL, 'adalah_staff', '::1', 1615219381, 0x73746166665f69647c733a32343a22535446323032313031333030393235323530303030303031223b726f6c655f69647c733a313a2231223b757365726e616d657c733a353a2261646d696e223b6e616d617c733a31323a2262617975206b617274696b6f223b736564616e675f62657274756761737c733a313a2230223b69645f74756761737c4e3b76657269666965647c733a313a2231223b69735f6163746976657c733a363a226f6e6c696e65223b77616b74755f616b7469667c693a313631353231393338313b),
-('vedapqhborpfb9f9cutqv47foe0gvb4b', NULL, NULL, NULL, '::1', 1615219338, '');
+('vedapqhborpfb9f9cutqv47foe0gvb4b', NULL, NULL, NULL, '::1', 1615264570, '');
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,7 @@ CREATE TABLE `tabel_event` (
 --
 
 INSERT INTO `tabel_event` (`id_event`, `nama_event`, `custom_url`, `gambar_qrcode`, `tanggal_dibuka`, `tanggal_ditutup`, `jam_dibuka`, `jam_ditutup`, `status`) VALUES
-('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', 'gjui', 'EVNT2102146814270000001.png', '2021-02-16', '2021-03-08', '08:00:00', '23:00:00', 'not_active');
+('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', 'gjui', 'EVNT2102146814270000001.png', '2021-02-16', '2021-03-09', '08:00:00', '23:00:00', 'active');
 
 -- --------------------------------------------------------
 
@@ -138,7 +138,7 @@ CREATE TABLE `tabel_staff` (
 --
 
 INSERT INTO `tabel_staff` (`staff_id`, `role_id`, `username`, `password`, `nama`, `sedang_bertugas`, `id_tugas`, `verified`, `is_active`) VALUES
-('STF202101300925250000001', 1, 'admin', '$2y$10$giRYQKKvjOVEuGiozcCwVeVWOD2GGvwjLZzeVlPSl9Xv.ICsQ0FUu', 'bayu kartiko', 0, NULL, '1', 'online'),
+('STF202101300925250000001', 1, 'admin', '$2y$10$giRYQKKvjOVEuGiozcCwVeVWOD2GGvwjLZzeVlPSl9Xv.ICsQ0FUu', 'bayu kartiko', 0, NULL, '1', 'offline'),
 ('STF202102011946130000002', 2, 'petugas1', '$2y$10$iW628pKXrvgtpjChzkPAmeFmKuEyyv0o8dqnt3Z.aeSLikqywK32e', 'petugas1', 1, 'TGS21021468178000000010', '1', 'offline'),
 ('STF202102031313020000003', 2, 'petugas2', '$2y$10$Bx4GsO4luPGFu0A0I2JLouaMdYmxeVq.HVp0ayvmDMkYLLGPZ/9qW', 'petugas2', 1, 'TGS21021468178000000011', '1', 'offline'),
 ('STF202102031313240000004', 2, 'petugas3', '$2y$10$jTti8PnyZp8hNJkYqA3Rgut3eaU5WMv6Yw32xbmy55orhZztllbsq', 'petugas3', 1, 'TGS21021468178000000012', '1', 'offline'),
@@ -276,7 +276,12 @@ INSERT INTO `tabel_visitor` (`id_visitor`, `id_event`, `nama_visitor`, `perusaha
 ('VSTR2103088566150000023', 'EVNT2102146814270000001', 'coba 11', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103088566150000023.png', '2021-03-08 22:39:02', NULL, 'STF202102041818440000009', '2021-03-08 22:39:02', '2021-03-08 22:39:23', 'telah_keluar_event'),
 ('VSTR2103088964530000021', 'EVNT2102146814270000001', 'coba 9', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103088964530000021.png', '2021-03-08 22:19:47', NULL, 'STF202102041818440000009', '2021-03-08 22:19:47', '2021-03-08 22:20:17', 'telah_keluar_event'),
 ('VSTR2103089360230000029', 'EVNT2102146814270000001', 'coba 17', '', '', 'jkl@jlkl.jkl', '', '123', '', '', 'VSTR2103089360230000029.png', '2021-03-08 22:56:08', NULL, 'STF202102041818440000009', '2021-03-08 22:56:08', '2021-03-08 22:56:24', 'telah_keluar_event'),
-('VSTR2103089383530000022', 'EVNT2102146814270000001', 'coba 10', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103089383530000022.png', '2021-03-08 22:32:37', NULL, 'STF202102041818440000009', '2021-03-08 22:32:37', '2021-03-08 22:33:56', 'telah_keluar_event');
+('VSTR2103089383530000022', 'EVNT2102146814270000001', 'coba 10', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103089383530000022.png', '2021-03-08 22:32:37', NULL, 'STF202102041818440000009', '2021-03-08 22:32:37', '2021-03-08 22:33:56', 'telah_keluar_event'),
+('VSTR2103093110840000032', 'EVNT2102146814270000001', 'coba 20', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103093110840000032.png', '2021-03-09 11:31:34', NULL, 'STF202102041818440000009', '2021-03-09 11:31:34', '2021-03-09 11:32:00', 'telah_keluar_event'),
+('VSTR2103094153990000034', 'EVNT2102146814270000001', 'coba 22', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103094153990000034.png', '2021-03-09 11:34:20', NULL, 'STF202102041818440000009', '2021-03-09 11:34:20', '2021-03-09 11:34:32', 'telah_keluar_event'),
+('VSTR2103095732790000031', 'EVNT2102146814270000001', 'coba 19', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103095732790000031.png', '2021-03-09 11:26:24', NULL, 'STF202102041818440000009', '2021-03-09 11:26:24', '2021-03-09 11:26:39', 'telah_keluar_event'),
+('VSTR2103097258920000033', 'EVNT2102146814270000001', 'coba 21', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103097258920000033.png', '2021-03-09 11:33:49', NULL, 'STF202102041818440000009', '2021-03-09 11:33:49', '2021-03-09 11:34:00', 'telah_keluar_event'),
+('VSTR2103098319350000030', 'EVNT2102146814270000001', 'coba 18', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103098319350000030.png', '2021-03-09 11:24:45', NULL, 'STF202102041818440000009', '2021-03-09 11:24:45', '2021-03-09 11:25:47', 'telah_keluar_event');
 
 --
 -- Indexes for dumped tables

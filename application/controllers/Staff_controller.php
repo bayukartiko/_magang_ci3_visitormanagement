@@ -101,7 +101,7 @@ class Staff_controller extends CI_Controller {
 						'event' => $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array(), 
 						'id_event'=>$id_event,
 						'all_area' => $this->db->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
-						'all_visitor_join' => $this->db->order_by('id_visitor', 'DESC')->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
+						'all_visitor_join' => $this->db->order_by('time_in_event', 'DESC')->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
 						'total_visitor' => $this->db->query("SELECT DATE(registered_at) 'mendaftar_pada', COUNT(DISTINCT id_visitor) 'total_visitor' FROM tabel_visitor WHERE registered_at BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY mendaftar_pada")->result(),
 						'visitor_in' => $this->db->query("SELECT DATE(time_in_event) 'waktu_masuk_event', COUNT(DISTINCT id_visitor) 'visitor_in' FROM tabel_visitor WHERE time_in_event BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY waktu_masuk_event")->result(),
 						'visitor_out' => $this->db->query("SELECT DATE(time_out_event) 'waktu_keluar_event', COUNT(DISTINCT id_visitor) 'visitor_out' FROM tabel_visitor WHERE time_out_event BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY waktu_keluar_event")->result(),
@@ -210,16 +210,16 @@ class Staff_controller extends CI_Controller {
 						$data["all_visitor"] = $this->db->get_where('tabel_visitor', ['id_event'=>$this->input->post("id_event")])->result();
 					}else{
 						if($this->input->post('smptgl') == null){
-							$data["all_visitor"] = $this->db->query("SELECT * FROM tabel_visitor WHERE id_event='".$this->input->post("id_event")."' AND registered_at BETWEEN '".$conv_daritgl."' AND '".$tabel_event['tanggal_ditutup'].' '.$tabel_event['jam_ditutup']."'")->result();
+							$data["all_visitor"] = $this->db->query("SELECT * FROM tabel_visitor WHERE id_event='".$this->input->post("id_event")."' AND registered_at BETWEEN '".$conv_daritgl."' AND '".$tabel_event['tanggal_ditutup'].' '.$tabel_event['jam_ditutup']."' ORDER BY `tabel_visitor`.`registered_at` ASC")->result();
 						}else{
-							$data["all_visitor"] = $this->db->query("SELECT * FROM tabel_visitor WHERE id_event='".$this->input->post("id_event")."' AND registered_at BETWEEN '".$conv_daritgl."' AND '".$conv_smptgl."'")->result();
+							$data["all_visitor"] = $this->db->query("SELECT * FROM tabel_visitor WHERE id_event='".$this->input->post("id_event")."' AND registered_at BETWEEN '".$conv_daritgl."' AND '".$conv_smptgl."' ORDER BY `tabel_visitor`.`registered_at` ASC")->result();
 						}
 					}
 
 					header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 					header('Content-Disposition: attachment; filename="filter_report.xls"');
 					header('Cache-Control: max-age=0');
-					$this->load->view('tabel/tabel_report_filter', $data);
+					$this->load->view('page/staff_only/admin/report/tabel_report_filter', $data);
 
 					// $callback = array(
 					// 	'status'=>'sukses',

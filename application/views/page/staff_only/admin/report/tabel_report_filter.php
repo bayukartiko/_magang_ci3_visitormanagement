@@ -59,19 +59,19 @@
 	<table class="table tabel table-responsive table-hover table-striped">
 		<thead>
 			<tr>
-				<th colspan="10" class="text-center h2">List Data Visitor</th>
+				<th colspan="10" class="text-center h2" style="background-color: #8c99a6;">List Data Visitor</th>
 			</tr>
 			<tr>
-				<th>Nomor.</th>
-				<th>Nama</th>
-				<th>Perusahaan</th>
-				<th>Jabatan</th>
-				<th>Email visitor</th>
-				<th>Email perusahaan</th>
-				<th>No.Telepon visitor</th>
-				<th>No.Telepon perusahaan</th>
-				<th>Alasan ikut</th>
-				<th>Tanggal/waktu register</th>
+				<th style="background-color: aqua;">Nomor.</th>
+				<th style="background-color: aqua;">Nama</th>
+				<th style="background-color: aqua;">Perusahaan</th>
+				<th style="background-color: aqua;">Jabatan</th>
+				<th style="background-color: aqua;">Email visitor</th>
+				<th style="background-color: aqua;">Email perusahaan</th>
+				<th style="background-color: aqua;">No.Telepon visitor</th>
+				<th style="background-color: aqua;">No.Telepon perusahaan</th>
+				<th style="background-color: aqua;">Alasan ikut</th>
+				<th style="background-color: aqua;">Tanggal/waktu register</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -86,22 +86,22 @@
 					<td><?= $data_visitor->tlp_visitor ?></td>
 					<td><?php if(empty($data_visitor->tlp_perusahaan)){echo "<i class='text-danger'>tidak diisi</i>";}else{echo $data_visitor->tlp_perusahaan;} ?></td>
 					<td><?php if(empty($data_visitor->alasan_ikut)){echo "<i class='text-danger'>tidak diisi</i>";}else{echo $data_visitor->alasan_ikut;} ?></td>
-					<td><?= date("D, d-M-Y H:i:s", strtotime($data_visitor->registered_at)) ?></td>
+					<td><?= date("D, d-M-Y", strtotime($data_visitor->registered_at)) ?><br><?= date("G:i:s", strtotime($data_visitor->registered_at)) ?></td>
 				</tr>
 			<?php } ?>
 		</tbody>
 		<tfoot>
 			<tr>
-				<th>Nomor.</th>
-				<th>Nama</th>
-				<th>Perusahaan</th>
-				<th>Jabatan</th>
-				<th>Email visitor</th>
-				<th>Email perusahaan</th>
-				<th>No.Telepon visitor</th>
-				<th>No.Telepon perusahaan</th>
-				<th>Alasan ikut</th>
-				<th>Tanggal/waktu register</th>
+				<th style="background-color: aqua;">Nomor.</th>
+				<th style="background-color: aqua;">Nama</th>
+				<th style="background-color: aqua;">Perusahaan</th>
+				<th style="background-color: aqua;">Jabatan</th>
+				<th style="background-color: aqua;">Email visitor</th>
+				<th style="background-color: aqua;">Email perusahaan</th>
+				<th style="background-color: aqua;">No.Telepon visitor</th>
+				<th style="background-color: aqua;">No.Telepon perusahaan</th>
+				<th style="background-color: aqua;">Alasan ikut</th>
+				<th style="background-color: aqua;">Tanggal/waktu register</th>
 			</tr>
 		</tfoot>
 	</table>
