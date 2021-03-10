@@ -253,9 +253,11 @@ class Main_controller extends CI_Controller {
 			$this->load->view('visitor_register', $data);
 			$this->load->view('template/visitor/b4/footer', $data);
 	
-			$cek_visitor_keluar_event = $this->db->get_where('ci_sessions', ["id" => session_id(), "user_id"=>$this->session->userdata("id_visitor")])->row_array();
-			if($cek_visitor_keluar_event["status"] == "visitor_telah_keluar_event"){
-				$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
+			if($this->session->userdata("id_visitor")){
+				$cek_visitor_keluar_event = $this->db->get_where('ci_sessions', ["id" => session_id(), "user_id"=>$this->session->userdata("id_visitor")])->row_array();
+				if($cek_visitor_keluar_event["status"] == "visitor_telah_keluar_event"){
+					$this->db->delete('ci_sessions', ['user_id' => $this->session->userdata("id_visitor")]);
+				}
 			}
 		}else{
 			redirect('block');
