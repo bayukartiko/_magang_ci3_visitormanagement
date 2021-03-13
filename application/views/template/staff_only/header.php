@@ -44,6 +44,17 @@
 	<link href="<?= base_url() ?>vendor/select2/dist/css/select2-bootstrap4.css" rel="stylesheet" />
 	<link href="<?= base_url() ?>vendor/ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css" rel="stylesheet" />
 	<script src="<?= base_url() ?>vendor/select2/dist/js/select2.min.js"></script>
+	
+	<!-- tinyMCE (RichTextbox) -->
+	<script type="text/javascript" src="<?= base_url() ?>vendor/tinymce/tinymce/tinymce.min.js"></script>  
+	<script type="text/javascript" src="<?= base_url() ?>vendor/tinymce/tinymce/plugins/table/plugin.min.js"></script>  
+	<script type="text/javascript" src="<?= base_url() ?>vendor/tinymce/tinymce/plugins/paste/plugin.min.js"></script>  
+	<script type="text/javascript" src="<?= base_url() ?>vendor/tinymce/tinymce/plugins/spellchecker/plugin.min.js"></script>  
+
+	<!-- <link rel="stylesheet" href="</?= base_url() ?>vendor/richtexteditor/rte_theme_default.css" />  
+	<script type="text/javascript" src="</?= base_url() ?>vendor/richtexteditor/rte.js"></script>  
+	<script type="text/javascript" src='</?= base_url() ?>vendor/richtexteditor/plugins/all_plugins.js'></script>   -->
+	<!-- <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script> -->
 
 	<!-- bootstrap-select
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">

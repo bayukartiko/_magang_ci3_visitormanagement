@@ -50,6 +50,7 @@
 							<input type="hidden" class="download_qrcode_event-value_data" value="<?= base_url() ?><?= $event_data->custom_url ?>.png">
 							<input type="hidden" class="link_akses_event-value_data" value="<?= base_url() ?><?= $event_data->custom_url ?>">
 							<input type="hidden" class="nama_event-value_data" value="<?= $event_data->nama_event; ?>">
+							<input type="hidden" class="detail_event-value_data" value='<?= str_replace("'", '&apos;', $event_data->detail_event); ?>'>
 							<input type="hidden" class="custom_url-value_data" value="<?= $event_data->custom_url; ?>">
 							<input type="hidden" class="gambar_qrcode-value_data" value="<?= $event_data->gambar_qrcode; ?>">
 							<input type="hidden" class="tanggal_dibuka-value_data" value="<?= $event_data->tanggal_dibuka; ?>">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2021 at 10:20 AM
+-- Generation Time: Mar 13, 2021 at 02:35 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -43,8 +43,8 @@ CREATE TABLE `ci_sessions` (
 
 INSERT INTO `ci_sessions` (`id`, `user_id`, `id_event`, `status`, `ip_address`, `timestamp`, `data`) VALUES
 ('f93lv6o9gb9dgk7ijumm8niltgju2vpj', NULL, NULL, NULL, '::1', 1615194611, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226e6577223b7d),
+('g67u6ej0qpbcgbmvoh6rdr0kv39naq23', NULL, NULL, NULL, '::1', 1615642500, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
 ('g9937bsa45epgou2jh6b57ds47n89gav', NULL, NULL, NULL, '::1', 1614570423, ''),
-('hm2st0blkkem6bl55cf5pje5q6ph6s34', NULL, NULL, NULL, '::1', 1615281619, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
 ('inchflpnd3hnif6urcufdk5ge3l67nl6', NULL, NULL, NULL, '::1', 1615219328, ''),
 ('jvsr52qgaav01vs28f6abql95psegbj8', NULL, NULL, NULL, '::1', 1615184323, ''),
 ('kd3oh1nhijvk7asg01sd69ook9cas646', NULL, NULL, NULL, '::1', 1614903998, ''),
@@ -80,6 +80,7 @@ INSERT INTO `tabel_area` (`id_area`, `id_event`, `nama_area`) VALUES
 CREATE TABLE `tabel_event` (
   `id_event` varchar(255) NOT NULL,
   `nama_event` varchar(255) NOT NULL,
+  `detail_event` text NOT NULL,
   `custom_url` varchar(255) NOT NULL,
   `gambar_qrcode` varchar(255) NOT NULL,
   `tanggal_dibuka` date NOT NULL,
@@ -93,8 +94,8 @@ CREATE TABLE `tabel_event` (
 -- Dumping data for table `tabel_event`
 --
 
-INSERT INTO `tabel_event` (`id_event`, `nama_event`, `custom_url`, `gambar_qrcode`, `tanggal_dibuka`, `tanggal_ditutup`, `jam_dibuka`, `jam_ditutup`, `status`) VALUES
-('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', 'gjui', 'EVNT2102146814270000001.png', '2021-02-16', '2021-03-09', '08:00:00', '23:00:00', 'active');
+INSERT INTO `tabel_event` (`id_event`, `nama_event`, `detail_event`, `custom_url`, `gambar_qrcode`, `tanggal_dibuka`, `tanggal_ditutup`, `jam_dibuka`, `jam_ditutup`, `status`) VALUES
+('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', '<h1 style=\"text-align: center;\"><span style=\"font-family: \'comic sans ms\', sans-serif;\">About GJUI</span></h1>\r\n<p><span style=\"color: #49586f;\"><span style=\"font-size: 14pt; font-family: \'comic sans ms\', sans-serif;\">Gelar Jepang Universitas Indonesia (GJUI) is an annual Japanese culture festival held by students of the Japanese Studies Program at the University of Indonesia. GJUI was first born in 1994, and now it has become one of the biggest Japanese cultural festivals held by college students in Indonesia. This year, the main theme of Gelar Jepang Universitas Indonesia 27 is Mugenchi: Journey into the World of Dreams. Mugenchi is a parallel world oriented to the classical Japanese period which means \"Fantasy World.\" It becomes an entity because of the imagination of a fantasy world that has no boundaries.</span></span></p>\r\n<hr />\r\n<p><iframe src=\"https://www.youtube.com/embed/H3aerwAPqGY\" width=\"560\" height=\"314\" allowfullscreen=\"allowfullscreen\" data-mce-fragment=\"1\"></iframe></p>', 'gjui', 'EVNT2102146814270000001.png', '2021-02-16', '2021-03-09', '08:00:00', '18:50:00', 'not_active');
 
 -- --------------------------------------------------------
 

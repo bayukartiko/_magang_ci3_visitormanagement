@@ -190,6 +190,7 @@ class Staff_model extends CI_Model{
 				$data_tabel_event = [
 					"id_event" => htmlspecialchars($id_event),
 					"nama_event" => htmlspecialchars($this->input->post('nama_event', true)),
+					"detail_event" => htmlspecialchars($this->input->post('detail_event', true)),
 					"custom_url" => htmlspecialchars($url),
 					"gambar_qrcode" => htmlspecialchars($id_event.'.png'),
 					"tanggal_dibuka" => htmlspecialchars($this->input->post('tgl_mulai', true)),
@@ -327,6 +328,7 @@ class Staff_model extends CI_Model{
 
 				$data_tabel_event = [
 					"nama_event" => htmlspecialchars($this->input->post('nama_event', true)),
+					"detail_event" => $this->input->post('detail_event', false),
 					"custom_url" => htmlspecialchars($url),
 					"gambar_qrcode" => htmlspecialchars($id_event.'.png'),
 					"tanggal_dibuka" => htmlspecialchars($this->input->post('tgl_mulai', true)),

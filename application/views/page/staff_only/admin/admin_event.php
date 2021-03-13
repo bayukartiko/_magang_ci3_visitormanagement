@@ -70,7 +70,7 @@
 							<div class="row">
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_nama_event">Nama Event</label>
+										<label class="bmd-label-floating text-gray-800" for="field_nama_event">Nama Event</label> <span class="text-danger">*</span>
 										<input type="text" class="form-control" id="field_nama_event" name="nama_event" placeholder="masukkan nama event" value="<?= set_value('nama_event') ?>"/>
 
 										<small id="error_nama_event" class="invalid-feedback"></small>
@@ -78,7 +78,50 @@
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_custom_url">Custom URL (opsional)</label>
+										<label class="bmd-label-floating text-gray-800" for="field_detail_event">Detail Event <span class="small">(opsional)</span></label>
+										<textarea name="detail_event" id="field_detail_event" class="form-control" cols="30" rows="10" placeholder="masukkan detail event"><?= set_value('nama_event') ?></textarea>
+
+										<script>
+											tinymce.init({
+												selector: '#field_detail_event',
+												height: 350,
+												plugins: 'print preview paste searchreplace autolink save directionality code visualblocks visualchars fullscreen image link media advlist template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons spellchecker',
+												toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | charmap emoticons | fullscreen  preview save print | insertfile image media link codesample | ltr rtl',
+  												toolbar_sticky: true,
+												image_caption: true,
+												toolbar_mode: 'sliding',
+												content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+												fix_table_elements : true,
+												schema: 'html5',
+												valid_children : '+body[style],-body[div],p[strong|a|#text]',
+												imagetools_cors_hosts: ['picsum.photos'],
+												image_advtab: true,
+												content_css: [
+													'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+													'//www.tiny.cloud/css/codepen.min.css'
+												],
+												importcss_append: true,
+												entity_encoding : 'raw',
+												format_empty_lines: true
+											});
+
+											$(document).on('keydown', function(event) {
+												if (event.key == "Escape") {
+													tinyMCE.activeEditor.windowManager.close();
+												}
+											});
+
+											$(document).on('focusin', function(e) {
+												if ($(e.target).closest(".tox-tinymce, .tox-tinymce-aux, .moxman-window, .tam-assetmanager-root").length) {
+													e.stopImmediatePropagation();
+												}
+											});
+										</script>
+									</div>
+								</div>
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_custom_url">Custom URL <span class="small">(opsional)</span></label>
 										<table>
 											<tr>
 												<td><?= base_url() ?></td>
@@ -95,7 +138,7 @@
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai">Tanggal Dimulai</label>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai">Tanggal Dimulai</label> <span class="text-danger">*</span>
 										<input type="date" class="form-control" id="field_tgl_mulai" name="tgl_mulai" value="<?= set_value('tgl_mulai') ?>"/>
 
 										<small id="error_tgl_mulai" class="invalid-feedback"></small>
@@ -103,7 +146,7 @@
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai">Tanggal Berakhir</label>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai">Tanggal Berakhir</label> <span class="text-danger">*</span>
 										<input type="date" class="form-control" id="field_tgl_selesai" name="tgl_selesai" value="<?= set_value('tgl_selesai') ?>"/>
 										
 										<small id="error_tgl_selesai" class="invalid-feedback"></small>
@@ -111,7 +154,7 @@
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka">Jam Dibuka</label>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka">Jam Dibuka</label> <span class="text-danger">*</span>
 										<input type="time" class="form-control" id="field_jam_dibuka" name="jam_dibuka" value="<?= set_value('jam_dibuka') ?>"/>
 										
 										<small id="error_jam_dibuka" class="invalid-feedback"></small>
@@ -119,7 +162,7 @@
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup">Jam Ditutup</label>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup">Jam Ditutup</label> <span class="text-danger">*</span>
 										<input type="time" class="form-control" id="field_jam_ditutup" name="jam_ditutup" value="<?= set_value('jam_ditutup') ?>"/>
 
 										<small id="error_jam_ditutup" class="invalid-feedback"></small>
@@ -140,8 +183,8 @@
 										<thead>
 											<tr>
 												<!-- <th>Nomor.</th> -->
-												<th>Nama Area</th>
-												<th>Nama Petugas</th>
+												<th>Nama Area <span class="text-danger">*</span></th>
+												<th>Nama Petugas <span class="text-danger">*</span></th>
 												<th>Aksi</th>
 											</tr>
 										</thead>
@@ -235,7 +278,7 @@
 							<div class="row">
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_nama_event-edit">Nama Event</label>
+										<label class="bmd-label-floating text-gray-800" for="field_nama_event-edit">Nama Event <span class="text-danger">*</span></label>
 										<input type="hidden" id="field_id_event-edit" name="id_event"/>
 										<input type="text" class="form-control" id="field_nama_event-edit" name="nama_event" placeholder="masukkan nama event" value="<?= set_value('nama_event') ?>"/>
 
@@ -244,7 +287,55 @@
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_custom_url-edit">Custom URL (opsional)</label>
+										<label class="bmd-label-floating text-gray-800" for="field_detail_event-edit">Detail Event <span class="small">(opsional)</span></label>
+										<textarea name="detail_event" id="field_detail_event-edit" class="form-control" cols="30" rows="10" placeholder="masukkan detail event"><?= set_value('nama_event') ?></textarea>
+
+										<script>
+											tinymce.init({
+												selector: '#field_detail_event-edit',
+												height: 350,
+												plugins: 'print preview paste searchreplace autolink save directionality code visualblocks visualchars fullscreen image link media advlist template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons spellchecker',
+												toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | charmap emoticons | fullscreen  preview save print | insertfile image media link codesample | ltr rtl',
+  												toolbar_sticky: true,
+												image_caption: true,
+												toolbar_mode: 'sliding',
+												content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+												fix_table_elements : true,
+												schema: 'html5',
+												valid_children : '+body[style],-body[div],p[strong|a|#text]',
+												imagetools_cors_hosts: ['picsum.photos'],
+												image_advtab: true,
+												content_css: [
+													'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+													'//www.tiny.cloud/css/codepen.min.css'
+												],
+												importcss_append: true,
+												entity_encoding : 'raw',
+												format_empty_lines: true
+											});
+
+											$(document).on('keydown', function(event) {
+												if (event.key == "Escape") {
+													tinyMCE.activeEditor.windowManager.close();
+												}
+											});
+
+											$(document).on('focusin', function(e) {
+												if ($(e.target).closest(".tox-tinymce, .tox-tinymce-aux, .moxman-window, .tam-assetmanager-root").length) {
+													e.stopImmediatePropagation();
+												}
+											});
+											// function MYMODULE_wysiwyg_editor_settings_alter(&$settings, $context) {
+											// 	if ($context['profile']->editor == 'tinymce') {
+											// 		$settings['valid_children'] = '+body[style]';
+											// 	}
+											// }
+										</script>
+									</div>
+								</div>
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_custom_url-edit">Custom URL <span class="small">(opsional)</span></label>
 										<table>
 											<tr>
 												<td><?= base_url() ?></td>
@@ -260,7 +351,7 @@
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai-edit">Tanggal Dimulai</label>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai-edit">Tanggal Dimulai <span class="text-danger">*</span></label>
 										<input type="date" class="form-control" id="field_tgl_mulai-edit" name="tgl_mulai" value="<?= set_value('tgl_mulai') ?>"/>
 
 										<small id="error_tgl_mulai-edit" class="invalid-feedback"></small>
@@ -268,7 +359,7 @@
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai-edit">Tanggal Berakhir</label>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai-edit">Tanggal Berakhir <span class="text-danger">*</span></label>
 										<input type="date" class="form-control" id="field_tgl_selesai-edit" name="tgl_selesai" value="<?= set_value('tgl_selesai') ?>"/>
 										
 										<small id="error_tgl_selesai-edit" class="invalid-feedback"></small>
@@ -276,7 +367,7 @@
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka-edit">Jam Dibuka</label>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka-edit">Jam Dibuka <span class="text-danger">*</span></label>
 										<input type="time" class="form-control" id="field_jam_dibuka-edit" name="jam_dibuka" value="<?= set_value('jam_dibuka') ?>"/>
 										
 										<small id="error_jam_dibuka-edit" class="invalid-feedback"></small>
@@ -284,7 +375,7 @@
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup-edit">Jam Ditutup</label>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup-edit">Jam Ditutup <span class="text-danger">*</span></label>
 										<input type="time" class="form-control" id="field_jam_ditutup-edit" name="jam_ditutup" value="<?= set_value('jam_ditutup') ?>"/>
 
 										<small id="error_jam_ditutup-edit" class="invalid-feedback"></small>
@@ -368,6 +459,12 @@
 												<input type="text" class="form-control" id="field_nama_event-detail" disabled/>
 											</div>
 										</div>
+									</div>
+								</div>
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_detail_event-detail">Detail Event</label>
+										<div class="form-control shadow-sm" id="field_detail_event-detail"/></div>
 									</div>
 								</div>
 								<div class="offset-md-1 col-md-10">
@@ -527,6 +624,9 @@
 			// fungsi tambah event
 				$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
 					// e.preventDefault();
+
+					tinyMCE.triggerSave();
+
 					$('#btn-simpan').html('Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
 					$('#btn-simpan').attr('disabled', true);
 
@@ -830,6 +930,7 @@
 					var tr = $(this).closest('tr');
 					var id_event = tr.find('.id_event-value_data').val();
 					var nama_event = tr.find('.nama_event-value_data').val();
+					var detail_event = tr.find('.detail_event-value_data').val();
 					var custom_url = tr.find('.custom_url-value_data').val();
 					var gambar_qrcode = tr.find('.gambar_qrcode-value_data').val();
 					var tanggal_dibuka = tr.find('.tanggal_dibuka-value_data').val();
@@ -840,6 +941,7 @@
 					
 					$('#field_id_event-edit').val(id_event);
 					$('#field_nama_event-edit').val(nama_event);
+					tinymce.activeEditor.setContent(detail_event);
 					$('#field_custom_url-edit').val(custom_url);
 					$('#field_tgl_mulai-edit').val(tanggal_dibuka);
 					$('#field_tgl_selesai-edit').val(tanggal_ditutup);
@@ -850,6 +952,8 @@
 				$('#btn-ubah').click(function(e){
 					$('#btn-ubah').html('Sedang mengubah..'); // ganti text btn-ubah jadi sedang menambahkan
 					$('#btn-ubah').attr('disabled', true);
+
+					tinyMCE.triggerSave();
 					
 					var startDate = new Date($('#field_tgl_mulai-edit').val());
 					var endDate = new Date($('#field_tgl_selesai-edit').val());
@@ -1012,6 +1116,7 @@
 					var alt_qrcode_event = tr.find('.alt_qrcode_event-value_data').val();
 					var download_qrcode_event = tr.find('.download_qrcode_event-value_data').val();
 					var nama_event = tr.find('.nama_event-value_data').val();
+					var detail_event = tr.find('.detail_event-value_data').val();
 					var custom_url = tr.find('.custom_url-value_data').val();
 					var gambar_qrcode = tr.find('.gambar_qrcode-value_data').val();
 					var tanggal_dibuka = tr.find('.tanggal_dibuka-value_data').val();
@@ -1027,6 +1132,11 @@
 					// $('#field_href_qrcode-detail').attr("href", src_qrcode_event);
 					$('#field_href_qrcode-detail').attr("download", download_qrcode_event+".png");
 					$('#field_nama_event-detail').val(nama_event);
+					if(!detail_event){
+						$('#field_detail_event-detail').html("<i class='text-danger'>Tidak Diisi</i>").css({'height': 'auto'});
+					}else{
+						$('#field_detail_event-detail').html(detail_event).css({'height': 'auto'});
+					}
 					$('#field_custom_url-detail').val(custom_url);
 					$('#field_tgl_mulai-detail').val(tanggal_dibuka);
 					$('#field_tgl_selesai-detail').val(tanggal_ditutup);
