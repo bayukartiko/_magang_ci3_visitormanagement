@@ -59,6 +59,18 @@ class Staff_model extends CI_Model{
 			$this->form_validation->set_rules('nama_event', 'nama event', 'required|trim', [
 				'required' => 'Nama event harus diisi !',
 			]);
+			$this->form_validation->set_rules('alamat_event', 'alamat event', 'required|trim', [
+				'required' => 'Alamat event harus diisi !',
+			]);
+			$this->form_validation->set_rules('alamat-event-addr', 'hidden alamat event', 'required|trim', [
+				'required' => 'error field alamat event, coba input ulang field ini',
+			]);
+			$this->form_validation->set_rules('alamat-event-latitude', 'hidden latitude alamat event', 'required|trim', [
+				'required' => 'error field alamat event, coba input ulang field ini',
+			]);
+			$this->form_validation->set_rules('alamat-event-longitude', 'hidden longitude alamat event', 'required|trim', [
+				'required' => 'error field alamat event, coba input ulang field ini',
+			]);
 			$this->form_validation->set_rules('custom_url', 'custom_url', 'is_unique[tabel_event.custom_url]|trim', [
 				'is_unique' => 'Custom url ini sudah digunakan sebelumnya, harap membuat custom url yang baru !'
 			]);
@@ -87,6 +99,20 @@ class Staff_model extends CI_Model{
 			$this->form_validation->set_rules('nama_event', 'nama event', 'required|trim', [
 				'required' => 'Nama event harus diisi !',
 			]);
+
+			$this->form_validation->set_rules('alamat_event-edit', 'alamat event', 'required|trim', [
+				'required' => 'Alamat event harus diisi !',
+			]);
+			$this->form_validation->set_rules('alamat-event-addr-edit', 'hidden alamat event', 'required|trim', [
+				'required' => 'error field alamat event, coba input ulang field ini',
+			]);
+			$this->form_validation->set_rules('alamat-event-latitude-edit', 'hidden latitude alamat event', 'required|trim', [
+				'required' => 'error field alamat event, coba input ulang field ini',
+			]);
+			$this->form_validation->set_rules('alamat-event-longitude-edit', 'hidden longitude alamat event', 'required|trim', [
+				'required' => 'error field alamat event, coba input ulang field ini',
+			]);
+
 			$this->form_validation->set_rules('custom_url', 'custom_url', 'trim',);
 			$this->form_validation->set_rules('tgl_mulai', 'tgl mulai', 'required|trim', [
 				'required' => 'Tanggal mulai event harus diisi !'
@@ -191,6 +217,9 @@ class Staff_model extends CI_Model{
 					"id_event" => htmlspecialchars($id_event),
 					"nama_event" => htmlspecialchars($this->input->post('nama_event', true)),
 					"detail_event" => htmlspecialchars($this->input->post('detail_event', true)),
+					"alamat_event" => $this->input->post('alamat_event', false),
+					"latitude" => $this->input->post('alamat-event-latitude', false),
+					"longitude" => $this->input->post('alamat-event-longitude', false),
 					"custom_url" => htmlspecialchars($url),
 					"gambar_qrcode" => htmlspecialchars($id_event.'.png'),
 					"tanggal_dibuka" => htmlspecialchars($this->input->post('tgl_mulai', true)),
@@ -329,6 +358,9 @@ class Staff_model extends CI_Model{
 				$data_tabel_event = [
 					"nama_event" => htmlspecialchars($this->input->post('nama_event', true)),
 					"detail_event" => $this->input->post('detail_event', false),
+					"alamat_event" => $this->input->post('alamat_event-edit', false),
+					"latitude" => $this->input->post('alamat-event-latitude-edit', false),
+					"longitude" => $this->input->post('alamat-event-longitude-edit', false),
 					"custom_url" => htmlspecialchars($url),
 					"gambar_qrcode" => htmlspecialchars($id_event.'.png'),
 					"tanggal_dibuka" => htmlspecialchars($this->input->post('tgl_mulai', true)),

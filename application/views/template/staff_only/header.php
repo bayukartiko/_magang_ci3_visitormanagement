@@ -51,6 +51,11 @@
 	<script type="text/javascript" src="<?= base_url() ?>vendor/tinymce/tinymce/plugins/paste/plugin.min.js"></script>  
 	<script type="text/javascript" src="<?= base_url() ?>vendor/tinymce/tinymce/plugins/spellchecker/plugin.min.js"></script>  
 
+	<!-- Google Maps API -->
+	<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_R0roYpXIn7Y-GOo1HDCcyswc0LOssuI&libraries=places" type="text/javascript"></script> -->
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= $_ENV["GoogleMapsAPI"] ?>&libraries=places" type="text/javascript"></script>
+	<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_R0roYpXIn7Y-GOo1HDCcyswc0LOssuI&callback=initMap" type="text/javascript"></script> -->
+
 	<!-- <link rel="stylesheet" href="</?= base_url() ?>vendor/richtexteditor/rte_theme_default.css" />  
 	<script type="text/javascript" src="</?= base_url() ?>vendor/richtexteditor/rte.js"></script>  
 	<script type="text/javascript" src='</?= base_url() ?>vendor/richtexteditor/plugins/all_plugins.js'></script>   -->

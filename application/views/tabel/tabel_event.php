@@ -52,6 +52,9 @@
 							<input type="hidden" class="nama_event-value_data" value="<?= $event_data->nama_event; ?>">
 							<input type="hidden" class="detail_event-value_data" value='<?= str_replace("'", '&apos;', $event_data->detail_event); ?>'>
 							<input type="hidden" class="custom_url-value_data" value="<?= $event_data->custom_url; ?>">
+							<input type="hidden" class="alamat_event-value_data" value="<?= $event_data->alamat_event; ?>">
+							<input type="hidden" class="latitude-value_data" value="<?= $event_data->latitude; ?>">
+							<input type="hidden" class="longitude-value_data" value="<?= $event_data->longitude; ?>">
 							<input type="hidden" class="gambar_qrcode-value_data" value="<?= $event_data->gambar_qrcode; ?>">
 							<input type="hidden" class="tanggal_dibuka-value_data" value="<?= $event_data->tanggal_dibuka; ?>">
 							<input type="hidden" class="tanggal_ditutup-value_data" value="<?= $event_data->tanggal_ditutup; ?>">
