@@ -1,4 +1,21 @@
+<style>
+	/* dropdown list autocomplete google maps API */
+	/* more details: https://developers.google.com/maps/documentation/javascript/places-autocomplete?hl=en#style-autocomplete */
 
+	.pac-container {
+		padding-bottom: 12px;
+		margin-right: 12px;
+		z-index: 99999999999;
+	}
+	.pac-matched{
+		/* text-transform: uppercase; */
+		/* text-decoration: underline; */
+		background-color: yellow;
+	}
+	.pac-item-query{
+		font-weight: bold;
+	}
+</style>
           <!-- Begin Page Content -->
           <div class="container-fluid">
 
@@ -13,7 +30,7 @@
 					<h6 class="m-0 font-weight-bold text-primary">List data event</h6>
 				</div>
 				<div class="card-body">
-					<button class="btn btn-primary" data-toggle="modal" data-target="#modal_tambah_event">Tambah event baru</button>
+					<button class="btn btn-primary" id="btn-tambah-event" data-toggle="modal" data-target="#modal_tambah_event">Tambah event baru</button>
 					<br><br>
 
 					<div class="table-responsive">
@@ -79,13 +96,13 @@
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
 										<label class="bmd-label-floating text-gray-800" for="field_detail_event">Detail Event <span class="small">(opsional)</span></label>
-										<textarea name="detail_event" id="field_detail_event" class="form-control" cols="30" rows="10" placeholder="masukkan detail event"><?= set_value('nama_event') ?></textarea>
+										<textarea name="detail_event" id="field_detail_event" class="form-control" cols="30" rows="10" placeholder="masukkan detail event"><?= set_value('detail_event') ?></textarea>
 
 										<script>
 											tinymce.init({
 												selector: '#field_detail_event',
 												height: 350,
-												plugins: 'print preview paste searchreplace autolink save directionality code visualblocks visualchars fullscreen image link media advlist template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons spellchecker',
+												plugins: 'print preview paste searchreplace autolink save directionality code visualblocks visualchars fullscreen image link media advlist template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons spellchecker autoresize',
 												toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | charmap emoticons | fullscreen  preview save print | insertfile image media link codesample | ltr rtl',
   												toolbar_sticky: true,
 												image_caption: true,
@@ -136,6 +153,21 @@
 										<small class="text-muted">jika <u>di-isi</u>, url event akan menjadi seperti ini: <b><?= base_url() ?>custom_url</b></small>
 									</div>
 								</div>
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
+										<input type="hidden" name="alamat-event-addr" id="alamat-event-addr" hidden>
+										<input type="hidden" name="alamat-event-latitude" id="alamat-event-latitude" hidden>
+										<input type="hidden" name="alamat-event-longitude" id="alamat-event-longitude" hidden>
+
+										<label class="bmd-label-floating text-gray-800" for="field_alamat_event">Lokasi Event</label> <span class="text-danger">*</span>
+										<input type="text" class="form-control" id="field_alamat_event" name="alamat_event" placeholder="masukkan/cari lokasi event" value="<?= set_value('alamat_event') ?>"/>
+
+										<small id="error_alamat_event" class="invalid-feedback"></small>
+										<br>
+										<div id="map" class="embed-responsive embed-responsive-16by9"></div>
+									</div>
+									<hr>
+								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
 										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai">Tanggal Dimulai</label> <span class="text-danger">*</span>
@@ -169,6 +201,7 @@
 									</div>
 								</div>
 								<div class="offset-md-1 col-md-10">
+									<hr>
 									<div class="form-group" id="view_petugas_pintu_keluar">
 										<?php $this->load->view('page/staff_only/admin/select_petugas_pintu/petugas_pintu_keluar', ['staff_nganggur' => $staff_nganggur]); ?>
 									</div>
@@ -236,7 +269,9 @@
 													Tetapi anda masih bisa mengubah/mengedit:
 													<ol>
 														<li>Nama event</li>
+														<li>Detail event</li>
 														<li>Custom URL</li>
+														<li>Lokasi event</li>
 														<li>Tanggal dimulai</li>
 														<li>Tanggal berakhir</li>
 														<li>Jam dibuka</li>
@@ -294,7 +329,7 @@
 											tinymce.init({
 												selector: '#field_detail_event-edit',
 												height: 350,
-												plugins: 'print preview paste searchreplace autolink save directionality code visualblocks visualchars fullscreen image link media advlist template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons spellchecker',
+												plugins: 'print preview paste searchreplace autolink save directionality code visualblocks visualchars fullscreen image link media advlist template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons spellchecker autoresize',
 												toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | charmap emoticons | fullscreen  preview save print | insertfile image media link codesample | ltr rtl',
   												toolbar_sticky: true,
 												image_caption: true,
@@ -348,6 +383,21 @@
 										<small class="text-muted">jika <u>tidak di-isi</u>, url event akan menjadi seperti ini: <b><?= base_url() ?>nama_event</b></small><br>
 										<small class="text-muted">jika <u>di-isi</u>, url event akan menjadi seperti ini: <b><?= base_url() ?>custom_url</b></small>
 									</div>
+								</div>
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
+										<input type="hidden" name="alamat-event-addr-edit" id="alamat-event-addr-edit" hidden>
+										<input type="hidden" name="alamat-event-latitude-edit" id="alamat-event-latitude-edit" hidden>
+										<input type="hidden" name="alamat-event-longitude-edit" id="alamat-event-longitude-edit" hidden>
+
+										<label class="bmd-label-floating text-gray-800" for="field_alamat_event-edit">Lokasi Event</label> <span class="text-danger">*</span>
+										<input type="text" class="form-control" id="field_alamat_event-edit" name="alamat_event-edit" placeholder="masukkan/cari lokasi event" value="<?= set_value('alamat_event-edit') ?>"/>
+
+										<small id="error_alamat_event-edit" class="invalid-feedback"></small>
+										<br>
+										<div id="map-edit" class="embed-responsive embed-responsive-16by9"></div>
+									</div>
+									<hr>
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
@@ -469,6 +519,14 @@
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_alamat_event-detail">Lokasi Event</label>
+										<textarea name="" class="form-control" id="field_alamat_event-detail" cols="30" rows="3"></textarea>
+
+										<div id="map-detail" class="embed-responsive embed-responsive-16by9" aria-disabled="false"></div>
+									</div>
+								</div>
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
 										<label class="bmd-label-floating text-gray-800" for="field_custom_url-detail">Custom URL</label>
 										<table>
 											<tr>
@@ -538,20 +596,69 @@
 		</div>
 		
     <script>
+	// $(function initMap(){
+		// 	var LatLng = { lat: -6.175296396306855, lng:  106.82716889024275 };
+
+		// 	// var options = {
+		// 	// 	zoom: 15,
+		// 	// 	center: LatLng,
+		// 	// 	mapTypeId: "roadmap"
+		// 	// 	// mapTypeControl: true,
+		// 	// 	// control: true,
+
+		// 	// }
+
+		// 	var map = new google.maps.Map(document.getElementById("map"), {
+		// 		zoom: 15,
+		// 		center: LatLng,
+		// 		mapTypeId: "roadmap",
+		// 	});
+
+		// 	new google.maps.Marker({
+		// 		position: LatLng, 
+		// 		map: map,
+		// 		// animation: google.maps.Animation.BOUNCE,
+		// 		// title: place.name,
+		// 	});
+
+		// 	// var request = {
+		// 	// 	query: "monas",
+		// 	// 	fields: ["name", "formatted_address", "place_id", "geometry"],
+		// 	// };
+
+		// 	// var infowindow = new google.maps.InfoWindow();
+		// 	// var service = new google.maps.places.PlacesService(map);
+		// 	// // service.getDetails(request, (place, status) => {
+		// 	// service.findPlaceFromQuery(request, (place, status) => {
+		// 	// 	if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+		// 	// 		new google.maps.Marker({
+		// 	// 			position: LatLng, 
+		// 	// 			map: map,
+		// 	// 			// animation: google.maps.Animation.BOUNCE,
+		// 	// 			title: place.name,
+		// 	// 		});
+		// 	// 	}
+		// 	// });
+		
+	// });
+
       $(document).ready(function () {
 			// $('.field_nama_petugas').select2({
 			// 	theme: 'bootstrap4',
 			// });
+
 			
 			var id_event = "";
 			var nextform = ""; 
 
 			$('#modal_tambah_event').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
-				$('#modal_tambah_event input, #modal_tambah_event select, #modal_tambah_event datetime-local').val(''); // Clear inputan menjadi kosong
+				$('#modal_tambah_event input, #modal_tambah_event select, #modal_tambah_event datetime-local').val('').removeClass('is-invalid'); // Clear inputan menjadi kosong
+				$(".invalid_feedback").html('');
 				$('#btn-simpan').html('Simpan');
 			});
 			$('#modal_ubah_event').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
-				$('#modal_tambah_event input, #modal_tambah_event select, #modal_tambah_event datetime-local').val(''); // Clear inputan menjadi kosong
+				$('#modal_ubah_event input, #modal_ubah_event select, #modal_ubah_event datetime-local').val('').removeClass('is-invalid'); // Clear inputan menjadi kosong
+				$(".invalid_feedback").html('');
 				$('#btn-ubah').html('Ubah');
 			});
 			
@@ -581,6 +688,95 @@
 				});
 				
 				$("#jumlah-form").val(nextform); // Ubah value textbox jumlah-form dengan variabel nextform
+			});
+
+			$('#btn-tambah-event').click(function(){
+				// This example adds a search box to a map, using the Google Place Autocomplete
+				// feature. People can enter geographical searches. The search box will return a
+				// pick list containing a mix of places and predicted search terms.
+				// This example requires the Places library. Include the libraries=places
+				// parameter when you first load the API. For example:
+				// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+				
+				var LatLng = { lat: -0.007, lng:  123.500 };
+				var map = new google.maps.Map(document.getElementById("map"), {
+					center: LatLng,
+					zoom: 4.3,
+					mapTypeId: "roadmap",
+				});
+
+				// Create the search box and link it to the UI element.
+				const input = document.getElementById("field_alamat_event");
+				const searchBox = new google.maps.places.SearchBox(input);
+				// map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+				// Bias the SearchBox results towards current map's viewport.
+				map.addListener("bounds_changed", () => {
+					searchBox.setBounds(map.getBounds());
+				});
+				var addr;
+				var latitude;
+				var longitude;
+				let markers = [];
+				// Listen for the event fired when the user selects a prediction and retrieve
+				// more details for that place.
+				searchBox.addListener("places_changed", () => {
+					const places = searchBox.getPlaces();
+
+					if (places.length == 0) {
+						return;
+					}
+					// Clear out the old markers.
+					markers.forEach((marker) => {
+						marker.setMap(null);
+					});
+					markers = [];
+					// For each place, get the icon, name and location.
+					const bounds = new google.maps.LatLngBounds();
+					places.forEach((place) => {
+						if (!place.geometry || !place.geometry.location) {
+							console.log("Returned place contains no geometry");
+							return;
+						}
+
+						var marker;
+						// Create a marker for each place.
+						markers.push(
+							marker = new google.maps.Marker({
+								map,
+								title: place.name+" | "+ place.formatted_address,
+								position: place.geometry.location,
+								animation: google.maps.Animation.BOUNCE,
+							})
+						);
+						addr = place.name+", "+ place.formatted_address;
+						latitude = place.geometry.location.lat();
+						longitude = place.geometry.location.lng();
+						
+						if (place.geometry.viewport) {
+							// Only geocodes have viewport.
+							bounds.union(place.geometry.viewport);
+						} else {
+							bounds.extend(place.geometry.location);
+						}
+					});
+					map.fitBounds(bounds);
+					
+					// get latitude dan longtitude
+					// var center = map.getCenter();
+					// alert(center.toString()); 
+					
+					// alert("latitude: "+map.getCenter().lat()+", longtitude: "+map.getCenter().lng());
+						$('#alamat-event-addr').val(addr);
+						$('#alamat-event-latitude').val(latitude);
+						$('#alamat-event-longitude').val(longitude);
+				});
+
+				// new google.maps.Marker({
+				// 	position: LatLng, 
+				// 	map: map,
+				// 	animation: google.maps.Animation.BOUNCE,
+				// });
+
 			});
 
 			$('.select-petugas-pintu').change(function () {
@@ -781,6 +977,14 @@
 										$('#field_nama_event').removeClass('is-invalid');
 										$('#error_nama_event').html('');
 									}
+
+									if(callback.alamat_event_error || callback.alamat_event_addr_error ||callback.alamat_event_latitude_error || callback.alamat_event_longitude_error){
+										$('#field_alamat_event').addClass('is-invalid');
+										$('#error_alamat_event').html(callback.text_alamat_event_error);
+									}else{
+										$('#field_alamat_event').removeClass('is-invalid');
+										$('#error_alamat_event').html('');
+									}
 									
 									if(callback.custom_url_error){
 										$('#field_custom_url').addClass('is-invalid');
@@ -932,6 +1136,9 @@
 					var nama_event = tr.find('.nama_event-value_data').val();
 					var detail_event = tr.find('.detail_event-value_data').val();
 					var custom_url = tr.find('.custom_url-value_data').val();
+					var alamat_event = tr.find('.alamat_event-value_data').val();
+					var latitude = tr.find('.latitude-value_data').val();
+					var longitude = tr.find('.longitude-value_data').val();
 					var gambar_qrcode = tr.find('.gambar_qrcode-value_data').val();
 					var tanggal_dibuka = tr.find('.tanggal_dibuka-value_data').val();
 					var tanggal_ditutup = tr.find('.tanggal_ditutup-value_data').val();
@@ -943,10 +1150,100 @@
 					$('#field_nama_event-edit').val(nama_event);
 					tinymce.activeEditor.setContent(detail_event);
 					$('#field_custom_url-edit').val(custom_url);
+					$('#alamat-event-addr-edit').val(alamat_event);
+					$('#alamat-event-latitude-edit').val(latitude);
+					$('#alamat-event-longitude-edit').val(longitude);
+					$('#field_alamat_event-edit').val(alamat_event);
 					$('#field_tgl_mulai-edit').val(tanggal_dibuka);
 					$('#field_tgl_selesai-edit').val(tanggal_ditutup);
 					$('#field_jam_dibuka-edit').val(jam_dibuka);
 					$('#field_jam_ditutup-edit').val(jam_ditutup);
+
+					// google maps
+					// This example adds a search box to a map, using the Google Place Autocomplete
+					// feature. People can enter geographical searches. The search box will return a
+					// pick list containing a mix of places and predicted search terms.
+					// This example requires the Places library. Include the libraries=places
+					// parameter when you first load the API. For example:
+					// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+					
+					var LatLng = { lat: Number(latitude), lng:  Number(longitude) };
+					var map = new google.maps.Map(document.getElementById("map-edit"), {
+						center: LatLng,
+						zoom: 18,
+						mapTypeId: "roadmap",
+					});
+					// new google.maps.Marker({
+					// 	position: LatLng, 
+					// 	map: map,
+					// 	animation: google.maps.Animation.BOUNCE,
+					// });
+
+					// Create the search box and link it to the UI element.
+					const input = document.getElementById("field_alamat_event-edit");
+					const searchBox = new google.maps.places.SearchBox(input);
+					// map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+					// Bias the SearchBox results towards current map's viewport.
+					map.addListener("bounds_changed", () => {
+						searchBox.setBounds(map.getBounds());
+					});
+					var addr;
+					var latitude;
+					var longitude;
+					let markers = [];
+					// Listen for the event fired when the user selects a prediction and retrieve
+					// more details for that place.
+					searchBox.addListener("places_changed", () => {
+						const places = searchBox.getPlaces();
+
+						if (places.length == 0) {
+							return;
+						}
+						// Clear out the old markers.
+						markers.forEach((marker) => {
+							marker.setMap(null);
+						});
+						markers = [];
+						// For each place, get the icon, name and location.
+						const bounds = new google.maps.LatLngBounds();
+						places.forEach((place) => {
+							if (!place.geometry || !place.geometry.location) {
+								console.log("Returned place contains no geometry");
+								return;
+							}
+
+							var marker;
+							// Create a marker for each place.
+							markers.push(
+								marker = new google.maps.Marker({
+									map,
+									title: place.name+", "+ place.formatted_address,
+									position: place.geometry.location,
+									animation: google.maps.Animation.BOUNCE,
+								})
+							);
+							addr = place.name+", "+ place.formatted_address;
+							latitude = place.geometry.location.lat();
+							longitude = place.geometry.location.lng();
+							
+							if (place.geometry.viewport) {
+								// Only geocodes have viewport.
+								bounds.union(place.geometry.viewport);
+							} else {
+								bounds.extend(place.geometry.location);
+							}
+						});
+						map.fitBounds(bounds);
+						
+						// get latitude dan longtitude
+							// var center = map.getCenter();
+							// alert(center.toString()); 
+							
+							// alert("latitude: "+map.getCenter().lat()+", longtitude: "+map.getCenter().lng());
+							$('#alamat-event-addr-edit').val(addr);
+							$('#alamat-event-latitude-edit').val(latitude);
+							$('#alamat-event-longitude-edit').val(longitude);
+					});
 				});
 
 				$('#btn-ubah').click(function(e){
@@ -1057,7 +1354,15 @@
 										$('#field_nama_event-edit').removeClass('is-invalid');
 										$('#error_nama_event-edit').html('');
 									}
-									
+
+									if(callback.alamat_event_error || callback.alamat_event_addr_error ||callback.alamat_event_latitude_error || callback.alamat_event_longitude_error){
+										$('#field_alamat_event-edit').addClass('is-invalid');
+										$('#error_alamat_event-edit').html(callback.text_alamat_event_error);
+									}else{
+										$('#field_alamat_event-edit').removeClass('is-invalid');
+										$('#error_alamat_event-edit').html('');
+									}
+
 									if(callback.tgl_mulai_error){
 										$('#field_tgl_mulai-edit').addClass('is-invalid');
 										$('#error_tgl_mulai-edit').html(callback.tgl_mulai_error);
@@ -1117,6 +1422,9 @@
 					var download_qrcode_event = tr.find('.download_qrcode_event-value_data').val();
 					var nama_event = tr.find('.nama_event-value_data').val();
 					var detail_event = tr.find('.detail_event-value_data').val();
+					var alamat_event = tr.find('.alamat_event-value_data').val();
+					var latitude = tr.find('.latitude-value_data').val();
+					var longitude = tr.find('.longitude-value_data').val();
 					var custom_url = tr.find('.custom_url-value_data').val();
 					var gambar_qrcode = tr.find('.gambar_qrcode-value_data').val();
 					var tanggal_dibuka = tr.find('.tanggal_dibuka-value_data').val();
@@ -1137,6 +1445,7 @@
 					}else{
 						$('#field_detail_event-detail').html(detail_event).css({'height': 'auto'});
 					}
+					$("#field_alamat_event-detail").val(alamat_event);
 					$('#field_custom_url-detail').val(custom_url);
 					$('#field_tgl_mulai-detail').val(tanggal_dibuka);
 					$('#field_tgl_selesai-detail').val(tanggal_ditutup);
@@ -1144,6 +1453,18 @@
 					$('#field_jam_ditutup-detail').val(jam_ditutup);
 					$('#field_nama_petugas_pintuKeluar-detail').val(petugas_pintu_keluar);
 					$('#field_nama_area_nama_petugas_pintuArea-detail').html(nama_area_nama_petugas_pintu_area);
+
+					var LatLng = { lat: Number(latitude), lng:  Number(longitude) };
+					var map = new google.maps.Map(document.getElementById("map-detail"), {
+						center: LatLng,
+						zoom: 18,
+						mapTypeId: "roadmap",
+					});
+					new google.maps.Marker({
+						position: LatLng, 
+						map: map,
+						animation: google.maps.Animation.BOUNCE,
+					});
 				});
 
       });

@@ -12,6 +12,9 @@ class Staff_controller extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->load->model('staff_model');
 
+		$dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
+		$dotenv->load();
+
 		if(!empty($_SESSION['staff_id'])) {
 			// if (time()-$_SESSION['waktu_aktif']>ini_get("session.gc_maxlifetime")){
 			if (time()-$_SESSION['waktu_aktif']>86400){ // 1 hari waktu session
@@ -564,6 +567,11 @@ class Staff_controller extends CI_Controller {
 							$callback = array(
 								'status'=>'gagal',
 								'nama_event_error' => form_error('nama_event'),
+								'alamat_event_error' => form_error('alamat_event'),
+								'alamat_event_addr_error' => form_error('alamat-event-addr'),
+								'alamat_event_latitude_error' => form_error('alamat-event-latitude'),
+								'alamat_event_longitude_error' => form_error('alamat-event-longitude'),
+								'text_alamat_event_error' => "error field alamat event, coba input ulang field ini",
 								'custom_url_error' => form_error('custom_url'),
 								'tgl_mulai_error' => form_error('tgl_mulai'),
 								'tgl_selesai_error' => form_error('tgl_selesai'),
@@ -655,6 +663,11 @@ class Staff_controller extends CI_Controller {
 							$callback = array(
 								'status'=>'gagal',
 								'nama_event_error' => form_error('nama_event'),
+								'alamat_event_error' => form_error('alamat_event-edit'),
+								'alamat_event_addr_error' => form_error('alamat-event-addr-edit'),
+								'alamat_event_latitude_error' => form_error('alamat-event-latitude-edit'),
+								'alamat_event_longitude_error' => form_error('alamat-event-longitude-edit'),
+								'text_alamat_event_error' => "error field alamat event, coba input ulang field ini",
 								'tgl_mulai_error' => form_error('tgl_mulai'),
 								'tgl_selesai_error' => form_error('tgl_selesai'),
 								'jam_dibuka_error' => form_error('jam_dibuka'),
