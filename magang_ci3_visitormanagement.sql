@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2021 at 02:57 PM
+-- Generation Time: Mar 16, 2021 at 01:53 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -42,13 +42,14 @@ CREATE TABLE `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`id`, `user_id`, `id_event`, `status`, `ip_address`, `timestamp`, `data`) VALUES
-('er3qa9qot72dpdgof3s4undruo54ocr4', NULL, NULL, NULL, '::1', 1615816589, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
+('bvn012p92n0g682te02j9j8rrnfhh41v', NULL, NULL, NULL, '::1', 1615899136, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
 ('f93lv6o9gb9dgk7ijumm8niltgju2vpj', NULL, NULL, NULL, '::1', 1615194611, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226e6577223b7d),
 ('g67u6ej0qpbcgbmvoh6rdr0kv39naq23', NULL, NULL, NULL, '::1', 1615710477, ''),
 ('g9937bsa45epgou2jh6b57ds47n89gav', NULL, NULL, NULL, '::1', 1614570423, ''),
 ('inchflpnd3hnif6urcufdk5ge3l67nl6', NULL, NULL, NULL, '::1', 1615219328, ''),
 ('jvsr52qgaav01vs28f6abql95psegbj8', NULL, NULL, NULL, '::1', 1615184323, ''),
 ('kd3oh1nhijvk7asg01sd69ook9cas646', NULL, NULL, NULL, '::1', 1614903998, ''),
+('sh9cmsnkm425drpcc6sr0jalick5bmkp', NULL, NULL, NULL, '::1', 1615868794, ''),
 ('vedapqhborpfb9f9cutqv47foe0gvb4b', NULL, NULL, NULL, '::1', 1615264570, '');
 
 -- --------------------------------------------------------
@@ -81,6 +82,7 @@ INSERT INTO `tabel_area` (`id_area`, `id_event`, `nama_area`) VALUES
 CREATE TABLE `tabel_event` (
   `id_event` varchar(255) NOT NULL,
   `nama_event` varchar(255) NOT NULL,
+  `gambar_event` varchar(255) NOT NULL,
   `detail_event` text NOT NULL,
   `alamat_event` text NOT NULL,
   `latitude` text NOT NULL DEFAULT '-0.007',
@@ -98,8 +100,8 @@ CREATE TABLE `tabel_event` (
 -- Dumping data for table `tabel_event`
 --
 
-INSERT INTO `tabel_event` (`id_event`, `nama_event`, `detail_event`, `alamat_event`, `latitude`, `longitude`, `custom_url`, `gambar_qrcode`, `tanggal_dibuka`, `tanggal_ditutup`, `jam_dibuka`, `jam_ditutup`, `status`) VALUES
-('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', '<h1 style=\"text-align: center;\"><span style=\"font-family: \'comic sans ms\', sans-serif;\">About GJUI</span></h1>\r\n<p><span style=\"color: #49586f;\"><span style=\"font-size: 14pt; font-family: \'comic sans ms\', sans-serif;\">Gelar Jepang Universitas Indonesia (GJUI) is an annual Japanese culture festival held by students of the Japanese Studies Program at the University of Indonesia. GJUI was first born in 1994, and now it has become one of the biggest Japanese cultural festivals held by college students in Indonesia. This year, the main theme of Gelar Jepang Universitas Indonesia 27 is Mugenchi: Journey into the World of Dreams. Mugenchi is a parallel world oriented to the classical Japanese period which means \"Fantasy World.\" It becomes an entity because of the imagination of a fantasy world that has no boundaries.</span></span></p>\r\n<hr />\r\n<h1 style=\"text-align: center;\"><span style=\"font-family: \'comic sans ms\', sans-serif;\">Apa itu Gelar Jepang UI?</span></h1>\r\n<p><span style=\"font-family: \'comic sans ms\', sans-serif;\"><span style=\"font-size: 14pt;\">Gelar Jepang UI adalah acara jejepangan yang paling poluler di masyarakat Indonesia, terutama Jabodetabek. Pertama Kali diselenggarakan pada tahun 1996, acara ini menjadi ajang berkumpul bagi para penggemar budaya Jepang. Dilaksanakan oleh mahasiswa/i program studi Jepang UI, acara ini juga menyediakan berbagai macam ekshibisi, lomba, seminar, workshop, konser, dan banyak lagi. Pada tahun lalu. GJUI 25 diadakan dengan penuh kemeriahan dan membawa performer dan guest star ternama. Mulai dari Shojo Complex, Nanairo Symphony, HTDRA, The Heavenly Project. hingga Kei Takebuchi.</span></span></p>\r\n<hr />\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://mediaformasi.com/content/images/wordpress/2020/07/photo_2020-07-04_17-59-51.jpg\" alt=\"\" width=\"600\" height=\"400\" /><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://mediaformasi.com/content/images/wordpress/2020/07/photo_2020-07-04_17-59-57.jpg\" alt=\"\" width=\"600\" height=\"400\" /><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://mediaformasi.com/content/images/wordpress/2020/07/photo_2020-07-04_17-59-55.jpg\" alt=\"\" width=\"600\" height=\"400\" /><span style=\"font-family: \'comic sans ms\', sans-serif;\">\" Pelaksanaan Gelar Jepang UI 25 (Foto: Yehez Frederik)</span></p>\r\n<hr />\r\n<p><iframe src=\"https://www.youtube.com/embed/H3aerwAPqGY\" width=\"560\" height=\"314\" allowfullscreen=\"allowfullscreen\" data-mce-fragment=\"1\"></iframe></p>', 'Pusat Studi Jepang UI, Universitas Indonesia, Jalan Professor Doktor Selo Soemardjan, Pondok Cina, Kota Depok, Jawa Barat, Indonesia', '-6.361840999999999', '106.828496', 'gjui', 'EVNT2102146814270000001.png', '2021-02-16', '2021-03-09', '08:00:00', '18:50:00', 'not_active');
+INSERT INTO `tabel_event` (`id_event`, `nama_event`, `gambar_event`, `detail_event`, `alamat_event`, `latitude`, `longitude`, `custom_url`, `gambar_qrcode`, `tanggal_dibuka`, `tanggal_ditutup`, `jam_dibuka`, `jam_ditutup`, `status`) VALUES
+('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', 'EVNT2102146814270000001.jpg', '<h1 style=\"text-align: center;\"><span style=\"font-family: \'comic sans ms\', sans-serif;\">Tentang GJUI</span></h1>\r\n<p><span style=\"font-family: \'comic sans ms\', sans-serif;\"><span style=\"font-size: 14pt;\">Gelar Jepang Unuversitas Indonesia, atau biasa disebut GJUI, adalah acara Festival Jepang tahunan yg diselenggarakan oleh mahasiswa Program Studi Jepang FIB UI. GJUI pertama kali lahir pada tahun 1994, dan kini telah menjadi salah satu festival budaya Jepang terbesar yang diadakan oleh mahasiswa di Indonesia. GJUI merupakan Festival Jepang tertua dan salah satu yg terbesar  di Indonesia, dengan program andalan seperti music performances, workshop gundam, lomba karaoke, lomba dance cover, rumah hantu Jepang, pesta kembang api, dll. Yang spesial di tahun ke-25 mengangkat tema Mugenchi: Journey into the World of Dreams. Mugenchi adalah dunia paralel yang berorientasi pada periode klasik Jepang yang berarti \"Dunia Fantasi.\" Ia menjadi entitas karena imajinasi dunia fantasi yang tidak memiliki batas. penyelenggaraan GJUI tahun ini juga menampilkan Guest Star yg merupakan penyanyi dari soundtrack anime Log Horizon yg sudah terkenal di kalangan penikmat anime.</span></span></p>\r\n<hr />\r\n<p><iframe src=\"https://www.youtube.com/embed/H3aerwAPqGY\" width=\"600\" height=\"336\" allowfullscreen=\"allowfullscreen\" data-mce-fragment=\"1\"></iframe></p>', 'Pusat Studi Jepang UI, Universitas Indonesia, Jalan Professor Doktor Selo Soemardjan, Pondok Cina, Kota Depok, Jawa Barat, Indonesia', '-6.361840999999999', '106.828496', 'gjui', 'EVNT2102146814270000001.png', '2021-02-16', '2021-03-09', '08:00:00', '18:50:00', 'not_active');
 
 -- --------------------------------------------------------
 

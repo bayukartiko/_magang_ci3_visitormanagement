@@ -146,26 +146,26 @@
 						<form id="form-tambah-staff" enctype="multipart/form-data" action="" class="" method="POST">
 							<div class="form-row">
 								<div class="form-group col-md-6">
-									<label for="field_username">Username</label>
+									<label for="field_username"><b>Username</b> <span class="text-danger">*</span></label>
 									<input type="text" class="form-control" id="field_username" name="username" placeholder="masukkan username" value="<?= set_value('username') ?>">
 									
 									<small id="error_username" class="invalid-feedback"></small>
 								</div>
 								<div class="form-group col-md-6">
-									<label for="field_password">Password</label>
+									<label for="field_password"><b>Password</b> <span class="text-danger">*</span></label>
 									<input type="password" class="form-control" id="field_password" name="password" placeholder="masukkan password" value="<?= set_value('password') ?>">
 
 									<small id="error_password" class="invalid-feedback"></small>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="field_nama">Nama</label>
+								<label for="field_nama"><b>Nama</b> <span class="text-danger">*</span></label>
 								<input type="text" class="form-control" id="field_nama" name="nama" placeholder="Masukkan nama staff" value="<?= set_value('nama') ?>">
 
 								<small id="error_nama" class="invalid-feedback"></small>
 							</div>
 							<div class="form-group">
-								<label for="field_jabatan">Jabatan</label>
+								<label for="field_jabatan"><b>Jabatan</b> <span class="text-danger">*</span></label>
 								<select name="jabatan" id="field_jabatan" class="form-control">
 								<!-- <select name="jabatan" id="field_jabatan" class="form-control" data-live-search="true" multiple> -->
 									<option value="" selected disabled>Pilih Jabatan</option>
@@ -200,19 +200,19 @@
 							<div class="row">
 								<div class="col md-6">
 									<div class="form-group">
-										<label for="username_detail">Username</label>
+										<label for="username_detail"><b>Username</b></label>
 										<input type="text" class="form-control" id="username_detail" disabled>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="nama_detail">Nama</label>
+										<label for="nama_detail"><b>Nama</b></label>
 										<input type="text" class="form-control" id="nama_detail" disabled>
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="form-group">
-										<label for="jabatan_detail">Jabatan</label>
+										<label for="jabatan_detail"><b>Jabatan</b></label>
 										<select id="jabatan_detail" class="form-control" disabled>
 											<option value="" selected disabled>Pilih Jabatan</option>
 											<option value="1">admin</option>
@@ -222,11 +222,11 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="nama_area_detail">Bertugas di</label>
+								<label for="nama_area_detail"><b>Bertugas di</b></label>
 								<input type="text" class="form-control" id="nama_area_detail" disabled>
 							</div>
 							<div class="form-group">
-								<label for="status_detail">Status</label><br>
+								<label for="status_detail"><b>Status</b></label><br>
 								<button id="status_detail" class="btn btn-outline-info"></button>
 							</div>
 						</fieldset>

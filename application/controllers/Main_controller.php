@@ -27,6 +27,9 @@ class Main_controller extends CI_Controller {
 		$this->load->model('main_model');
 		$this->load->library('form_validation', 'ciqrcode', 'session');
 
+		$dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
+		$dotenv->load();
+
 		if(!empty($_SESSION['staff_id'])) {
 			// if (time()-$_SESSION['waktu_aktif']>ini_get("session.gc_maxlifetime")){
 			if (time()-$_SESSION['waktu_aktif']>86400){ // 1 hari waktu session

@@ -181,6 +181,29 @@ class Staff_model extends CI_Model{
 					$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
 					$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
 				
+				// upload gambar event
+					$upload_foto = $_FILES['field_gambar_event']['name'];
+											
+					if(!empty($upload_foto)){
+						$config['upload_path'] = './assets/img/event_image/';
+						$config['allowed_types'] = 'jpg|png|jpeg|gif';
+						$config['remove_space'] = TRUE;
+						// $config['file_name'] = url_title($this->input->post('field_gambar_event'));
+						$config['file_name'] = $id_event;
+
+						$this->load->library('upload', $config);
+						$this->upload->initialize($config);
+						if($this->upload->do_upload('field_gambar_event')){
+		
+							$gambar_baru = $this->upload->data('file_name');
+							$this->db->set('gambar_event', $gambar_baru);
+						}else{
+							echo $this->upload->display_errors();
+						}
+					}else{
+						$this->db->set('gambar_event', 'default.jpg');
+					}
+
 				// jika input tanggal_mulai kurang atau sama dengan dari tanggal sekarang
 				if($this->input->post('tgl_mulai', true) <= mdate('%Y-%m-%d')){
 
@@ -291,6 +314,12 @@ class Staff_model extends CI_Model{
 			// hapus gambar qrcode event
 				unlink(FCPATH . 'assets/img/qrcode/' . $id_event .'.png');
 
+			// hapus gambar event
+				$gambar_lama = $this->db->get_where('tabel_event', ['id_event'=>$id_event])->row_array();
+				if($gambar_lama["gambar_event"] != 'default.jpg'){
+					unlink(FCPATH . '/assets/img/event_image/' . $gambar_lama["gambar_event"]);
+				}
+
 			// hapus tabel_area
 				$this->db->delete('tabel_area', array('id_event' => $id_event));
 
@@ -322,6 +351,36 @@ class Staff_model extends CI_Model{
 				}
 
 				unlink(FCPATH . 'assets/img/qrcode/' . $id_event .'.png');
+
+				// ubah gambar event
+					$upload_foto = $_FILES['field_gambar_event-edit']['name'];
+					
+					if(!empty($upload_foto)){
+						$config['upload_path'] = './assets/img/event_image/';
+						$config['allowed_types'] = 'jpg|png|jpeg|gif';
+						$config['file_name'] = $id_event;
+						
+						// $filename = $this->upload->file_name;
+						$this->upload->initialize($config);
+						if($this->upload->do_upload('field_gambar_event-edit')){
+
+							// hapus gambar lama
+								$gambar_lama = $this->db->get_where('tabel_event', ['id_event'=>$id_event])->row_array();
+								if($gambar_lama["gambar_event"] != 'default.jpg'){
+									unlink(FCPATH . 'assets/img/event_image/' . $gambar_lama["gambar_event"]);
+								}
+								
+								// }
+								$gambar_baru = $this->upload->data('file_name');
+								$this->db->set('gambar_event', $gambar_baru);
+						}else{
+							echo $this->upload->display_errors();
+						}
+						// $data = $this->upload->data();
+					}else{
+						$gambar_lama = $this->input->post('hidden-field_gambar_event-edit');
+						$this->db->set('gambar_event', $gambar_lama);
+					}
 				
 				// jika input tanggal_mulai kurang atau sama dengan dari tanggal sekarang
 				if($this->input->post('tgl_mulai', true) <= mdate('%Y-%m-%d')){

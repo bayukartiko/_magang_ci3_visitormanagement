@@ -87,7 +87,41 @@
 							<div class="row">
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_nama_event">Nama Event</label> <span class="text-danger">*</span>
+										<label class="bmd-label-floating text-gray-800" for="field_gambar_event"><b>Gambar Event</b></label> <small class="text-muted">(opsional)</small>
+										<br>
+										<small class="text-muted">Saran gunakan gambar dengan resolusi tinggi: 2160x1080px (2:1 ratio) </small>
+
+										<img src="" alt="" id="preview-gambar" class="img-thumbnail mb-3">
+
+										<div class="custom-file">
+											<input type="file" class="custom-file-input" id="field_gambar_event" name="field_gambar_event" onchange="previewFile(this);">
+											<label class="custom-file-label" for="field_gambar_event">Choose file</label>
+										</div>
+
+
+										<small id="error_gambar_event" class="invalid-feedback"></small>
+
+										<script>
+											function previewFile(input){
+												var file = $("input[type=file]#field_gambar_event").get(0).files[0];
+										
+												if(file){
+													var reader = new FileReader();
+										
+													reader.onload = function(){
+														$("#preview-gambar").attr("src", reader.result);
+													}
+										
+													reader.readAsDataURL(file);
+												}
+											}
+										</script>
+									</div>
+									<hr>
+								</div>
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_nama_event"><b>Nama Event</b></label> <span class="text-danger">*</span>
 										<input type="text" class="form-control" id="field_nama_event" name="nama_event" placeholder="masukkan nama event" value="<?= set_value('nama_event') ?>"/>
 
 										<small id="error_nama_event" class="invalid-feedback"></small>
@@ -95,7 +129,7 @@
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_detail_event">Detail Event <span class="small">(opsional)</span></label>
+										<label class="bmd-label-floating text-gray-800" for="field_detail_event"><b>Detail Event</b> <span class="small">(opsional)</span></label>
 										<textarea name="detail_event" id="field_detail_event" class="form-control" cols="30" rows="10" placeholder="masukkan detail event"><?= set_value('detail_event') ?></textarea>
 
 										<script>
@@ -138,7 +172,7 @@
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_custom_url">Custom URL <span class="small">(opsional)</span></label>
+										<label class="bmd-label-floating text-gray-800" for="field_custom_url"><b>Custom URL</b> <span class="small">(opsional)</span></label>
 										<table>
 											<tr>
 												<td><?= base_url() ?></td>
@@ -159,7 +193,7 @@
 										<input type="hidden" name="alamat-event-latitude" id="alamat-event-latitude" hidden>
 										<input type="hidden" name="alamat-event-longitude" id="alamat-event-longitude" hidden>
 
-										<label class="bmd-label-floating text-gray-800" for="field_alamat_event">Lokasi Event</label> <span class="text-danger">*</span>
+										<label class="bmd-label-floating text-gray-800" for="field_alamat_event"><b>Lokasi Event</b></label> <span class="text-danger">*</span>
 										<input type="text" class="form-control" id="field_alamat_event" name="alamat_event" placeholder="masukkan/cari lokasi event" value="<?= set_value('alamat_event') ?>"/>
 
 										<small id="error_alamat_event" class="invalid-feedback"></small>
@@ -170,7 +204,7 @@
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai">Tanggal Dimulai</label> <span class="text-danger">*</span>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai"><b>Tanggal Dimulai</b></label> <span class="text-danger">*</span>
 										<input type="date" class="form-control" id="field_tgl_mulai" name="tgl_mulai" value="<?= set_value('tgl_mulai') ?>"/>
 
 										<small id="error_tgl_mulai" class="invalid-feedback"></small>
@@ -178,7 +212,7 @@
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai">Tanggal Berakhir</label> <span class="text-danger">*</span>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai"><b>Tanggal Berakhir</b></label> <span class="text-danger">*</span>
 										<input type="date" class="form-control" id="field_tgl_selesai" name="tgl_selesai" value="<?= set_value('tgl_selesai') ?>"/>
 										
 										<small id="error_tgl_selesai" class="invalid-feedback"></small>
@@ -186,7 +220,7 @@
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka">Jam Dibuka</label> <span class="text-danger">*</span>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka"><b>Jam Dibuka</b></label> <span class="text-danger">*</span>
 										<input type="time" class="form-control" id="field_jam_dibuka" name="jam_dibuka" value="<?= set_value('jam_dibuka') ?>"/>
 										
 										<small id="error_jam_dibuka" class="invalid-feedback"></small>
@@ -194,7 +228,7 @@
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup">Jam Ditutup</label> <span class="text-danger">*</span>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup"><b>Jam Ditutup</b></label> <span class="text-danger">*</span>
 										<input type="time" class="form-control" id="field_jam_ditutup" name="jam_ditutup" value="<?= set_value('jam_ditutup') ?>"/>
 
 										<small id="error_jam_ditutup" class="invalid-feedback"></small>
@@ -313,7 +347,42 @@
 							<div class="row">
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_nama_event-edit">Nama Event <span class="text-danger">*</span></label>
+										<input type="hidden" name="hidden-field_gambar_event-edit" id="hidden-field_gambar_event-edit" hidden>
+										
+										<label class="bmd-label-floating text-gray-800" for="field_gambar_event-edit"><b>Gambar Event</b></label> <small class="text-muted">(opsional)</small>
+										<br>
+										<small class="text-muted">Saran gunakan gambar dengan resolusi tinggi: 2160x1080px (2:1 ratio) </small>
+
+										<img src="" alt="" id="preview-gambar-edit" class="img-thumbnail mb-3">
+
+										<div class="custom-file">
+											<input type="file" class="custom-file-input" id="field_gambar_event-edit" name="field_gambar_event-edit" onchange="previewFile_edit(this);">
+											<label class="custom-file-label" for="field_gambar_event-edit">Choose file</label>
+										</div>
+
+										<small id="error_gambar_event-edit" class="invalid-feedback"></small>
+
+										<script>
+											function previewFile_edit(input){
+												var file = $("input[type=file]#field_gambar_event-edit").get(0).files[0];
+										
+												if(file){
+													var reader = new FileReader();
+										
+													reader.onload = function(){
+														$("#preview-gambar-edit").attr("src", reader.result);
+													}
+										
+													reader.readAsDataURL(file);
+												}
+											}
+										</script>
+									</div>
+									<hr>
+								</div>
+								<div class="offset-md-1 col-md-10">
+									<div class="form-group">
+										<label class="bmd-label-floating text-gray-800" for="field_nama_event-edit"><b>Nama Event</b> <span class="text-danger">*</span></label>
 										<input type="hidden" id="field_id_event-edit" name="id_event"/>
 										<input type="text" class="form-control" id="field_nama_event-edit" name="nama_event" placeholder="masukkan nama event" value="<?= set_value('nama_event') ?>"/>
 
@@ -322,7 +391,7 @@
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_detail_event-edit">Detail Event <span class="small">(opsional)</span></label>
+										<label class="bmd-label-floating text-gray-800" for="field_detail_event-edit"><b>Detail Event</b> <span class="small">(opsional)</span></label>
 										<textarea name="detail_event" id="field_detail_event-edit" class="form-control" cols="30" rows="10" placeholder="masukkan detail event"><?= set_value('nama_event') ?></textarea>
 
 										<script>
@@ -370,7 +439,7 @@
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_custom_url-edit">Custom URL <span class="small">(opsional)</span></label>
+										<label class="bmd-label-floating text-gray-800" for="field_custom_url-edit"><b>Custom URL</b> <span class="small">(opsional)</span></label>
 										<table>
 											<tr>
 												<td><?= base_url() ?></td>
@@ -390,7 +459,7 @@
 										<input type="hidden" name="alamat-event-latitude-edit" id="alamat-event-latitude-edit" hidden>
 										<input type="hidden" name="alamat-event-longitude-edit" id="alamat-event-longitude-edit" hidden>
 
-										<label class="bmd-label-floating text-gray-800" for="field_alamat_event-edit">Lokasi Event</label> <span class="text-danger">*</span>
+										<label class="bmd-label-floating text-gray-800" for="field_alamat_event-edit"><b>Lokasi Event</b></label> <span class="text-danger">*</span>
 										<input type="text" class="form-control" id="field_alamat_event-edit" name="alamat_event-edit" placeholder="masukkan/cari lokasi event" value="<?= set_value('alamat_event-edit') ?>"/>
 
 										<small id="error_alamat_event-edit" class="invalid-feedback"></small>
@@ -401,7 +470,7 @@
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai-edit">Tanggal Dimulai <span class="text-danger">*</span></label>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai-edit"><b>Tanggal Dimulai</b> <span class="text-danger">*</span></label>
 										<input type="date" class="form-control" id="field_tgl_mulai-edit" name="tgl_mulai" value="<?= set_value('tgl_mulai') ?>"/>
 
 										<small id="error_tgl_mulai-edit" class="invalid-feedback"></small>
@@ -409,7 +478,7 @@
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai-edit">Tanggal Berakhir <span class="text-danger">*</span></label>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai-edit"><b>Tanggal Berakhir</b> <span class="text-danger">*</span></label>
 										<input type="date" class="form-control" id="field_tgl_selesai-edit" name="tgl_selesai" value="<?= set_value('tgl_selesai') ?>"/>
 										
 										<small id="error_tgl_selesai-edit" class="invalid-feedback"></small>
@@ -417,7 +486,7 @@
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka-edit">Jam Dibuka <span class="text-danger">*</span></label>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka-edit"><b>Jam Dibuka</b> <span class="text-danger">*</span></label>
 										<input type="time" class="form-control" id="field_jam_dibuka-edit" name="jam_dibuka" value="<?= set_value('jam_dibuka') ?>"/>
 										
 										<small id="error_jam_dibuka-edit" class="invalid-feedback"></small>
@@ -425,7 +494,7 @@
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup-edit">Jam Ditutup <span class="text-danger">*</span></label>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup-edit"><b>Jam Ditutup</b> <span class="text-danger">*</span></label>
 										<input type="time" class="form-control" id="field_jam_ditutup-edit" name="jam_ditutup" value="<?= set_value('jam_ditutup') ?>"/>
 
 										<small id="error_jam_ditutup-edit" class="invalid-feedback"></small>
@@ -499,72 +568,65 @@
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
 										<div class="row">
-											<div class="col-md-3">
+											<div class="col-md-3 text-center">
+												<label class="bmd-label-floating text-gray-800" for="field_href_qrcode-detail"><b>QRcode Link Akses Event</b></label>
 												<a href="" download="" id="field_href_qrcode-detail">
 													<img id="field_qrcode-detail" src="" alt="" class="img-thumbnail mx-auto" style="width: 200px; height: 200px;">
 												</a>
+												<br><br>
+												<a href="" id="link_akses_event" target="_blank" style="word-wrap: break-word;"><?= base_url() ?><span id="field_custom_url-detail"></span></a>
+												<br><br>
 											</div>
 											<div class="col-md-9">
-												<label class="bmd-label-floating text-gray-800" for="field_nama_event-detail">Nama Event</label>
-												<input type="text" class="form-control" id="field_nama_event-detail" disabled/>
+												<label class="bmd-label-floating text-gray-800" for="field_detail_event-detail"><b>Gambar Event</b></label>
+												<img src="" alt="" id="preview-gambar-detail" class="img-thumbnail mb-3">
 											</div>
 										</div>
+										<label class="bmd-label-floating text-gray-800" for="field_nama_event-detail"><b>Nama Event</b></label>
+										<input type="text" class="form-control" id="field_nama_event-detail" disabled/>
 									</div>
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_detail_event-detail">Detail Event</label>
+										<label class="bmd-label-floating text-gray-800" for="field_detail_event-detail"><b>Detail Event</b></label>
 										<div class="form-control shadow-sm" id="field_detail_event-detail"/></div>
 									</div>
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_alamat_event-detail">Lokasi Event</label>
+										<label class="bmd-label-floating text-gray-800" for="field_alamat_event-detail"><b>Lokasi Event</b></label>
 										<textarea name="" class="form-control" id="field_alamat_event-detail" cols="30" rows="3"></textarea>
 
 										<div id="map-detail" class="embed-responsive embed-responsive-16by9" aria-disabled="false"></div>
 									</div>
 								</div>
-								<div class="offset-md-1 col-md-10">
-									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_custom_url-detail">Custom URL</label>
-										<table>
-											<tr>
-												<td><?= base_url() ?></td>
-												<td>
-													<input type="text" class="form-control" id="field_custom_url-detail" disabled/>
-												</td>
-											</tr>
-										</table>
-									</div>
-								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai-detail">Tanggal Dimulai</label>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_mulai-detail"><b>Tanggal Dimulai</b></label>
 										<input type="date" class="form-control" id="field_tgl_mulai-detail" disabled/>
 									</div>
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai-detail">Tanggal Berakhir</label>
+										<label class="bmd-label-floating text-gray-800" for="field_tgl_selesai-detail"><b>Tanggal Berakhir</b></label>
 										<input type="date" class="form-control" id="field_tgl_selesai-detail" disabled/>
 									</div>
 								</div>
 								<div class="offset-md-1 col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka-detail">Jam Dibuka</label>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_dibuka-detail"><b>Jam Dibuka</b></label>
 										<input type="time" class="form-control" id="field_jam_dibuka-detail" disabled/>
 									</div>
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup-detail">Jam Ditutup</label>
+										<label class="bmd-label-floating text-gray-800" for="field_jam_ditutup-detail"><b>Jam Ditutup</b></label>
 										<input type="time" class="form-control" id="field_jam_ditutup-detail"/>
 									</div>
 								</div>
 								<div class="offset-md-1 col-md-10">
 									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_nama_petugas_pintuKeluar-detail">Petugas pintu keluar event</label>
+										<label class="bmd-label-floating text-gray-800" for="field_nama_petugas_pintuKeluar-detail"><b>Petugas pintu keluar event</b></label>
 										<input type="text" class="form-control" id="field_nama_petugas_pintuKeluar-detail" disabled>
 									</div>
 								</div>
@@ -647,17 +709,21 @@
 			// 	theme: 'bootstrap4',
 			// });
 
-			
+
 			var id_event = "";
 			var nextform = ""; 
 
 			$('#modal_tambah_event').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
 				$('#modal_tambah_event input, #modal_tambah_event select, #modal_tambah_event datetime-local').val('').removeClass('is-invalid'); // Clear inputan menjadi kosong
+				$('.custom-file-input').next('.custom-file-label').removeClass("selected").html("Choose file");
+				$("#preview-gambar").attr('src', '');
 				$(".invalid_feedback").html('');
 				$('#btn-simpan').html('Simpan');
 			});
 			$('#modal_ubah_event').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
 				$('#modal_ubah_event input, #modal_ubah_event select, #modal_ubah_event datetime-local').val('').removeClass('is-invalid'); // Clear inputan menjadi kosong
+				$('.custom-file-input').next('.custom-file-label').removeClass("selected").html("Choose file");
+				$("#preview-gambar-edit").attr('src', '');
 				$(".invalid_feedback").html('');
 				$('#btn-ubah').html('Ubah');
 			});
@@ -820,89 +886,90 @@
 			// fungsi tambah event
 				$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
 					// e.preventDefault();
-
-					tinyMCE.triggerSave();
-
-					$('#btn-simpan').html('Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
+					$('#btn-simpan').html('Sedang menyimpan..'); // ganti text btn-simpan jadi sedang menyimpan
 					$('#btn-simpan').attr('disabled', true);
 
-					
-					var startDate = new Date($('#field_tgl_mulai').val());
-					var endDate = new Date($('#field_tgl_selesai').val());
-					if (endDate < startDate){
-						$('#field_tgl_selesai').addClass('is-invalid');
-						$('#error_tgl_selesai').html('tanggal berakhir harus tanggal setelah tanggal dimulai');
-						$('#btn-simpan').html('x Terjadi kesalahan x');
-						setTimeout(() => {
-							$('#btn-simpan').html('Simpan');
-							$('#btn-simpan').attr('disabled', false);
-						}, 2000);
-						return false;
-					}else{
-						$('#field_tgl_selesai').removeClass('is-invalid');
-						$('#error_tgl_selesai').html('');
-					}
+					setTimeout(() => {
 
-					var startTime = $('#field_jam_dibuka').val();
-					var endTime = $('#field_jam_ditutup').val();
-					if (endTime < startTime){
-						$('#field_jam_ditutup').addClass('is-invalid');
-						$('#error_jam_ditutup').html('jam ditutup harus jam setelah jam dibuka');
-						$('#btn-simpan').html('x Terjadi kesalahan x');
-						setTimeout(() => {
-							$('#btn-simpan').html('Simpan');
-							$('#btn-simpan').attr('disabled', false);
-						}, 2000);
-						return false;
-					}else if(endTime == startTime){
-						$('#field_jam_ditutup').addClass('is-invalid');
-						$('#error_jam_ditutup').html('jam ditutup tidak boleh sama dengan jam dibuka');
-						$('#btn-simpan').html('x Terjadi kesalahan x');
-						setTimeout(() => {
-							$('#btn-simpan').html('Simpan');
-							$('#btn-simpan').attr('disabled', false);
-						}, 2000);
-						return false;
-					}else{
-						$('#field_jam_ditutup').removeClass('is-invalid');
-						$('#error_jam_ditutup').html('');
-					}
-					
-					var error = '';
-					var hitung_field_nama_area = 1;
-					$('.field_nama_area').each(function(){
-						if($(this).val() == ''){
-							error += "<p>harap isi field nama area pada baris "+hitung_field_nama_area+" !</p>";
-							$(this).addClass('is-invalid');
+						tinyMCE.triggerSave();
+						
+						var startDate = new Date($('#field_tgl_mulai').val());
+						var endDate = new Date($('#field_tgl_selesai').val());
+						if (endDate < startDate){
+							$('#field_tgl_selesai').addClass('is-invalid');
+							$('#error_tgl_selesai').html('tanggal berakhir harus tanggal setelah tanggal dimulai');
+							$('#btn-simpan').html('x Terjadi kesalahan x');
+							setTimeout(() => {
+								$('#btn-simpan').html('Simpan');
+								$('#btn-simpan').attr('disabled', false);
+							}, 2000);
 							return false;
 						}else{
-							$(this).removeClass('is-invalid');
+							$('#field_tgl_selesai').removeClass('is-invalid');
+							$('#error_tgl_selesai').html('');
 						}
-						hitung_field_nama_area = hitung_field_nama_area + 1;
-					});
-					var hitung_field_nama_petugas = 1;
-					$('.field_nama_petugas').each(function(){
-						if($(this).find(":selected").val() == ''){
-							error += "<p>harap pilih field nama petugas pada baris "+hitung_field_nama_petugas+" !</p>";
-							$(this).addClass('is-invalid');
+	
+						var startTime = $('#field_jam_dibuka').val();
+						var endTime = $('#field_jam_ditutup').val();
+						if (endTime < startTime){
+							$('#field_jam_ditutup').addClass('is-invalid');
+							$('#error_jam_ditutup').html('jam ditutup harus jam setelah jam dibuka');
+							$('#btn-simpan').html('x Terjadi kesalahan x');
+							setTimeout(() => {
+								$('#btn-simpan').html('Simpan');
+								$('#btn-simpan').attr('disabled', false);
+							}, 2000);
+							return false;
+						}else if(endTime == startTime){
+							$('#field_jam_ditutup').addClass('is-invalid');
+							$('#error_jam_ditutup').html('jam ditutup tidak boleh sama dengan jam dibuka');
+							$('#btn-simpan').html('x Terjadi kesalahan x');
+							setTimeout(() => {
+								$('#btn-simpan').html('Simpan');
+								$('#btn-simpan').attr('disabled', false);
+							}, 2000);
 							return false;
 						}else{
-							$(this).removeClass('is-invalid');
+							$('#field_jam_ditutup').removeClass('is-invalid');
+							$('#error_jam_ditutup').html('');
 						}
-						hitung_field_nama_petugas = hitung_field_nama_petugas + 1;
-					});
-
-					if(error == ''){
-						$('#error').html('');
-						tambah_event();
-					}else{
-						$('#error').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+error+'</div>');
-						$('#btn-simpan').html('x Terjadi kesalahan x');
-						setTimeout(() => {
-							$('#btn-simpan').html('Simpan');
-							$('#btn-simpan').attr('disabled', false);
-						}, 2000);
-					}
+						
+						var error = '';
+						var hitung_field_nama_area = 1;
+						$('.field_nama_area').each(function(){
+							if($(this).val() == ''){
+								error += "<p>harap isi field nama area pada baris "+hitung_field_nama_area+" !</p>";
+								$(this).addClass('is-invalid');
+								return false;
+							}else{
+								$(this).removeClass('is-invalid');
+							}
+							hitung_field_nama_area = hitung_field_nama_area + 1;
+						});
+						var hitung_field_nama_petugas = 1;
+						$('.field_nama_petugas').each(function(){
+							if($(this).find(":selected").val() == ''){
+								error += "<p>harap pilih field nama petugas pada baris "+hitung_field_nama_petugas+" !</p>";
+								$(this).addClass('is-invalid');
+								return false;
+							}else{
+								$(this).removeClass('is-invalid');
+							}
+							hitung_field_nama_petugas = hitung_field_nama_petugas + 1;
+						});
+	
+						if(error == ''){
+							$('#error').html('');
+							tambah_event();
+						}else{
+							$('#error').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+error+'</div>');
+							$('#btn-simpan').html('x Terjadi kesalahan x');
+							setTimeout(() => {
+								$('#btn-simpan').html('Simpan');
+								$('#btn-simpan').attr('disabled', false);
+							}, 2000);
+						}
+					}, 500);
 
 				});
 
@@ -1134,6 +1201,7 @@
 					var tr = $(this).closest('tr');
 					var id_event = tr.find('.id_event-value_data').val();
 					var nama_event = tr.find('.nama_event-value_data').val();
+					var gambar_event = tr.find('.gambar_event-value_data').val();
 					var detail_event = tr.find('.detail_event-value_data').val();
 					var custom_url = tr.find('.custom_url-value_data').val();
 					var alamat_event = tr.find('.alamat_event-value_data').val();
@@ -1148,7 +1216,12 @@
 					
 					$('#field_id_event-edit').val(id_event);
 					$('#field_nama_event-edit').val(nama_event);
+					$('#hidden-field_gambar_event-edit').val(gambar_event);
+					$('.custom-file-input').next('.custom-file-label').addClass("selected").html(gambar_event);
+					$("#preview-gambar-edit").attr('src', '<?= base_url() ?>assets/img/event_image/'+gambar_event);
 					tinymce.activeEditor.setContent(detail_event);
+					tinymce.activeEditor.dom.addClass(tinymce.activeEditor.dom.select('img'), "img-thumbnail");
+					tinymce.activeEditor.dom.addClass(tinymce.activeEditor.dom.select('iframe'), "embed-responsive embed-responsive-16by9");
 					$('#field_custom_url-edit').val(custom_url);
 					$('#alamat-event-addr-edit').val(alamat_event);
 					$('#alamat-event-latitude-edit').val(latitude);
@@ -1250,50 +1323,53 @@
 					$('#btn-ubah').html('Sedang mengubah..'); // ganti text btn-ubah jadi sedang menambahkan
 					$('#btn-ubah').attr('disabled', true);
 
-					tinyMCE.triggerSave();
-					
-					var startDate = new Date($('#field_tgl_mulai-edit').val());
-					var endDate = new Date($('#field_tgl_selesai-edit').val());
-					if (endDate < startDate){
-						$('#field_tgl_selesai-edit').addClass('is-invalid');
-						$('#error_tgl_selesai-edit').html('tanggal berakhir harus tanggal setelah tanggal dimulai');
-						$('#btn-ubah').html('x Terjadi kesalahan x');
-						setTimeout(() => {
-							$('#btn-ubah').html('Ubah');
-							$('#btn-ubah').attr('disabled', false);
-						}, 2000);
-						return false;
-					}else{
-						$('#field_tgl_selesai-edit').removeClass('is-invalid');
-						$('#error_tgl_selesai-edit').html('');
-					}
-
-					var startTime = $('#field_jam_dibuka-edit').val();
-					var endTime = $('#field_jam_ditutup-edit').val();
-					if (endTime < startTime){
-						$('#field_jam_ditutup-edit').addClass('is-invalid');
-						$('#error_jam_ditutup-edit').html('jam ditutup harus jam setelah jam dibuka');
-						$('#btn-ubah').html('x Terjadi kesalahan x');
-						setTimeout(() => {
-							$('#btn-ubah').html('Ubah');
-							$('#btn-ubah').attr('disabled', false);
-						}, 2000);
-						return false;
-					}else if(endTime == startTime){
-						$('#field_jam_ditutup-edit').addClass('is-invalid');
-						$('#error_jam_ditutup-edit').html('jam ditutup tidak boleh sama dengan jam dibuka');
-						$('#btn-ubah').html('x Terjadi kesalahan x');
-						setTimeout(() => {
-							$('#btn-ubah').html('Ubah');
-							$('#btn-ubah').attr('disabled', false);
-						}, 2000);
-						return false;
-					}else{
-						$('#field_jam_ditutup-edit').removeClass('is-invalid');
-						$('#error_jam_ditutup-edit').html('');
-					}
-
-					ubah_event();
+					setTimeout(() => {
+						
+						tinyMCE.triggerSave();
+						
+						var startDate = new Date($('#field_tgl_mulai-edit').val());
+						var endDate = new Date($('#field_tgl_selesai-edit').val());
+						if (endDate < startDate){
+							$('#field_tgl_selesai-edit').addClass('is-invalid');
+							$('#error_tgl_selesai-edit').html('tanggal berakhir harus tanggal setelah tanggal dimulai');
+							$('#btn-ubah').html('x Terjadi kesalahan x');
+							setTimeout(() => {
+								$('#btn-ubah').html('Ubah');
+								$('#btn-ubah').attr('disabled', false);
+							}, 2000);
+							return false;
+						}else{
+							$('#field_tgl_selesai-edit').removeClass('is-invalid');
+							$('#error_tgl_selesai-edit').html('');
+						}
+	
+						var startTime = $('#field_jam_dibuka-edit').val();
+						var endTime = $('#field_jam_ditutup-edit').val();
+						if (endTime < startTime){
+							$('#field_jam_ditutup-edit').addClass('is-invalid');
+							$('#error_jam_ditutup-edit').html('jam ditutup harus jam setelah jam dibuka');
+							$('#btn-ubah').html('x Terjadi kesalahan x');
+							setTimeout(() => {
+								$('#btn-ubah').html('Ubah');
+								$('#btn-ubah').attr('disabled', false);
+							}, 2000);
+							return false;
+						}else if(endTime == startTime){
+							$('#field_jam_ditutup-edit').addClass('is-invalid');
+							$('#error_jam_ditutup-edit').html('jam ditutup tidak boleh sama dengan jam dibuka');
+							$('#btn-ubah').html('x Terjadi kesalahan x');
+							setTimeout(() => {
+								$('#btn-ubah').html('Ubah');
+								$('#btn-ubah').attr('disabled', false);
+							}, 2000);
+							return false;
+						}else{
+							$('#field_jam_ditutup-edit').removeClass('is-invalid');
+							$('#error_jam_ditutup-edit').html('');
+						}
+	
+						ubah_event();
+					}, 500);
 					
 				});
 
@@ -1421,6 +1497,7 @@
 					var alt_qrcode_event = tr.find('.alt_qrcode_event-value_data').val();
 					var download_qrcode_event = tr.find('.download_qrcode_event-value_data').val();
 					var nama_event = tr.find('.nama_event-value_data').val();
+					var gambar_event = tr.find('.gambar_event-value_data').val();
 					var detail_event = tr.find('.detail_event-value_data').val();
 					var alamat_event = tr.find('.alamat_event-value_data').val();
 					var latitude = tr.find('.latitude-value_data').val();
@@ -1439,14 +1516,18 @@
 					$('#field_qrcode-detail').attr("alt", alt_qrcode_event);
 					// $('#field_href_qrcode-detail').attr("href", src_qrcode_event);
 					$('#field_href_qrcode-detail').attr("download", download_qrcode_event+".png");
+					$('#link_akses_event').attr("href", "<?= base_url() ?>"+custom_url);
+					$('#field_custom_url-detail').html(custom_url);
+					$("#preview-gambar-detail").attr('src', '<?= base_url() ?>assets/img/event_image/'+gambar_event);
 					$('#field_nama_event-detail').val(nama_event);
 					if(!detail_event){
 						$('#field_detail_event-detail').html("<i class='text-danger'>Tidak Diisi</i>").css({'height': 'auto'});
 					}else{
 						$('#field_detail_event-detail').html(detail_event).css({'height': 'auto'});
+						$('#field_detail_event-detail img').addClass("img-thumbnail");
+						$('#field_detail_event-detail iframe').addClass("embed-responsive embed-responsive-16by9");
 					}
 					$("#field_alamat_event-detail").val(alamat_event);
-					$('#field_custom_url-detail').val(custom_url);
 					$('#field_tgl_mulai-detail').val(tanggal_dibuka);
 					$('#field_tgl_selesai-detail').val(tanggal_ditutup);
 					$('#field_jam_dibuka-detail').val(jam_dibuka);

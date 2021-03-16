@@ -43,7 +43,20 @@
 	<!-- select2 -->
 	<!-- <script src="</?= base_url() ?>vendor/select2/dist/js/select2.min.js"></script> -->
 	<script>
-		$(document).ready(function(){
+		$(document).ready(function(event){
+			var label;
+			$('.custom-file-input').on('change', function(){
+				let filename = $(this).val().split('\\').pop();
+				if(filename == ''){
+					$(this).next('.custom-file-label').removeClass("selected").html("Choose file");
+					$("#preview-gambar").attr('src', '');
+					$("#preview-gambar-edit").attr('src', '');
+				}else{
+					$(this).next('.custom-file-label').addClass("selected").html(filename);
+					label = filename;
+				};
+			});
+			
 			function aktivasi_event_otomatis(){
 				$.ajax({
 					url: '<?= base_url(); ?>staff_only/admin/aktivasi_event_otomatis', // URL tujuan
