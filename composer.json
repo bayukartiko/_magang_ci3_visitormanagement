@@ -19,7 +19,8 @@
 		"snapappointments/bootstrap-select": "^1.13",
 		"ttskch/select2-bootstrap4-theme": "^1.5",
 		"phpoffice/phpspreadsheet": "^1.16",
-		"vlucas/phpdotenv": "^5.3"
+		"vlucas/phpdotenv": "^5.3",
+		"nesbot/carbon": "^2.46"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

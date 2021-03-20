@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+
+    <title>Hello, world!</title>
+	<style>
+		body{
+			font-family: 'Mulish', sans-serif;
+			background-color: #F0F2F9;
+			position: relative;
+		}
+		.jumbotron{
+			/* background-image: url('./assets/img/checking-her-messages.jpg');
+			background-repeat: no-repeat;
+ 			background-size: cover; */
+			/* background-color: #28903B; */
+			color: #ffffff;
+			/* height: 100vh; */
+			vertical-align: middle;
+		}
+		.jumbotron h1{
+			font-family: 'Mulish', sans-serif;
+			font-weight: bold;
+			font-size: 10vh;
+		}
+		.jumbotron p{
+			font-size: 3vh;
+		}
+		.jumbotron p{
+			font-family: 'Mulish', sans-serif;
+		}
+		.jumbotron button{
+			width: 25vw;
+		}
+		.card{
+			border: none;
+		}
+		.nav-link.active{
+			border-bottom: 2px solid white;
+			font-weight: bold;
+		}
+
+		@media screen and (max-width: 780px) {
+			.jumbotron{
+				text-align: center;
+			}
+			.jumbotron h1{
+				font-size: 7vh;
+			}
+			.jumbotron button{
+				width: 50vw;
+			}
+			.navbar-brand img{
+				display: none;
+				/* background-image: none;	 */
+			}
+			.navbar-brand:after {
+				content: 'VM';
+			}
+			.nav-link.active{
+				border-left: 2px solid white;
+				border-bottom: none;
+				padding-left: 5px;
+			}
+		}
+		@media screen and (max-width: 600px) {
+			.jumbotron{
+				text-align: center;
+			}
+			.jumbotron h1{
+				font-size: 7vh;
+			}
+			.jumbotron button{
+				width: 50vw;
+			}
+			.jumbotron img{
+				display: none;
+			}
+			.navbar-brand img{
+				display: none;
+				/* background-image: none;	 */
+			}
+			.navbar-brand:after {
+				content: 'VM';
+			}
+			.nav-link.active{
+				border-left: 2px solid white;
+				border-bottom: none;
+				padding-left: 5px;
+			}
+		}
+	</style>
+  </head>
+  <body data-spy="scroll" data-target="#navbar" data-offset="0">
+	<section id="topbar">
+		<nav class="navbar navbar-expand-lg navbar-light bg-success fixed-top" id="navbar" style="transition: 0.3s;">
+			<div class="container">
+				<a class="navbar-brand text-light" href="#">
+					<img src="./assets/img/id_card_img.png" style="width: 30px; height: 55px;" alt="" srcset="">
+				</a>
+
+				<button class="navbar-toggler" onclick="addshadow()" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				
+				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+					<div class="navbar-nav m-2">
+						<a class="nav-link text-light mr-3" href="#home">Home</a>
+						<a class="nav-link text-light mr-3" href="javascript:void(0)">Koleksi Event</a>
+						<a class="nav-link text-light mr-3" href="#event-terpopuler">Event Terpopuler</a>
+						<a class="nav-link text-light mr-3" href="javascript:void(0)">Semua Event</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</section>
+
+	<section id="home" class="">
+		<div class="jumbotron jumbotron-fluid bg-success my-auto" style="padding-top: 100px; border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-8">
+						<h1>Visitor Management</h1>
+						<p>Website untuk mempermudah pendataan pada partisipasi anda dalam event yang anda ikuti.</p>
+						<div class="pt-5 position-relative">
+							<button class="btn btn-danger rounded-circle m-1"  style="width: 50px; height: 50px;"><i class="fab fa-fw fa-youtube"></i></button>
+							<button class="btn btn-light rounded-circle  m-1" style="width: 50px; height: 50px;"><i class="fab fa-fw fa-instagram"></i></button>
+							<button class="btn btn-info rounded-circle  m-1" style="width: 50px; height: 50px;"><i class="fab fa-fw fa-twitter"></i></button>
+							<button class="btn btn-primary rounded-circle  m-1" style="width: 50px; height: 50px;"><i class="fab fa-fw fa-facebook-f"></i></button>
+						</div>
+					</div>
+					<div class="col-md-4 p-3 text-center">
+						<img src="./assets/img/id_card_img.png" alt="" srcset="">
+					</div>
+				</div>
+				<br>
+				<button class="btn btn-light p-3 mb-3 rounded-pill">Lihat Event</button>
+			</div>
+		</div>
+	</section>
+
+	<section id="event-terpopuler" class="" style="padding-top: 90px;">
+		<!-- thanks to https://www.codeply.com/go/EIOtI7nkP8 -->
+		<div class="container text-center my-3">
+			<h1 class="font-weight-light">List Event</h1>
+			<p class="font-weight-light">Pilih event untuk menampilkan detail</p>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card mb-4 shadow-sm" style="width: 18rem;">
+						<img src="..." class="card-img-top" alt="...">
+						<div class="card-body">
+						  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card mb-4 shadow-sm" style="width: 18rem;">
+						<img src="..." class="card-img-top" alt="...">
+						<div class="card-body">
+						  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card mb-4 shadow-sm" style="width: 18rem;">
+						<img src="..." class="card-img-top" alt="...">
+						<div class="card-body">
+						  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class="btn btn-outline-secondary mt-2">Lihat Selengkapnya</button>
+		</div>
+	</section>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+    <!-- Option 2: jQuery, Popper.js, and Bootstrap JS
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    -->
+	<script>
+		$('body').scrollspy({ target: '#navbar' })
+
+		var count;
+		function addshadow(){
+			if(count != "1"){
+				$('.navbar').addClass('shadow-lg');
+				count = "1";
+			}else{
+				$('.navbar').removeClass('shadow-lg');
+				count = "0";
+			}
+		}
+
+		$(document).ready(function(){
+			$( ".card" ).hover(
+				function() {
+					$(this).addClass('shadow-lg').css('transition', '0.3s'); 
+				}, function() {
+					$(this).removeClass('shadow-lg');
+				}
+			);
+
+			$(window).scroll(function() {
+				if ($(window).scrollTop() >= 50) {
+					$('.navbar').addClass('shadow');
+				} else {
+					$('.navbar').removeClass('shadow');
+				}
+			});
+
+		})
+	</script>
+  </body>
+</html>

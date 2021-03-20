@@ -88,13 +88,13 @@
 				<td><?= $staff_data->is_active ?></td>
 				<td>
 					<?php if($staff_data->is_active == 'online'){ ?>
-						<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff">Detail</a>
+						<button data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff">Detail</button>
 					<?php }else{ ?>
 						<?php if($staff_data->sedang_bertugas == true){ ?>
-							<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff m-1">Detail</a>
+							<button data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff m-1">Detail</button>
 						<?php }else{ ?>
-							<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff m-1">Detail</a>
-							<a href="javascript:void();" data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_hapus_staff" class="btn btn-danger btn-hapus-staff m-1">Hapus</a>
+							<button data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_detail_staff" class="btn btn-info btn-detail-staff m-1">Detail</button>
+							<button data-id="<?= $staff_data->staff_id; ?>" data-toggle="modal" data-target="#modal_hapus_staff" class="btn btn-danger btn-hapus-staff m-1">Hapus</button>
 						<?php } ?>
 					<?php } ?>
 

@@ -18,9 +18,9 @@
 				<td class="text-center"><?= $no ?></td>
 				<td class="text-center">
 					<!-- <a href="<?= base_url() ?>assets/img/qrcode/<?= $event_data->gambar_qrcode ?>" download="<?= base_url() ?><?= $event_data->custom_url ?>.png" > -->
-					<a href="javascript:void()" data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_preview_qrcode" id="btn-preview-qrcode" class="btn-preview-qrcode">
-						<img src="<?= base_url() ?>assets/img/qrcode/<?= $event_data->gambar_qrcode ?>" alt="<?= $event_data->gambar_qrcode ?>" style="width: 75px; height: 75px;">
-					</a>
+					<button data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_preview_qrcode" id="btn-preview-qrcode" class="btn-preview-qrcode btn btn-default">
+						<img src="<?= base_url() ?>assets/img/qrcode/<?= $event_data->gambar_qrcode ?>" alt="<?= $event_data->gambar_qrcode ?>" style="width: 100px; height: 100px;">
+					</button>
 					<br><small>klik QRcode diatas untuk perbesar</small>
 				</td>
 				<td><?= $event_data->nama_event ?></td>
@@ -36,11 +36,11 @@
 				</td>
 				<td>
 					<?php if($event_data->status == "active"){ ?>
-						<a href="javascript:void()" data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_detail_event" class="btn btn-info btn-detail-event m-1" id="btn-detail-event">Detail</a> <br>
+						<button data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_detail_event" class="btn btn-info btn-detail-event m-1" id="btn-detail-event">Detail</button> <br>
 					<?php }elseif($event_data->status == "not_active"){ ?>
-						<a href="javascript:void()" data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_detail_event" class="btn btn-info btn-detail-event m-1" id="btn-detail-event">Detail</a> <br>
-						<a href="javascript:void()" data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_ubah_event" class="btn btn-secondary btn-ubah-event m-1" id="btn-ubah-event">Ubah</a> <br>
-						<a href="javascript:void()" data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_hapus_event" class="btn btn-danger btn-hapus-event m-1" id="btn-hapus-event">Hapus</a> <br>
+						<button data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_detail_event" class="btn btn-info btn-detail-event m-1" id="btn-detail-event">Detail</button> <br>
+						<button data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_ubah_event" class="btn btn-secondary btn-ubah-event m-1" id="btn-ubah-event">Ubah</button> <br>
+						<button data-id="<?= $event_data->id_event; ?>" data-toggle="modal" data-target="#modal_hapus_event" class="btn btn-danger btn-hapus-event m-1" id="btn-hapus-event">Hapus</button> <br>
 					<?php } ?>
 
 						<!-- Membuat sebuah textbox hidden yang akan digunakan untuk form ubah event -->

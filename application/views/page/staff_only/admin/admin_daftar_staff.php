@@ -96,7 +96,7 @@
 						</div>
 						<!-- Card Body -->
 						<div class="card-body">
-							<button class="btn btn-primary" data-toggle="modal" data-target="#modal_tambah_staff">Tambah staff baru</button>
+							<button class="btn btn-primary" id="btn-tambah-staff" data-toggle="modal" data-target="#modal_tambah_staff">Tambah staff baru</button>
 							<br><br>
 							
 							<div id="view_tabel_staff">
@@ -265,6 +265,23 @@
 			</div>
 		</div>
 	<script>
+
+		$("#btn-tambah-staff").attr('disabled', true);
+		$(".btn-detail-staff").attr('disabled', true);
+		$(".btn-hapus-staff").attr('disabled', true);
+		
+		$(window).on('load', function(){
+			$("#btn-tambah-staff").attr('disabled', false);
+			$(".btn-detail-staff").attr('disabled', false);
+			$(".btn-hapus-staff").attr('disabled', false);
+		});
+		
+		$(window).bind('beforeunload',function(){
+			$("#btn-tambah-staff").attr('disabled', true);
+			$(".btn-detail-staff").attr('disabled', true);
+			$(".btn-hapus-staff").attr('disabled', true);
+		});
+
 		$(document).ready(function() {
 			$('#view_tabel_staff #tabel_list_staff').DataTable();
 			var id = "";

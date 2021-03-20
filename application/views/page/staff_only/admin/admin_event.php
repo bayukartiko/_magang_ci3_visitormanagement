@@ -90,7 +90,7 @@
 										<label class="bmd-label-floating text-gray-800" for="field_gambar_event"><b>Gambar Event</b></label> <small class="text-muted">(opsional)</small>
 										<br>
 										<small class="text-muted">Saran gunakan gambar dengan resolusi tinggi: 2160x1080px (2:1 ratio) </small>
-
+										<br>
 										<img src="" alt="" id="preview-gambar" class="img-thumbnail mb-3">
 
 										<div class="custom-file">
@@ -302,6 +302,7 @@
 												<li>
 													Tetapi anda masih bisa mengubah/mengedit:
 													<ol>
+														<li>Gambar event</li>
 														<li>Nama event</li>
 														<li>Detail event</li>
 														<li>Custom URL</li>
@@ -704,6 +705,27 @@
 		
 	// });
 
+	$("#btn-tambah-event").attr('disabled', true);
+	$(".btn-preview-qrcode").attr('disabled', true);
+	$(".btn-detail-event").attr('disabled', true);
+	$(".btn-ubah-event").attr('disabled', true);
+	$(".btn-hapus-event").attr('disabled', true);
+	$(window).on('load', function(){
+		$("#btn-tambah-event").attr('disabled', false);
+		$(".btn-preview-qrcode").attr('disabled', false);
+		$(".btn-detail-event").attr('disabled', false);
+		$(".btn-ubah-event").attr('disabled', false);
+		$(".btn-hapus-event").attr('disabled', false);
+	});
+	
+	$(window).bind('beforeunload',function(){
+		$("#btn-tambah-event").attr('disabled', true);
+		$(".btn-preview-qrcode").attr('disabled', true);
+		$(".btn-detail-event").attr('disabled', true);
+		$(".btn-ubah-event").attr('disabled', true);
+		$(".btn-hapus-event").attr('disabled', true);
+	});
+	
       $(document).ready(function () {
 			// $('.field_nama_petugas').select2({
 			// 	theme: 'bootstrap4',

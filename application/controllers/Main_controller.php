@@ -74,9 +74,9 @@ class Main_controller extends CI_Controller {
 	public function index(){
 
 		$data["title"] = "Visitor Management";
-		$this->load->view('template/visitor/b4/header', $data);
-		$this->load->view('index');
-		$this->load->view('template/visitor/b4/footer');
+		$data["all_event"] = $this->db->order_by('id_event', 'DESC')->get("tabel_event")->result();
+		
+		$this->load->view('index', $data);
 
 	}
 
