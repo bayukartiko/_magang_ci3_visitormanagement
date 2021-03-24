@@ -93,9 +93,18 @@
 													Me</label>
 											</div>
 										</div> -->
-										<button type="submit" class="btn btn-primary btn-user btn-block btn-login" id="btn-login">
-											login
-										</button>
+										<?php if($this->session->userdata("id_visitor")){ ?>
+											<small class="text-center text-danger">
+												anda tidak diizinkan mengakses halaman ini!
+											</small>
+											<a href="javascript:history.back()" class="btn btn-danger btn-user btn-block">
+												kembali
+											</a>
+										<?php }else{ ?>
+											<button type="submit" class="btn btn-primary btn-user btn-block btn-login" id="btn-login">
+												login
+											</button>
+										<?php } ?>
 									</form>
 									<!-- <hr> -->
 									<!-- <div class="text-center">

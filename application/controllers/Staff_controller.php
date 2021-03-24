@@ -104,6 +104,8 @@ class Staff_controller extends CI_Controller {
 						'event' => $this->db->get_where("tabel_event", ["id_event"=>$id_event])->row_array(), 
 						'id_event'=>$id_event,
 						'all_area' => $this->db->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
+						'hitung_all_visitor_daftar_lebih_awal' => $this->db->order_by('registered_at', 'DESC')->get_where("tabel_visitor", ["registered_at <" => $tabel_event["tanggal_dibuka"].' '.$tabel_event["jam_dibuka"], "status" => "terdaftar_lebih_awal"])->num_rows(),
+						'all_visitor_daftar_lebih_awal' => $this->db->order_by('registered_at', 'DESC')->get_where("tabel_visitor", ["registered_at <"=> $tabel_event["tanggal_dibuka"].' '.$tabel_event["jam_dibuka"], "status" => "terdaftar_lebih_awal"])->result(),
 						'all_visitor_join' => $this->db->order_by('time_in_event', 'DESC')->get_where("tabel_visitor", ["id_event"=>$id_event])->result(),
 						'total_visitor' => $this->db->query("SELECT DATE(registered_at) 'mendaftar_pada', COUNT(DISTINCT id_visitor) 'total_visitor' FROM tabel_visitor WHERE registered_at BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY mendaftar_pada")->result(),
 						'visitor_in' => $this->db->query("SELECT DATE(time_in_event) 'waktu_masuk_event', COUNT(DISTINCT id_visitor) 'visitor_in' FROM tabel_visitor WHERE time_in_event BETWEEN '".$tabel_event['tanggal_dibuka']."' AND '".$tabel_event['tanggal_ditutup']."' GROUP BY waktu_masuk_event")->result(),
@@ -778,6 +780,11 @@ class Staff_controller extends CI_Controller {
 												];
 												$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
 												
+											// update tabel visitor yang status daftar lebih awal
+												$data_tabel_visitor_daftar_lebih_awal = [
+													"status" => "telah_keluar_event",
+												];
+												$this->db->update('tabel_visitor', $data_tabel_visitor_daftar_lebih_awal, ["status" => "terdaftar_lebih_awal"]);
 											// delete session staff petugas pintu (logout)
 												$session_user = $this->db->get_where('ci_sessions', ["id_event"=>$data_event->id_event])->result();
 
@@ -851,6 +858,12 @@ class Staff_controller extends CI_Controller {
 												"status" => htmlspecialchars("not_active"),
 											];
 											$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+
+										// update tabel visitor yang status daftar lebih awal
+											$data_tabel_visitor_daftar_lebih_awal = [
+												"status" => "telah_keluar_event",
+											];
+											$this->db->update('tabel_visitor', $data_tabel_visitor_daftar_lebih_awal, ["status" => "terdaftar_lebih_awal"]);
 											
 										// delete session staff petugas pintu (logout)
 											$session_user = $this->db->get_where('ci_sessions', ["id_event"=>$data_event->id_event])->result();
@@ -925,6 +938,12 @@ class Staff_controller extends CI_Controller {
 											"status" => htmlspecialchars("not_active"),
 										];
 										$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+									
+									// update tabel visitor yang status daftar lebih awal
+										$data_tabel_visitor_daftar_lebih_awal = [
+											"status" => "telah_keluar_event",
+										];
+										$this->db->update('tabel_visitor', $data_tabel_visitor_daftar_lebih_awal, ["status" => "terdaftar_lebih_awal"]);
 										
 									// delete session staff petugas pintu (logout)
 										$session_user = $this->db->get_where('ci_sessions', ["id_event"=>$data_event->id_event])->result();
@@ -999,6 +1018,12 @@ class Staff_controller extends CI_Controller {
 										"status" => htmlspecialchars("not_active"),
 									];
 									$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $data_event->id_event]);
+								
+								// update tabel visitor yang status daftar lebih awal
+									$data_tabel_visitor_daftar_lebih_awal = [
+										"status" => "telah_keluar_event",
+									];
+									$this->db->update('tabel_visitor', $data_tabel_visitor_daftar_lebih_awal, ["status" => "terdaftar_lebih_awal"]);
 									
 								// delete session staff petugas pintu (logout)
 									$session_user = $this->db->get_where('ci_sessions', ["id_event"=>$data_event->id_event])->result();
@@ -1200,6 +1225,9 @@ class Staff_controller extends CI_Controller {
 		$session_aktif = array('staff_id', 'role_id', 'username', 'nama', 'sedang_bertugas', 'id_tugas', 'verified', 'is_active', 'waktu_aktif');
 		$this->session->unset_userdata($session_aktif);
 
+		if($this->input->get("lokasi_logout") == "view_event"){
+			redirect($this->input->get("lokasi_redirect"));
+		}
 		session_regenerate_id(); // Update the current session id with a newly generated one
 		$this->session->set_flashdata('sukses', 'Anda sudah berhasil keluar !');
 		redirect('staff_only/login');

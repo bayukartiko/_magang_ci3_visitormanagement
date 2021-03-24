@@ -11,13 +11,14 @@
     <meta name="author" content="">
 
     <title>
-		<?= $title ?>
+		Visitor Management
 	</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
@@ -30,7 +31,8 @@
 	
 		<style>
 			body{
-				font-family: 'Mulish', sans-serif;
+				/* font-family: 'Mulish', sans-serif; */
+				font-family: 'Nunito', sans-serif;
 				background-color: #F0F2F9;
 				position: relative;
 			}
@@ -44,15 +46,11 @@
 				vertical-align: middle;
 			}
 			.jumbotron h1{
-				font-family: 'Mulish', sans-serif;
 				font-weight: bold;
 				font-size: 10vh;
 			}
 			.jumbotron p{
 				font-size: 3vh;
-			}
-			.jumbotron p{
-				font-family: 'Mulish', sans-serif;
 			}
 			.jumbotron button{
 				width: 25vw;
@@ -174,10 +172,15 @@
 				<?php foreach($all_event as $data_event){ ?>
 					<div class="col-md-4 mb-3 kolom mx-auto">
 						<div class="card kartu mb-4 shadow-sm text-decoration-none text-body w-100 h-100 btn-detail-event" data-toggle="modal" data-target="#exampleModal" style="cursor: pointer">
-							<img src="<?= base_url() ?>assets/img/event_image/<?= $data_event->gambar_event ?>" class="card-img-top" alt="...">
+							<img src="<?= base_url() ?>assets/img/event_image/<?= $data_event->gambar_event ?>" height="180" class="card-img-top" alt="...">
+							
 							<div class="card-body">
 								<?php if($data_event->status == "not_active"){ ?>
-									<button class="btn btn-outline-danger rounded-pill text-center">Closed</button>
+									<?php if($data_event->tanggal_dibuka.' '.$data_event->jam_dibuka > date('Y-m-d H:i:s')){ ?>
+										<button class="btn btn-outline-success rounded-pill text-center">Pendaftaran Dibuka</button>
+									<?php }else{ ?>
+										<button class="btn btn-outline-danger rounded-pill text-center">Closed</button>
+									<?php } ?>
 								<?php }else{ ?>
 									<button class="btn btn-outline-primary rounded-pill text-center">Open</button>
 								<?php } ?>
@@ -193,7 +196,7 @@
 								<input type="hidden" class="src_gambar_event-value_data" value="<?= base_url() ?>assets/img/event_image/<?= $data_event->gambar_event; ?>">
 								<input type="hidden" class="alt_gambar_event-value_data" value="<?= $data_event->nama_event ?> image">
 								<input type="hidden" class="link_akses_event-value_data" value="<?= base_url() ?><?= $data_event->custom_url ?>">
-								<input type="hidden" class="btn_status_event-value_data" value="<?php if($data_event->status == "not_active"){ ?><button class='btn btn-outline-danger rounded text-center'>Closed</button><?php }else{ ?><button class='btn btn-outline-primary rounded text-center'>Open</button><?php } ?>">
+								<input type="hidden" class="btn_status_event-value_data" value="<?php if($data_event->status == "not_active"){ ?><?php if($data_event->tanggal_dibuka.' '.$data_event->jam_dibuka > date('Y-m-d H:i:s')){ ?><button class='btn btn-outline-danger rounded-pill text-center'>Pendaftaran Dibuka</button><?php }else{ ?><button class='btn btn-outline-danger rounded-pill text-center'>Closed</button><?php } ?><?php }else{ ?><button class='btn btn-outline-primary rounded text-center'>Open</button><?php } ?>">
 								<input type="hidden" class="nama_event-value_data" value="<?= $data_event->nama_event; ?>">
 								<input type="hidden" class="detail_event-value_data" value='<?= str_replace("'", '&apos;', $data_event->detail_event); ?>'>
 								<input type="hidden" class="custom_url-value_data" value="<?= base_url().$data_event->custom_url; ?>">
@@ -272,7 +275,7 @@
 									</div>
 								</div>
 
-								<div class="main">
+								<div class="main" style="width: 100%;">
 									<nav class="navbar topbarInModal sticky-top p-2 shadow text-center" style="width: 100%; border-bottom: 2px solid #ECECEC; background-color: #FFFFFF;">
 										<div style="width: 100%;">
 											<p>Gratis</p>

@@ -1,0 +1,11 @@
+Update :
+  - ganti barcode visitor jadi qrcode
+  - tampilan  tabel tambahkan tombol print untuk preview qrcode
+  - tambah data area dgn format grafik(total waktu visitor berkunjung & total pengunjung yang masuk)
+  - isi menu report :
+	- visitor tracking (event, area visitor, date, in/out)
+	- data visitor (data yang di input visitor + qrcode)
+	- event & staff (data event & staff yg bertugas)
+  - create id visitor
+  - membuat halaman index menjadi tempat pendaftaran / pembelian tiket event
+  - tanya guru tentang jadwal dan projek freelance keluar kota

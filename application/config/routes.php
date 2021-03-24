@@ -63,7 +63,8 @@ $route['block'] = 'main_controller/block';
 $route['visitor'] = 'main_controller/index_visitor';
 $route['(:any)'] = 'main_controller/page_register_visitor/$1';
 $route['visitor/cek_event_jamDitutup/(:any)'] = 'main_controller/cek_event_jamDitutup/$1';
-$route['visitor/register/(:any)'] = 'main_controller/aksi_register_visitor/$1';
+$route['visitor/register/(:any)/(:any)'] = 'main_controller/aksi_register_visitor/$1/$2';
+$route['(:any)/register'] = 'main_controller/verify_kode_pendaftaran_visitor/$1';
 $route['visitor/logout'] = 'main_controller/visitor_logout';
 
 $route['staff_only'] = 'main_controller/index_staff';

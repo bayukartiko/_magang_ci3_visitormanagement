@@ -6,7 +6,7 @@
 
 	<!-- modal form register -->
 		<div class="modal fade" id="Modalregister" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+			<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">Daftar event</h5>
@@ -37,7 +37,7 @@
 									</div>
 									<div class="col-md-12">
 										<div class="form-group" id="field_nama_perusahaan">
-											<label for="nama_perusahaan">Nama Perusahaan (opsional)</label>
+											<label for="nama_perusahaan">Nama Perusahaan <small class="text-muted">(opsional)</small></label>
 											<input type="text" class="form-control" id="nama_perusahaan" name="nama_perusahaan" value="<?= set_value('nama_perusahaan') ?>">
 
 											<small id="error_nama_perusahaan" class="invalid-feedback"></small>
@@ -45,7 +45,7 @@
 									</div>
 									<div class="col-md-12">
 										<div class="form-group" id="field_jabatan">
-											<label for="jabatan">Jabatan (opsional)</label>
+											<label for="jabatan">Jabatan <small class="text-muted">(opsional)</small></label>
 											<input type="text" class="form-control" id="jabatan" name="jabatan" value="<?= set_value('jabatan') ?>">
 
 											<small id="error_jabatan" class="invalid-feedback"></small>
@@ -61,7 +61,7 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-group" id="field_email_perusahaan">
-											<label for="email_perusahaan">Email Perusahaan (opsional)</label>
+											<label for="email_perusahaan">Email Perusahaan <small class="text-muted">(opsional)</small></label>
 											<input type="email" class="form-control" id="email_perusahaan" name="email_perusahaan" value="<?= set_value('email_perusahaan') ?>">
 
 											<small id="error_email_perusahaan" class="invalid-feedback"></small>
@@ -70,22 +70,22 @@
 									<div class="col-md-6">
 										<div class="form-group" id="field_notlp_pribadi">
 											<label for="notlp_pribadi">No Telpon Pribadi <span class="text-danger">*</span></label>
-											<input type="number" class="form-control" id="notlp_pribadi" name="notlp_pribadi" value="<?= set_value('notlp_pribadi') ?>">
+											<input type="number" class="form-control" id="notlp_pribadi" name="notlp_pribadi" value="<?= set_value('notlp_pribadi') ?>" min="0">
 
 											<small id="error_notlp_pribadi" class="invalid-feedback"></small>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group" id="field_notlp_perusahaan">
-											<label for="notlp_perusahaan">No Telpon Perusahaan (opsional)</label>
-											<input type="number" class="form-control" id="notlp_perusahaan" name="notlp_perusahaan" value="<?= set_value('notlp_perusahaan') ?>">
+											<label for="notlp_perusahaan">No Telpon Perusahaan <small class="text-muted">(opsional)</small></label>
+											<input type="number" class="form-control" id="notlp_perusahaan" name="notlp_perusahaan" value="<?= set_value('notlp_perusahaan') ?>" min="0">
 
 											<small id="error_notlp_perusahaan" class="invalid-feedback"></small>
 										</div>
 									</div>
 								</div>
 								<div class="form-group" id="field_alasan">
-									<label for="alasan">Alasan Mengikuti Event (opsional)</label>
+									<label for="alasan">Alasan Mengikuti Event <small class="text-muted">(opsional)</small></label>
 									<textarea class="form-control" rows="4" id="alasan" name="alasan"><?= set_value('alasan') ?></textarea>
 
 									<small id="error_alasan" class="invalid-feedback"></small>
@@ -112,18 +112,29 @@
 			// 	e.returnValue = '';
 			// });
 
+			var url = window.location.toString();
+			setTimeout(() => {
+				if (url.indexOf("/register?") > 0) {
+					var clean_url = url.substring(0, url.indexOf("/register?"));
+					window.history.replaceState({}, document.title, clean_url);
+				}
+			}, 500);
+
 			$('[data-toggle="tooltip"]').tooltip();
 
 			$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
 				e.preventDefault();
-				$('#btn-simpan').html('Sedang mendaftar..'); // ganti text btn-simpan jadi sedang mendaftar
+				$('#btn-simpan').html('<i class="fas fa-fw fa-spinner fa-pulse"></i> Sedang mendaftar..'); // ganti text btn-simpan jadi sedang mendaftar
 				$('#btn-simpan').attr('disabled', true); // ganti text btn-simpan jadi sedang mendaftar
-				register_visitor();
+
+				setTimeout(() => {
+					register_visitor();
+				}, 500);
 			});
 
 			function register_visitor(){
 				$.ajax({
-					url: '<?= base_url(); ?>visitor/register/'+$("#id_event").val()+'', // URL tujuan
+					url: '<?= base_url(); ?>visitor/register/'+$("#id_event").val()+'/'+$("#tipe_pendaftaran").val(), // URL tujuan
 					type: 'POST',
 					// data: $("#form-modal form").serialize(),
 					data: new FormData(document.getElementById('form-register')),
@@ -238,7 +249,7 @@
 								// 	$('#error_alasan').html('');
 								// }
 							
-							$('#btn-simpan').html('x Terjadi kesalahan x');
+							$('#btn-simpan').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 							setTimeout(() => {
 								$('#btn-simpan').html('Daftar');
 								$('#btn-simpan').attr('disabled', false);
@@ -285,6 +296,13 @@
 				cek_event();
 			}, 10000); // 10 detik
 
+			setTimeout(()=>{
+				hapus_parameter();
+			}, 5);
+
+			function hapus_parameter(){
+				history.replaceState('', document.title, window.location.origin + window.location.pathname + window.location.search);
+			}
 		});
 	</script>
 

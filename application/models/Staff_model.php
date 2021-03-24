@@ -113,7 +113,6 @@ class Staff_model extends CI_Model{
 				'required' => 'error field alamat event, coba input ulang field ini',
 			]);
 
-			$this->form_validation->set_rules('custom_url', 'custom_url', 'trim',);
 			$this->form_validation->set_rules('tgl_mulai', 'tgl mulai', 'required|trim', [
 				'required' => 'Tanggal mulai event harus diisi !'
 			]);
@@ -342,15 +341,6 @@ class Staff_model extends CI_Model{
 				$this->db->delete('tabel_event', array('id_event' => $id_event));
 		}elseif($mode == "ubah"){
 			// update tabel_event
-				$nama_event = str_replace(' ', '_', $this->input->post('nama_event', true));
-				$custom_url = str_replace(' ', '_', $this->input->post('custom_url', true));
-				if(empty($this->input->post("custom_url", true))){
-					$url = $nama_event;
-				}elseif(!empty($this->input->post("custom_url", true))){
-					$url = $custom_url;
-				}
-
-				unlink(FCPATH . 'assets/img/qrcode/' . $id_event .'.png');
 
 				// ubah gambar event
 					$upload_foto = $_FILES['field_gambar_event-edit']['name'];
@@ -420,7 +410,6 @@ class Staff_model extends CI_Model{
 					"alamat_event" => htmlspecialchars($this->input->post('alamat_event-edit', true)),
 					"latitude" => htmlspecialchars($this->input->post('alamat-event-latitude-edit', true)),
 					"longitude" => htmlspecialchars($this->input->post('alamat-event-longitude-edit', true)),
-					"custom_url" => htmlspecialchars($url),
 					"gambar_qrcode" => htmlspecialchars($id_event.'.png'),
 					"tanggal_dibuka" => htmlspecialchars($this->input->post('tgl_mulai', true)),
 					"tanggal_ditutup" => htmlspecialchars($this->input->post('tgl_selesai', true)),
@@ -429,23 +418,6 @@ class Staff_model extends CI_Model{
 					"status" => htmlspecialchars($status),
 				];
 				$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $id_event]);
-
-				// qr code
-					$config['cacheable'] = true; //boolean, the default is true
-					$config['cachedir'] = './assets/'; //string, the default is application/cache/
-					$config['errorlog'] = './assets/'; //string, the default is application/logs/
-					$config['imagedir'] = './assets/img/qrcode/'; //direktori penyimpanan qr code
-					$config['quality'] = true; //boolean, the default is true
-					$config['size'] = '1024'; //interger, the default is 1024
-					$config['black'] = array(224,255,255); // array, default is array(255,255,255)
-					$config['white'] = array(70,130,180); // array, default is array(0,0,0)
-					$this->ciqrcode->initialize($config);
-					$image_name= $id_event.'.png';
-					$params['data'] = base_url().$url; //data yang akan di jadikan QR CODE
-					$params['level'] = 'H'; //H=High
-					$params['size'] = 10;
-					$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
-					$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
 		}
 	}
 

@@ -285,6 +285,52 @@
 			</div>
 		<?php } ?>
 
+	<!-- data visitor terdaftar lebih awal -->
+		<?php if($hitung_all_visitor_daftar_lebih_awal > 0){ ?>
+			<div class="card shadow-sm mb-4">
+				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					<h6 class="m-0 font-weight-bold text-primary">Data visitor yang daftar lebih awal</h6>
+				</div>
+				<div class="card-body">
+					<table class="table tabel-dvyb table-hover table-striped table-responsive-sm tabel-data-visitor-berpartisipasi">
+						<thead>
+							<tr>
+								<th>Nama</th>
+								<th>Waktu Daftar</th>
+								<th>Aksi</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach($all_visitor_daftar_lebih_awal as $data_visitor){ ?>
+								<tr>
+									<td><?= $data_visitor->nama_visitor ?></td>
+									<td><?= date('D, d-M-Y H:i:s', strtotime($data_visitor->registered_at)) ?></td>
+									<td><a href="javascript:void()" data-id="<?= $data_visitor->id_visitor; ?>" data-toggle="modal" data-target="#modal_detail_visitor" class="btn btn-info btn-detail-visitor m-1">Detail</a></td>
+	
+									<!-- Membuat sebuah textbox hidden yang akan digunakan untuk detail visitor -->
+										<input type="hidden" class="id_visitor-value_data" value="<?= $data_visitor->id_visitor; ?>">
+										<input type="hidden" class="nama_visitor-value_data" value="<?= $data_visitor->nama_visitor; ?>">
+										<input type="hidden" class="perusahaan_visitor-value_data" value="<?= $data_visitor->perusahaan_visitor; ?>">
+										<input type="hidden" class="jabatan_visitor-value_data" value="<?= $data_visitor->jabatan_visitor; ?>">
+										<input type="hidden" class="email_visitor-value_data" value="<?= $data_visitor->email_visitor; ?>">
+										<input type="hidden" class="email_perusahaan-value_data" value="<?= $data_visitor->email_perusahaan; ?>">
+										<input type="hidden" class="tlp_visitor-value_data" value="<?= $data_visitor->tlp_visitor; ?>">
+										<input type="hidden" class="tlp_perusahaan-value_data" value="<?= $data_visitor->tlp_perusahaan; ?>">
+										<input type="hidden" class="alasan_ikut-value_data" value="<?= $data_visitor->alasan_ikut; ?>">
+								</tr>
+							<?php } ?>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Nama</th>
+								<th>Waktu Daftar</th>
+								<th>Aksi</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		<?php } ?>
 	<!-- data visitor yang berpartisipasi -->
 		<div class="card shadow-sm mb-4">
 			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">

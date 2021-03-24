@@ -323,18 +323,24 @@
 
 			$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
 				e.preventDefault();
-				$('#btn-simpan').html('Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
+				$('#btn-simpan').html('<i class="fas fa-fw fa-spinner fa-pulse"></i> Sedang menambahkan..'); // ganti text btn-simpan jadi sedang menambahkan
 				$('#btn-simpan').attr('disabled', true);
-				tambah_staff();
+
+				setTimeout(() => {
+					tambah_staff();
+				}, 500);
 			});
 
 			$('#view_tabel_staff').on('click', '.btn-hapus-staff', function(){
 				id = $(this).data('id');
 			});
 			$('#btn-hapus').click(function(e){
-				$('#btn-hapus').html('Sedang menghapus..');
+				$('#btn-hapus').html('<i class="fas fa-fw fa-spinner fa-pulse"></i> Sedang menghapus..');
 				$('#btn-hapus').attr('disabled', true);
-				hapus_staff();
+
+				setTimeout(() => {
+					hapus_staff();
+				}, 500);
 			});
 
 			function tambah_staff(){
@@ -426,7 +432,7 @@
 									$('#error_jabatan').html('');
 								}
 							
-							$('#btn-simpan').html('x Terjadi kesalahan x');
+							$('#btn-simpan').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 							setTimeout(() => {
 								$('#btn-simpan').html('Simpan');
 								$('#btn-simpan').attr('disabled', false);

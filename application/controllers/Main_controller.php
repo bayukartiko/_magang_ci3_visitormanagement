@@ -381,7 +381,7 @@ class Main_controller extends CI_Controller {
 		
 	}
 
-	public function aksi_register_visitor($id_event){
+	public function aksi_register_visitor($id_event, $tipe_daftar){
 		if($this->input->is_ajax_request()){
 	
 			if($this->main_model->validasi_register_pengunjung() == true){
@@ -400,57 +400,58 @@ class Main_controller extends CI_Controller {
 					$batas_user = str_pad($kode, 7, "0", STR_PAD_LEFT);
 					$id_visitor = "VSTR".$tgl.$batas_user;
 
-				$this->main_model->simpan_register_pengunjung($id_visitor, $id_event);
-
-				// qr code
-					$config['cacheable'] = true; //boolean, the default is true
-					$config['cachedir'] = 'assets/'; //string, the default is application/cache/
-					$config['errorlog'] = 'assets/'; //string, the default is application/logs/
-					$config['imagedir'] = 'assets/img/qrcode/'; //direktori penyimpanan qr code
-					$config['quality'] = true; //boolean, the default is true
-					$config['size'] = '1024'; //interger, the default is 1024
-					$config['black'] = array(224,255,255); // array, default is array(255,255,255)
-					$config['white'] = array(70,130,180); // array, default is array(0,0,0)
-					$this->ciqrcode->initialize($config);
-					$image_name= $id_visitor.'.png';
-					$params['data'] = $id_visitor; //data yang akan di jadikan QR CODE
-					$params['level'] = 'H'; //H=High
-					$params['size'] = 10;
-					$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
-					$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
-				
-				// barcode
-					// $generatorJPG = new Picqer\Barcode\BarcodeGeneratorJPG();
-					// file_put_contents('assets/img/barcode/'.$id_visitor.'.png', $generatorJPG->getBarcode($id_visitor, $generatorJPG::TYPE_CODE_128));
+				$this->main_model->simpan_register_pengunjung($id_visitor, $id_event, $tipe_daftar);
 
 				$event_data = $this->db->get_where('tabel_event', ['id_event' => $id_event])->row_array();
-				$all_area = $this->db->get('tabel_area')->result();
-				$all_data_saya = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
-				$all_data_tracking_saya = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
-				$all_data_tracking_saya_1 = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
-				$data_session = $this->db->get_where('ci_sessions', ["user_id" => $this->session->userdata("id_visitor")])->row_array();
-				
-				// Load ulang view_register.php agar data yang baru bisa muncul di tabel pada visitorRegister2.php
-				// $html = $this->load->view('registrasi/view_register', array(
-				// 	"all_area" => $all_area,
-				// 	"all_data_saya" => $all_data_saya,
-				// 	"all_data_tracking_saya" => $all_data_tracking_saya,
-				// 	"all_data_tracking_saya_1" => $all_data_tracking_saya_1
-				// ), true);
-				
-				$html = $this->load->view('registrasi/b4/view_register', array(
-					"event" => $event_data,
-					"nama_event" => $event_data["nama_event"],
-					"all_data_saya" => $all_data_saya, 
-					"all_data_tracking_saya" => $all_data_tracking_saya, 
-					"all_data_tracking_saya_1" => $all_data_tracking_saya_1, 
-					"all_area" => $all_area, 
-					"data_session"=>$data_session
-				), true);
+
+				if($tipe_daftar == "daftar_di_depan"){
+					$all_area = $this->db->get('tabel_area')->result();
+					$all_data_saya = $this->db->get_where('tabel_visitor', ["id_visitor" => $this->session->userdata("id_visitor")])->row_array();
+					$all_data_tracking_saya = $this->db->order_by('time_in_area', 'DESC')->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+					$all_data_tracking_saya_1 = $this->db->order_by('time_in_area', 'DESC')->limit(1)->get_where('tabel_tracking', ["id_visitor" => $this->session->userdata("id_visitor")])->result();
+					$data_session = $this->db->get_where('ci_sessions', ["user_id" => $this->session->userdata("id_visitor")])->row_array();
+					
+					// qr code
+						$config['cacheable'] = true; //boolean, the default is true
+						$config['cachedir'] = 'assets/'; //string, the default is application/cache/
+						$config['errorlog'] = 'assets/'; //string, the default is application/logs/
+						$config['imagedir'] = 'assets/img/qrcode/'; //direktori penyimpanan qr code
+						$config['quality'] = true; //boolean, the default is true
+						$config['size'] = '1024'; //interger, the default is 1024
+						$config['black'] = array(224,255,255); // array, default is array(255,255,255)
+						$config['white'] = array(70,130,180); // array, default is array(0,0,0)
+						$this->ciqrcode->initialize($config);
+						$image_name= $id_visitor.'.png';
+						$params['data'] = $id_visitor; //data yang akan di jadikan QR CODE
+						$params['level'] = 'H'; //H=High
+						$params['size'] = 10;
+						$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
+						$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+					
+					// barcode
+						// $generatorJPG = new Picqer\Barcode\BarcodeGeneratorJPG();
+						// file_put_contents('assets/img/barcode/'.$id_visitor.'.png', $generatorJPG->getBarcode($id_visitor, $generatorJPG::TYPE_CODE_128));
+
+					$html = $this->load->view('registrasi/b4/view_register', array(
+						"event" => $event_data,
+						"nama_event" => $event_data["nama_event"],
+						"all_data_saya" => $all_data_saya, 
+						"all_data_tracking_saya" => $all_data_tracking_saya, 
+						"all_data_tracking_saya_1" => $all_data_tracking_saya_1, 
+						"all_area" => $all_area, 
+						"data_session"=>$data_session
+					), true);
+				}elseif($tipe_daftar == "daftar_jarak_jauh"){
+					$this->session->set_flashdata('berhasil_daftar_jarak_jauh', 'asd');
+					$html = $this->load->view('registrasi/b4/view_register', array(
+						"event" => $event_data,
+						"nama_event" => $event_data["nama_event"],
+					), true);
+				}
 
 				$callback = array(
 					'status'=>'sukses',
-					'pesan'=>'Hore! anda sudah terdaftar.',
+					'pesan'=>'Selamat! anda sudah berhasil terdaftar.',
 					'html'=>$html
 				);
 			}else{
@@ -472,6 +473,66 @@ class Main_controller extends CI_Controller {
 		}
 		// var_dump($callback);
 
+	}
+
+	public function verify_kode_pendaftaran_visitor($custom_url){
+		$id_visitor = $this->input->get("kode_pendaftaran");
+		$data_visitor = $this->db->get_where('tabel_visitor', ["id_visitor" => $id_visitor])->row_array();
+		$event_data = $this->db->get_where('tabel_event', ["id_event" => $data_visitor["id_event"]])->row_array();
+
+		if($id_visitor == $data_visitor["id_visitor"]){
+			if($data_visitor["status"] == "terdaftar_lebih_awal"){
+				if($custom_url == $event_data["custom_url"]){
+					if($event_data["status"] == "active"){
+						$this->main_model->simpan_register_pengunjung($id_visitor, $event_data["id_event"], "verifikasi_register");
+						
+						// qr code
+							$config['cacheable'] = true; //boolean, the default is true
+							$config['cachedir'] = 'assets/'; //string, the default is application/cache/
+							$config['errorlog'] = 'assets/'; //string, the default is application/logs/
+							$config['imagedir'] = 'assets/img/qrcode/'; //direktori penyimpanan qr code
+							$config['quality'] = true; //boolean, the default is true
+							$config['size'] = '1024'; //interger, the default is 1024
+							$config['black'] = array(224,255,255); // array, default is array(255,255,255)
+							$config['white'] = array(70,130,180); // array, default is array(0,0,0)
+							$this->ciqrcode->initialize($config);
+							$image_name= $id_visitor.'.png';
+							$params['data'] = $id_visitor; //data yang akan di jadikan QR CODE
+							$params['level'] = 'H'; //H=High
+							$params['size'] = 10;
+							$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
+							$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+
+						$this->page_register_visitor($custom_url);
+
+					}else{
+						$data_error = [
+							"error" => true,
+							"pesan_error" => "event ini masih belum dilaksanakan. <br> harap sabar menunggu ya.."
+						];
+						$this->load->view('page_verifikasi_register', $data_error);
+					}
+				}else{
+					$data_error = [
+						"error" => true,
+						"pesan_error" => "url event ini tidak valid. <br> cobalah bertanya kepada petugas terdekat untuk menyelesaikan masalah ini"
+					];
+					$this->load->view('page_verifikasi_register', $data_error);
+				}
+			}else{
+				$data_error = [
+					"error" => true,
+					"pesan_error" => "kode pendaftaran anda sudah kadaluarsa."
+				];
+				$this->load->view('page_verifikasi_register', $data_error);
+			}
+		}else{
+			$data_error = [
+				"error" => true,
+				"pesan_error" => "kode pendaftaran anda tidak valid. <br> harap periksa kembali kode pendaftaran anda."
+			];
+			$this->load->view('page_verifikasi_register', $data_error);
+		}
 	}
 
 	public function visitor_logout(){

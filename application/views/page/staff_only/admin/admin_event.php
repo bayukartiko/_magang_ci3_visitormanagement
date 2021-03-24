@@ -305,7 +305,6 @@
 														<li>Gambar event</li>
 														<li>Nama event</li>
 														<li>Detail event</li>
-														<li>Custom URL</li>
 														<li>Lokasi event</li>
 														<li>Tanggal dimulai</li>
 														<li>Tanggal berakhir</li>
@@ -436,22 +435,6 @@
 											// 	}
 											// }
 										</script>
-									</div>
-								</div>
-								<div class="offset-md-1 col-md-10">
-									<div class="form-group">
-										<label class="bmd-label-floating text-gray-800" for="field_custom_url-edit"><b>Custom URL</b> <span class="small">(opsional)</span></label>
-										<table>
-											<tr>
-												<td><?= base_url() ?></td>
-												<td>
-													<input type="text" class="form-control" id="field_custom_url-edit" name="custom_url" placeholder="masukkan custom url" value="<?= set_value('custom_url') ?>"/>
-												</td>
-											</tr>
-										</table>
-										<small class="text-muted">akan membuat url event custom untuk visitor akses event ini, jika tidak di-isi maka url akan mengikuti isi field nama event</small><br>
-										<small class="text-muted">jika <u>tidak di-isi</u>, url event akan menjadi seperti ini: <b><?= base_url() ?>nama_event</b></small><br>
-										<small class="text-muted">jika <u>di-isi</u>, url event akan menjadi seperti ini: <b><?= base_url() ?>custom_url</b></small>
 									</div>
 								</div>
 								<div class="offset-md-1 col-md-10">
@@ -908,7 +891,7 @@
 			// fungsi tambah event
 				$('#btn-simpan').click(function(e){ // Ketika tombol simpan didalam modal di klik
 					// e.preventDefault();
-					$('#btn-simpan').html('Sedang menyimpan..'); // ganti text btn-simpan jadi sedang menyimpan
+					$('#btn-simpan').html('<i class="fas fa-fw fa-spinner fa-pulse"></i> Sedang menyimpan..'); // ganti text btn-simpan jadi sedang menyimpan
 					$('#btn-simpan').attr('disabled', true);
 
 					setTimeout(() => {
@@ -920,7 +903,7 @@
 						if (endDate < startDate){
 							$('#field_tgl_selesai').addClass('is-invalid');
 							$('#error_tgl_selesai').html('tanggal berakhir harus tanggal setelah tanggal dimulai');
-							$('#btn-simpan').html('x Terjadi kesalahan x');
+							$('#btn-simpan').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 							setTimeout(() => {
 								$('#btn-simpan').html('Simpan');
 								$('#btn-simpan').attr('disabled', false);
@@ -936,7 +919,7 @@
 						if (endTime < startTime){
 							$('#field_jam_ditutup').addClass('is-invalid');
 							$('#error_jam_ditutup').html('jam ditutup harus jam setelah jam dibuka');
-							$('#btn-simpan').html('x Terjadi kesalahan x');
+							$('#btn-simpan').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 							setTimeout(() => {
 								$('#btn-simpan').html('Simpan');
 								$('#btn-simpan').attr('disabled', false);
@@ -945,7 +928,7 @@
 						}else if(endTime == startTime){
 							$('#field_jam_ditutup').addClass('is-invalid');
 							$('#error_jam_ditutup').html('jam ditutup tidak boleh sama dengan jam dibuka');
-							$('#btn-simpan').html('x Terjadi kesalahan x');
+							$('#btn-simpan').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 							setTimeout(() => {
 								$('#btn-simpan').html('Simpan');
 								$('#btn-simpan').attr('disabled', false);
@@ -985,7 +968,7 @@
 							tambah_event();
 						}else{
 							$('#error').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+error+'</div>');
-							$('#btn-simpan').html('x Terjadi kesalahan x');
+							$('#btn-simpan').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 							setTimeout(() => {
 								$('#btn-simpan').html('Simpan');
 								$('#btn-simpan').attr('disabled', false);
@@ -1159,9 +1142,11 @@
 				});
 				
 				$('#btn-hapus').click(function(e){
-					$('#btn-hapus').html('Sedang menghapus..');
+					$('#btn-hapus').html('<i class="fas fa-fw fa-spinner fa-pulse"></i> Sedang menghapus..');
 					$('#btn-hapus').attr('disabled', true);
-					hapus_event();
+					setTimeout(() => {
+						hapus_event();
+					}, 500);
 				});
 
 				function hapus_event(){
@@ -1175,8 +1160,8 @@
 						// async:false,
 						dataType: 'JSON',
 						beforeSend: function() {
-							$('#btn-hapus').html('Sedang menghapus..');
-							$('#btn-hapus').attr('disabled', true);
+							// $('#btn-hapus').html('Sedang menghapus..');
+							// $('#btn-hapus').attr('disabled', true);
 						},
 						success: function(callback){ // Ketika proses pengiriman berhasil
 							$('#modal_hapus_event').modal('hide'); // Close / Tutup Modal Dialog
@@ -1225,7 +1210,6 @@
 					var nama_event = tr.find('.nama_event-value_data').val();
 					var gambar_event = tr.find('.gambar_event-value_data').val();
 					var detail_event = tr.find('.detail_event-value_data').val();
-					var custom_url = tr.find('.custom_url-value_data').val();
 					var alamat_event = tr.find('.alamat_event-value_data').val();
 					var latitude = tr.find('.latitude-value_data').val();
 					var longitude = tr.find('.longitude-value_data').val();
@@ -1244,7 +1228,6 @@
 					tinymce.activeEditor.setContent(detail_event);
 					tinymce.activeEditor.dom.addClass(tinymce.activeEditor.dom.select('img'), "img-thumbnail");
 					tinymce.activeEditor.dom.addClass(tinymce.activeEditor.dom.select('iframe'), "embed-responsive embed-responsive-16by9");
-					$('#field_custom_url-edit').val(custom_url);
 					$('#alamat-event-addr-edit').val(alamat_event);
 					$('#alamat-event-latitude-edit').val(latitude);
 					$('#alamat-event-longitude-edit').val(longitude);
@@ -1342,7 +1325,7 @@
 				});
 
 				$('#btn-ubah').click(function(e){
-					$('#btn-ubah').html('Sedang mengubah..'); // ganti text btn-ubah jadi sedang menambahkan
+					$('#btn-ubah').html('<i class="fas fa-fw fa-spinner fa-pulse"></i> Sedang mengubah..'); // ganti text btn-ubah jadi sedang menambahkan
 					$('#btn-ubah').attr('disabled', true);
 
 					setTimeout(() => {
@@ -1354,7 +1337,7 @@
 						if (endDate < startDate){
 							$('#field_tgl_selesai-edit').addClass('is-invalid');
 							$('#error_tgl_selesai-edit').html('tanggal berakhir harus tanggal setelah tanggal dimulai');
-							$('#btn-ubah').html('x Terjadi kesalahan x');
+							$('#btn-ubah').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 							setTimeout(() => {
 								$('#btn-ubah').html('Ubah');
 								$('#btn-ubah').attr('disabled', false);
@@ -1370,7 +1353,7 @@
 						if (endTime < startTime){
 							$('#field_jam_ditutup-edit').addClass('is-invalid');
 							$('#error_jam_ditutup-edit').html('jam ditutup harus jam setelah jam dibuka');
-							$('#btn-ubah').html('x Terjadi kesalahan x');
+							$('#btn-ubah').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 							setTimeout(() => {
 								$('#btn-ubah').html('Ubah');
 								$('#btn-ubah').attr('disabled', false);
@@ -1379,7 +1362,7 @@
 						}else if(endTime == startTime){
 							$('#field_jam_ditutup-edit').addClass('is-invalid');
 							$('#error_jam_ditutup-edit').html('jam ditutup tidak boleh sama dengan jam dibuka');
-							$('#btn-ubah').html('x Terjadi kesalahan x');
+							$('#btn-ubah').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 							setTimeout(() => {
 								$('#btn-ubah').html('Ubah');
 								$('#btn-ubah').attr('disabled', false);
@@ -1407,8 +1390,8 @@
 						async:false,
 						dataType: 'JSON',
 						beforeSend: function() {
-							$('#btn-ubah').html('Sedang mengubah..'); // ganti text btn-ubah jadi sedang menambahkan
-							$('#btn-ubah').attr('disabled', true);
+							// $('#btn-ubah').html('Sedang mengubah..'); // ganti text btn-ubah jadi sedang menambahkan
+							// $('#btn-ubah').attr('disabled', true);
 						},
 						success: function(callback){
 							if(callback.status == "sukses"){ // Jika Statusnya = sukses
@@ -1493,7 +1476,7 @@
 										$('#error_jam_ditutup-edit').html('');
 									}
 								
-								$('#btn-ubah').html('x Terjadi kesalahan x');
+								$('#btn-ubah').html('<i class="fas fa-fw fa-exclamation-triangle"></i> Terjadi kesalahan <i class="fas fa-fw fa-exclamation-triangle"></i>');
 								setTimeout(() => {
 									$('#btn-ubah').html('Ubah');
 									$('#btn-ubah').attr('disabled', false);

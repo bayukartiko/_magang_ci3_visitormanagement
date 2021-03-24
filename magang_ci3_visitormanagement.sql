@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2021 at 01:53 PM
+-- Generation Time: Mar 24, 2021 at 04:24 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -42,7 +42,7 @@ CREATE TABLE `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`id`, `user_id`, `id_event`, `status`, `ip_address`, `timestamp`, `data`) VALUES
-('bvn012p92n0g682te02j9j8rrnfhh41v', NULL, NULL, NULL, '::1', 1615899136, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
+('d46oi58tfibll9v2a5t7piqj7d1di773', NULL, NULL, NULL, '::1', 1616251268, ''),
 ('f93lv6o9gb9dgk7ijumm8niltgju2vpj', NULL, NULL, NULL, '::1', 1615194611, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226e6577223b7d),
 ('g67u6ej0qpbcgbmvoh6rdr0kv39naq23', NULL, NULL, NULL, '::1', 1615710477, ''),
 ('g9937bsa45epgou2jh6b57ds47n89gav', NULL, NULL, NULL, '::1', 1614570423, ''),
@@ -50,7 +50,8 @@ INSERT INTO `ci_sessions` (`id`, `user_id`, `id_event`, `status`, `ip_address`, 
 ('jvsr52qgaav01vs28f6abql95psegbj8', NULL, NULL, NULL, '::1', 1615184323, ''),
 ('kd3oh1nhijvk7asg01sd69ook9cas646', NULL, NULL, NULL, '::1', 1614903998, ''),
 ('sh9cmsnkm425drpcc6sr0jalick5bmkp', NULL, NULL, NULL, '::1', 1615868794, ''),
-('vedapqhborpfb9f9cutqv47foe0gvb4b', NULL, NULL, NULL, '::1', 1615264570, '');
+('t948taacbmpaqem5cjtd2g4b6ctq8gha', NULL, NULL, NULL, '::1', 1616568819, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
+('tql45v42ga5bb25hd5cd92c8g7jt5h2e', NULL, NULL, NULL, '::1', 1616599469, '');
 
 -- --------------------------------------------------------
 
@@ -71,7 +72,10 @@ CREATE TABLE `tabel_area` (
 INSERT INTO `tabel_area` (`id_area`, `id_event`, `nama_area`) VALUES
 ('AR21021468164400000010', 'EVNT2102146814270000001', 'areaA'),
 ('AR21021468164400000011', 'EVNT2102146814270000001', 'areaB'),
-('AR21021468164400000012', 'EVNT2102146814270000001', 'areaC');
+('AR21021468164400000012', 'EVNT2102146814270000001', 'areaC'),
+('AR21031994434300000040', 'EVNT2103199439790000002', 'area pameran teknologi'),
+('AR21031994434300000041', 'EVNT2103199439790000002', 'area pameran buku'),
+('AR21031994434300000042', 'EVNT2103199439790000002', 'are pameran otomotif');
 
 -- --------------------------------------------------------
 
@@ -101,7 +105,8 @@ CREATE TABLE `tabel_event` (
 --
 
 INSERT INTO `tabel_event` (`id_event`, `nama_event`, `gambar_event`, `detail_event`, `alamat_event`, `latitude`, `longitude`, `custom_url`, `gambar_qrcode`, `tanggal_dibuka`, `tanggal_ditutup`, `jam_dibuka`, `jam_ditutup`, `status`) VALUES
-('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', 'EVNT2102146814270000001.jpg', '<h1 style=\"text-align: center;\"><span style=\"font-family: \'comic sans ms\', sans-serif;\">Tentang GJUI</span></h1>\r\n<p><span style=\"font-family: \'comic sans ms\', sans-serif;\"><span style=\"font-size: 14pt;\">Gelar Jepang Unuversitas Indonesia, atau biasa disebut GJUI, adalah acara Festival Jepang tahunan yg diselenggarakan oleh mahasiswa Program Studi Jepang FIB UI. GJUI pertama kali lahir pada tahun 1994, dan kini telah menjadi salah satu festival budaya Jepang terbesar yang diadakan oleh mahasiswa di Indonesia. GJUI merupakan Festival Jepang tertua dan salah satu yg terbesar  di Indonesia, dengan program andalan seperti music performances, workshop gundam, lomba karaoke, lomba dance cover, rumah hantu Jepang, pesta kembang api, dll. Yang spesial di tahun ke-25 mengangkat tema Mugenchi: Journey into the World of Dreams. Mugenchi adalah dunia paralel yang berorientasi pada periode klasik Jepang yang berarti \"Dunia Fantasi.\" Ia menjadi entitas karena imajinasi dunia fantasi yang tidak memiliki batas. penyelenggaraan GJUI tahun ini juga menampilkan Guest Star yg merupakan penyanyi dari soundtrack anime Log Horizon yg sudah terkenal di kalangan penikmat anime.</span></span></p>\r\n<hr />\r\n<p><iframe src=\"https://www.youtube.com/embed/H3aerwAPqGY\" width=\"600\" height=\"336\" allowfullscreen=\"allowfullscreen\" data-mce-fragment=\"1\"></iframe></p>', 'Pusat Studi Jepang UI, Universitas Indonesia, Jalan Professor Doktor Selo Soemardjan, Pondok Cina, Kota Depok, Jawa Barat, Indonesia', '-6.361840999999999', '106.828496', 'gjui', 'EVNT2102146814270000001.png', '2021-02-16', '2021-03-09', '08:00:00', '18:50:00', 'not_active');
+('EVNT2102146814270000001', 'Gelar Jepang Universitas Indonesia', 'EVNT2102146814270000001.jpg', '<h1 style=\"text-align: center;\"><span style=\"font-family: \'comic sans ms\', sans-serif;\">Tentang GJUI</span></h1>\r\n<p><span style=\"font-family: \'comic sans ms\', sans-serif;\"><span style=\"font-size: 14pt;\">Gelar Jepang Unuversitas Indonesia, atau biasa disebut GJUI, adalah acara Festival Jepang tahunan yg diselenggarakan oleh mahasiswa Program Studi Jepang FIB UI. GJUI pertama kali lahir pada tahun 1994, dan kini telah menjadi salah satu festival budaya Jepang terbesar yang diadakan oleh mahasiswa di Indonesia. GJUI merupakan Festival Jepang tertua dan salah satu yg terbesar  di Indonesia, dengan program andalan seperti music performances, workshop gundam, lomba karaoke, lomba dance cover, rumah hantu Jepang, pesta kembang api, dll. Yang spesial di tahun ke-25 mengangkat tema Mugenchi: Journey into the World of Dreams. Mugenchi adalah dunia paralel yang berorientasi pada periode klasik Jepang yang berarti \"Dunia Fantasi.\" Ia menjadi entitas karena imajinasi dunia fantasi yang tidak memiliki batas. penyelenggaraan GJUI tahun ini juga menampilkan Guest Star yg merupakan penyanyi dari soundtrack anime Log Horizon yg sudah terkenal di kalangan penikmat anime.</span></span></p>\r\n<hr />\r\n<p><iframe src=\"https://www.youtube.com/embed/H3aerwAPqGY\" width=\"600\" height=\"336\" allowfullscreen=\"allowfullscreen\" data-mce-fragment=\"1\"></iframe></p>', 'Pusat Studi Jepang UI, Universitas Indonesia, Jalan Professor Doktor Selo Soemardjan, Pondok Cina, Kota Depok, Jawa Barat, Indonesia', '-6.361840999999999', '106.828496', 'gjui', 'EVNT2102146814270000001.png', '2021-03-24', '2021-03-24', '08:00:00', '20:25:00', 'not_active'),
+('EVNT2103199439790000002', 'Jakarta Fair', 'EVNT2103199439790000002.jpeg', '<p><strong>Pekan Raya Jakarta (PRJ)</strong> atau <strong>Jakarta Fair</strong> adalah <a title=\"Pameran\" href=\"https://id.wikipedia.org/wiki/Pameran\" target=\"_blank\" rel=\"noopener\">pameran</a> tahunan terbesar di <a title=\"Indonesia\" href=\"https://id.wikipedia.org/wiki/Indonesia\" target=\"_blank\" rel=\"noopener\">Indonesia</a>. Walaupun dinamai \"<a title=\"Pekan\" href=\"https://id.wikipedia.org/wiki/Pekan\" target=\"_blank\" rel=\"noopener\">pekan</a>\", biasanya berlangsung selama satu <a title=\"Bulan (waktu)\" href=\"https://id.wikipedia.org/wiki/Bulan_(waktu)\" target=\"_blank\" rel=\"noopener\">bulan</a> penuh dari pertengahan <a title=\"Juni\" href=\"https://id.wikipedia.org/wiki/Juni\" target=\"_blank\" rel=\"noopener\">Juni</a> sampai pertengahan <a title=\"Juli\" href=\"https://id.wikipedia.org/wiki/Juli\" target=\"_blank\" rel=\"noopener\">Juli</a> untuk memperingati <a title=\"22 Juni\" href=\"https://id.wikipedia.org/wiki/22_Juni\" target=\"_blank\" rel=\"noopener\">hari jadi</a> kota <a title=\"Jakarta\" href=\"https://id.wikipedia.org/wiki/Jakarta\" target=\"_blank\" rel=\"noopener\">Jakarta</a>.</p>\r\n<p>- wikipedia</p>', 'Jakarta International Expo, RW.10, Pademangan Timur, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta, Indonesia', '-6.1463445', '106.8458163', 'jakartafair', 'EVNT2103199439790000002.png', '2019-05-22', '2019-06-30', '07:00:00', '23:00:00', 'not_active');
 
 -- --------------------------------------------------------
 
@@ -149,12 +154,12 @@ INSERT INTO `tabel_staff` (`staff_id`, `role_id`, `username`, `password`, `nama`
 ('STF202102011946130000002', 2, 'petugas1', '$2y$10$iW628pKXrvgtpjChzkPAmeFmKuEyyv0o8dqnt3Z.aeSLikqywK32e', 'petugas1', 1, 'TGS21021468178000000010', '1', 'offline'),
 ('STF202102031313020000003', 2, 'petugas2', '$2y$10$Bx4GsO4luPGFu0A0I2JLouaMdYmxeVq.HVp0ayvmDMkYLLGPZ/9qW', 'petugas2', 1, 'TGS21021468178000000011', '1', 'offline'),
 ('STF202102031313240000004', 2, 'petugas3', '$2y$10$jTti8PnyZp8hNJkYqA3Rgut3eaU5WMv6Yw32xbmy55orhZztllbsq', 'petugas3', 1, 'TGS21021468178000000012', '1', 'offline'),
-('STF202102031314180000005', 2, 'petugas4', '$2y$10$KZxAVnfystO.zMGHjrd6CuvzSZM5Owga4K8EZsJlQmHENteprH2Zu', 'petugas4', 0, NULL, '1', 'offline'),
-('STF202102031314360000006', 2, 'petugas5', '$2y$10$wuKg4zQ9OdRuprtJ43jalOpGzNjyKQVBbZLRbFX6tA2A6Y5qLUb9m', 'petugas5', 0, NULL, '1', 'offline'),
-('STF202102040906150000007', 2, 'petugas6', '$2y$10$5WPE96/MAFuD3Ch5cvxRSeGeqQF6ZAaIp8eQotxyDBBx0ISCQ6Cf6', 'petugas6', 0, NULL, '1', 'offline'),
+('STF202102031314180000005', 2, 'petugas4', '$2y$10$KZxAVnfystO.zMGHjrd6CuvzSZM5Owga4K8EZsJlQmHENteprH2Zu', 'petugas4', 1, 'TGS21031994471500000040', '1', 'offline'),
+('STF202102031314360000006', 2, 'petugas5', '$2y$10$wuKg4zQ9OdRuprtJ43jalOpGzNjyKQVBbZLRbFX6tA2A6Y5qLUb9m', 'petugas5', 1, 'TGS21031994471500000041', '1', 'offline'),
+('STF202102040906150000007', 2, 'petugas6', '$2y$10$5WPE96/MAFuD3Ch5cvxRSeGeqQF6ZAaIp8eQotxyDBBx0ISCQ6Cf6', 'petugas6', 1, 'TGS21031994471500000042', '1', 'offline'),
 ('STF202102040907200000008', 2, 'petugas7', '$2y$10$j4gky274DsmymOh9/YHYZucn1G2nnWEGTrH4yNtXTPs1Jh1elJ0KG', 'petugas7', 0, NULL, '1', 'offline'),
 ('STF202102041818440000009', 2, 'petugaspintukeluar1', '$2y$10$HgIAM1vjizSPnfJRBoFLD.tsk0WDPrz321b8klxqkVCUYa9oPbxHy', 'petugaspintukeluar1', 1, 'TGS2102146817800000001', '1', 'offline'),
-('STF202102041819060000010', 2, 'petugaspintukeluar2', '$2y$10$qAdsLyZKUlE1eoG1ZjKOfu99QzSesWEe1Yay3ITZVYdQnuYl6jBtq', 'petugaspintukeluar2', 0, NULL, '1', 'offline'),
+('STF202102041819060000010', 2, 'petugaspintukeluar2', '$2y$10$qAdsLyZKUlE1eoG1ZjKOfu99QzSesWEe1Yay3ITZVYdQnuYl6jBtq', 'petugaspintukeluar2', 1, 'TGS2103199447150000004', '1', 'offline'),
 ('STF202102051000500000011', 2, 'petugaspintukeluar3', '$2y$10$IIgYNdVXHYlW5AnO7Ar/YO4hyD66ldzv6c/QaKePPKTvbHiBt/G/.', 'petugaspintukeluar3', 0, NULL, '1', 'offline'),
 ('STF202102051001110000012', 2, 'petugaspintukeluar4', '$2y$10$Azr4GXo8n2Xqij4wIXhceO2GsyKLBbZ87l2AbhibX7tO3cx7eCJRu', 'petugaspintukeluar4', 0, NULL, '1', 'offline'),
 ('STF202102051001230000013', 2, 'petugaspintukeluar5', '$2y$10$28jfQMcn9SraZwzaYFjcpu.JQi9AecqeTyRtzzkdB8XGdskq8AVw2', 'petugaspintukeluar5', 0, NULL, '1', 'offline'),
@@ -197,7 +202,9 @@ INSERT INTO `tabel_tracking` (`nomor`, `id_visitor`, `id_event`, `id_petugas_pin
 (67, 'VSTR2103083373440000016', 'EVNT2102146814270000001', 'STF202102031313240000004', 'AR21021468164400000012', '2021-03-08 21:06:01', '2021-03-08 21:23:48'),
 (68, 'VSTR2103083373440000016', 'EVNT2102146814270000001', 'STF202102031313020000003', 'AR21021468164400000011', '2021-03-08 21:29:42', '2021-03-08 21:36:57'),
 (69, 'VSTR2103083373440000016', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000010', '2021-03-08 21:36:58', '2021-03-08 22:00:07'),
-(70, 'VSTR2103089383530000022', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000010', '2021-03-08 22:33:12', '2021-03-08 22:33:25');
+(70, 'VSTR2103089383530000022', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000010', '2021-03-08 22:33:12', '2021-03-08 22:33:25'),
+(71, 'VSTR2103249839090000036', 'EVNT2102146814270000001', 'STF202102011946130000002', 'AR21021468164400000010', '2021-03-24 13:44:40', '2021-03-24 13:45:28'),
+(72, 'VSTR2103249839090000036', 'EVNT2102146814270000001', 'STF202102031313020000003', 'AR21021468164400000011', '2021-03-24 13:45:28', '2021-03-24 13:45:53');
 
 -- --------------------------------------------------------
 
@@ -222,7 +229,11 @@ INSERT INTO `tabel_tugas_staff_petugas` (`id_tugas`, `staff_id`, `petugas_pintu_
 ('TGS2102146817800000001', 'STF202102041818440000009', 1, 0, 'EVNT2102146814270000001', NULL),
 ('TGS21021468178000000010', 'STF202102011946130000002', 0, 1, 'EVNT2102146814270000001', 'AR21021468164400000010'),
 ('TGS21021468178000000011', 'STF202102031313020000003', 0, 1, 'EVNT2102146814270000001', 'AR21021468164400000011'),
-('TGS21021468178000000012', 'STF202102031313240000004', 0, 1, 'EVNT2102146814270000001', 'AR21021468164400000012');
+('TGS21021468178000000012', 'STF202102031313240000004', 0, 1, 'EVNT2102146814270000001', 'AR21021468164400000012'),
+('TGS2103199447150000004', 'STF202102041819060000010', 1, 0, 'EVNT2103199439790000002', NULL),
+('TGS21031994471500000040', 'STF202102031314180000005', 0, 1, 'EVNT2103199439790000002', 'AR21031994434300000040'),
+('TGS21031994471500000041', 'STF202102031314360000006', 0, 1, 'EVNT2103199439790000002', 'AR21031994434300000041'),
+('TGS21031994471500000042', 'STF202102040906150000007', 0, 1, 'EVNT2103199439790000002', 'AR21031994434300000042');
 
 -- --------------------------------------------------------
 
@@ -241,13 +252,13 @@ CREATE TABLE `tabel_visitor` (
   `tlp_visitor` varchar(15) NOT NULL,
   `tlp_perusahaan` varchar(15) DEFAULT NULL,
   `alasan_ikut` text DEFAULT NULL,
-  `gambar_qrcode` varchar(255) NOT NULL,
+  `gambar_qrcode` varchar(255) DEFAULT NULL,
   `registered_at` datetime NOT NULL,
   `id_petugas_pintu_area` varchar(255) DEFAULT NULL,
   `id_petugas_pintu_keluar` varchar(255) DEFAULT NULL,
-  `time_in_event` datetime NOT NULL,
+  `time_in_event` datetime DEFAULT NULL,
   `time_out_event` datetime DEFAULT NULL,
-  `status` enum('dalam_antrian_masuk_event','telah_masuk_event','didalam_area','telah_keluar_event') NOT NULL
+  `status` enum('terdaftar_lebih_awal','dalam_antrian_masuk_event','telah_masuk_event','didalam_area','telah_keluar_event') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -288,7 +299,12 @@ INSERT INTO `tabel_visitor` (`id_visitor`, `id_event`, `nama_visitor`, `perusaha
 ('VSTR2103094153990000034', 'EVNT2102146814270000001', 'coba 22', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103094153990000034.png', '2021-03-09 11:34:20', NULL, 'STF202102041818440000009', '2021-03-09 11:34:20', '2021-03-09 11:34:32', 'telah_keluar_event'),
 ('VSTR2103095732790000031', 'EVNT2102146814270000001', 'coba 19', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103095732790000031.png', '2021-03-09 11:26:24', NULL, 'STF202102041818440000009', '2021-03-09 11:26:24', '2021-03-09 11:26:39', 'telah_keluar_event'),
 ('VSTR2103097258920000033', 'EVNT2102146814270000001', 'coba 21', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103097258920000033.png', '2021-03-09 11:33:49', NULL, 'STF202102041818440000009', '2021-03-09 11:33:49', '2021-03-09 11:34:00', 'telah_keluar_event'),
-('VSTR2103098319350000030', 'EVNT2102146814270000001', 'coba 18', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103098319350000030.png', '2021-03-09 11:24:45', NULL, 'STF202102041818440000009', '2021-03-09 11:24:45', '2021-03-09 11:25:47', 'telah_keluar_event');
+('VSTR2103098319350000030', 'EVNT2102146814270000001', 'coba 18', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103098319350000030.png', '2021-03-09 11:24:45', NULL, 'STF202102041818440000009', '2021-03-09 11:24:45', '2021-03-09 11:25:47', 'telah_keluar_event'),
+('VSTR2103240010030000039', 'EVNT2102146814270000001', 'asd asd', '', '', 'asd@asd.asd', '', '123', '', '', NULL, '2021-03-24 18:58:37', NULL, NULL, NULL, NULL, 'telah_keluar_event'),
+('VSTR2103242529610000037', 'EVNT2102146814270000001', 'asd asd', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103242529610000037.png', '2021-03-24 13:47:59', NULL, 'STF202102041818440000009', '2021-03-24 13:47:59', '2021-03-24 13:48:30', 'telah_keluar_event'),
+('VSTR2103246261320000038', 'EVNT2102146814270000001', 'asd asd', '', '', 'sad@efw.ewfe', '', '123', '', '', 'VSTR2103246261320000038.png', '2021-03-24 13:49:12', NULL, 'STF202102041818440000009', '2021-03-24 13:50:04', '2021-03-24 13:50:26', 'telah_keluar_event'),
+('VSTR2103249839090000036', 'EVNT2102146814270000001', 'asd qwe', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103249839090000036.png', '2021-03-24 13:18:18', NULL, 'STF202102041818440000009', '2021-03-24 13:19:26', '2021-03-24 13:45:53', 'telah_keluar_event'),
+('VSTR2103249859740000035', 'EVNT2103199439790000002', 'denis a', '', '', 'asd@asd.asd', '', '123', '', '', 'VSTR2103249859740000035.png', '2021-03-24 11:16:17', NULL, 'STF202102041819060000010', '2021-03-24 11:16:17', '2021-03-24 11:18:05', 'telah_keluar_event');
 
 --
 -- Indexes for dumped tables
@@ -370,7 +386,7 @@ ALTER TABLE `tabel_role`
 -- AUTO_INCREMENT for table `tabel_tracking`
 --
 ALTER TABLE `tabel_tracking`
-  MODIFY `nomor` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `nomor` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- Constraints for dumped tables
