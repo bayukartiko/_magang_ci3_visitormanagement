@@ -153,6 +153,7 @@ class Staff_model extends CI_Model{
 		}
 	}
 	public function aksi_crud_event($mode, $id_event, $id_area, $id_tugas){
+		$tabel_event = $this->db->get_where("tabel_event", ["id_event" => $id_event])->row_array();
 		if($mode == "tambah"){
 			// insert tabel_event
 				$nama_event = str_replace(' ', '_', $this->input->post('nama_event', true));
@@ -341,6 +342,7 @@ class Staff_model extends CI_Model{
 				$this->db->delete('tabel_event', array('id_event' => $id_event));
 		}elseif($mode == "ubah"){
 			// update tabel_event
+				unlink(FCPATH . 'assets/img/qrcode/' . $id_event .'.png');
 
 				// ubah gambar event
 					$upload_foto = $_FILES['field_gambar_event-edit']['name'];
@@ -418,6 +420,23 @@ class Staff_model extends CI_Model{
 					"status" => htmlspecialchars($status),
 				];
 				$this->db->update('tabel_event', $data_tabel_event, ["id_event" => $id_event]);
+
+				// qr code
+					$config['cacheable'] = true; //boolean, the default is true
+					$config['cachedir'] = './assets/'; //string, the default is application/cache/
+					$config['errorlog'] = './assets/'; //string, the default is application/logs/
+					$config['imagedir'] = './assets/img/qrcode/'; //direktori penyimpanan qr code
+					$config['quality'] = true; //boolean, the default is true
+					$config['size'] = '1024'; //interger, the default is 1024
+					$config['black'] = array(224,255,255); // array, default is array(255,255,255)
+					$config['white'] = array(70,130,180); // array, default is array(0,0,0)
+					$this->ciqrcode->initialize($config);
+					$image_name= $id_event.'.png';
+					$params['data'] = base_url().$tabel_event["custom_url"]; //data yang akan di jadikan QR CODE
+					$params['level'] = 'H'; //H=High
+					$params['size'] = 10;
+					$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/img/qrcode/
+					$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
 		}
 	}
 

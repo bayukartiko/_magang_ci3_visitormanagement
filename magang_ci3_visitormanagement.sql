@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2021 at 04:24 PM
+-- Generation Time: Mar 24, 2021 at 05:09 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -51,7 +51,7 @@ INSERT INTO `ci_sessions` (`id`, `user_id`, `id_event`, `status`, `ip_address`, 
 ('kd3oh1nhijvk7asg01sd69ook9cas646', NULL, NULL, NULL, '::1', 1614903998, ''),
 ('sh9cmsnkm425drpcc6sr0jalick5bmkp', NULL, NULL, NULL, '::1', 1615868794, ''),
 ('t948taacbmpaqem5cjtd2g4b6ctq8gha', NULL, NULL, NULL, '::1', 1616568819, 0x73756b7365737c733a32383a22416e646120737564616820626572686173696c206b656c7561722021223b5f5f63695f766172737c613a313a7b733a363a2273756b736573223b733a333a226f6c64223b7d),
-('tql45v42ga5bb25hd5cd92c8g7jt5h2e', NULL, NULL, NULL, '::1', 1616599469, '');
+('tql45v42ga5bb25hd5cd92c8g7jt5h2e', NULL, NULL, NULL, '::1', 1616600066, '');
 
 -- --------------------------------------------------------
 
@@ -89,8 +89,8 @@ CREATE TABLE `tabel_event` (
   `gambar_event` varchar(255) NOT NULL,
   `detail_event` text NOT NULL,
   `alamat_event` text NOT NULL,
-  `latitude` text NOT NULL DEFAULT '-0.007',
-  `longitude` text NOT NULL DEFAULT '123.500',
+  `latitude` text DEFAULT NULL,
+  `longitude` text DEFAULT NULL,
   `custom_url` varchar(255) NOT NULL,
   `gambar_qrcode` varchar(255) NOT NULL,
   `tanggal_dibuka` date NOT NULL,

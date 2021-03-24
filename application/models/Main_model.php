@@ -82,8 +82,8 @@ class Main_model extends CI_Model{
 				$this->email->initialize($config);
 	
 				$this->email->from($_ENV["AlamatEmail"], "Visitor Management");
-				$this->email->to('bayu69kartiko@gmail.com');
-				$this->email->subject('Testing');
+				$this->email->to(htmlspecialchars($this->input->post('email_pribadi', true)));
+				$this->email->subject('Kode Pendaftaran Event');
 				$this->email->message('<p>Hai '. htmlspecialchars($this->input->post("nama_depan", true)) . ' ' . htmlspecialchars($this->input->post("nama_belakang", true)) .'!</p><p>Selamat, kamu telah terdaftar pada event <b>'. $event["nama_event"] .'</b>!</p><br><p>Berikut kode pendaftaran anda:</p><h4 style="color: #7952B3; font-size: large;"><a href="'. base_url() . $event["custom_url"] .'/register?kode_pendaftaran='. $id_visitor .'" onclick="return confirm("Kode Pendaftaran ini hanya berlaku 1 kali pemakaian. \n yakin untuk melanjutkan?");">'. $id_visitor .'</a></h4><p>Kamu bisa langsung mengakses event ini hanya dengan menekan kode pendaftaran anda diatas.</p><br><p>Terima kasih sudah berpartisipasi pada event <b>'. $event["nama_event"] .'</b> :)</p><br><p>Regards,</p><p><b>Visitor Management</b></p>');
 	
 				if($this->email->send()){
