@@ -119,17 +119,17 @@
 <body data-spy="scroll" data-target="#navbar" data-offset="0">
 
 	<section id="topbar">
-		<nav class="navbar topbar navbar-expand-lg navbar-light bg-success fixed-top" id="navbar" style="transition: 0.3s;">
+		<nav class="navbar topbar navbar-expand-lg navbar-light fixed-top" id="navbar" style="background-color: #009432; transition: 0.3s;">
 			<div class="container">
 				<a class="navbar-brand text-light" href="#">
 					<img src="./assets/img/id_card_img.png" style="width: 30px; height: 55px;" alt="" srcset="">
 				</a>
 
-				<button class="navbar-toggler" onclick="addshadow()" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				
-				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-collapse collapse" id="navbarNavAltMarkup">
 					<div class="navbar-nav m-2">
 						<a class="nav-link text-light mr-3" href="#home">Home</a>
 						<a class="nav-link text-light mr-3" href="#semua-event">Semua Event</a>
@@ -140,7 +140,7 @@
 	</section>
 
 	<section id="home" class="">
-		<div class="jumbotron jumbotron-fluid bg-success my-auto" style="padding-top: 100px; border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;">
+		<div class="jumbotron jumbotron-fluid my-auto" style="background-color: #009432; padding-top: 100px; border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;">
 			<div class="container">
 				<div class="row align-items-center">
 					<div class="col-md-8">
@@ -299,7 +299,7 @@
 												<hr>
 												<br>
 												<b>Tanggal dan Waktu :</b><br>
-												<table class="table text-center table-responsive-sm">
+												<table class="table text-center table-borderless table-responsive-sm">
 													<tr>
 														<th>Tanggal Dimulai</th>
 														<th>Tanggal Berakhir</th>
@@ -308,9 +308,7 @@
 														<td id="tgl_dibuka-InModal"></td>
 														<td id="tgl_ditutup-InModal"></td>
 													</tr>
-												</table>
-												<br>
-												<table class="table text-center table-responsive-sm">
+													<tr><td><br></td></tr>
 													<tr>
 														<th>Jam Dibuka</th>
 														<th>Jam Ditutup</th>
@@ -320,7 +318,7 @@
 														<td id="jam_ditutup-InModal"></td>
 													</tr>
 												</table>
-
+												
 												<br>
 
 												<b>Lokasi :</b><br>
@@ -349,9 +347,6 @@
 			</div>
 		</div>
 	</div>
-
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
 	<script>
 		$("body").css('overflow', 'hidden');

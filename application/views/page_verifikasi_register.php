@@ -28,7 +28,7 @@
 	
 </head>
 
-	<body class="bg-success text-center" style="font-family: 'Nunito', sans-serif;">
+	<body class="text-center" style="font-family: 'Nunito', sans-serif; background-color: #009432;">
 		<div class="container d-flex flex-column justify-content-center vh-100">
 			<div class="text-center p-5" style="color: #FEFEFE;">
 				<?php 
