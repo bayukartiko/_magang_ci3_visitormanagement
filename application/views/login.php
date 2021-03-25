@@ -101,9 +101,16 @@
 												kembali
 											</a>
 										<?php }else{ ?>
+											<br>
 											<button type="submit" class="btn btn-primary btn-user btn-block btn-login" id="btn-login">
 												login
 											</button>
+											<br>
+											<div class="text-center">
+												<small>
+													<a href="<?= base_url() ?>" class="text-center">Kembali ke halaman awal</a>
+												</small>
+											</div>
 										<?php } ?>
 									</form>
 									<!-- <hr> -->
